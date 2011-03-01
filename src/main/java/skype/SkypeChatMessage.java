@@ -1,4 +1,4 @@
-package skype2gmail;
+package skype;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

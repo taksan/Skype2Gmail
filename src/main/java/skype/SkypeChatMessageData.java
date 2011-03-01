@@ -1,4 +1,4 @@
-package skype2gmail;
+package skype;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

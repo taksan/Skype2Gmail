@@ -7,6 +7,7 @@ import java.util.Date;
 import org.junit.Assert;
 import org.junit.Test;
 
+import skype.ChatMailBuilder;
 import skype2gmail.mocks.SkypeChatMock;
 
 public class ChatMailBuilderTest {

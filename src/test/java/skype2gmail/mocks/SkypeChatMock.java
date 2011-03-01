@@ -6,9 +6,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import skype2gmail.SkypeChat;
-import skype2gmail.SkypeChatMessage;
-import skype2gmail.SkypeChatMessageData;
+import skype.SkypeChat;
+import skype.SkypeChatMessage;
+import skype.SkypeChatMessageData;
 
 
 public class SkypeChatMock implements SkypeChat {

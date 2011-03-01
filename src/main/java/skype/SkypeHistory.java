@@ -1,4 +1,4 @@
-package skype2gmail;
+package skype;
 import java.io.File;
 import java.io.IOException;
 

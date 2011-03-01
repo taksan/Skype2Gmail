@@ -1,4 +1,4 @@
-package skype2gmail;
+package skype;
 
 import java.util.Collections;
 import java.util.Comparator;
