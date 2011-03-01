@@ -1,5 +1,6 @@
 package skype2gmail;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -11,25 +12,28 @@ import skype2gmail.mocks.SkypeChatMock;
 public class ChatMailBuilderTest {
 
 	@Test
-	public void happyDayTest() {
-		String chatId = "#cardoso.grazieli/$gabrielsan;81ef2618fc9a6343";
+	public void happyDayTest() throws ParseException {
+		String chatId = "#camaron.goo/$goofoo;81ef2618fc9a6343";
 		Date chatDate = makeDate(2011, 02, 21, 15, 39, 46);
-		SkypeChatMock chat = new SkypeChatMock(chatId, chatDate);
+		String[] members = new String[]{"camaron.goo","goofoo"};
+		SkypeChatMock chat = new SkypeChatMock(chatId, chatDate, "FOO", members);
 
 		chat.
-			addMockMessage("919", "15:14:18", "gabrielsan", "Gabriel Takeuchi", "qual a instância de homologação?").
-			addMockMessage("917", "15:18:16", "cardoso.grazieli", "Grazieli", "as tres").
-			addMockMessage("918", "15:14:24", "gabrielsan", "Gabriel Takeuchi", "ng-01, 02 ou 03?");
+			addMockMessage("919", "2011/02/21 15:14:18", "goofoo", "Goo Foo", "what's up").
+			addMockMessage("917", "2011/02/21 15:18:16", "camaron.goo", "Camaron", "so far so good").
+			addMockMessage("918", "2011/02/21 15:14:24", "goofoo", "Goo Foo", "doing fine??");
 
 		ChatMailBuilder chatMailBuilder = new ChatMailBuilder(chat);
 
-		String actual = chatMailBuilder.asString();
+		String actual = chatMailBuilder.toChatText();
 		String expected = 
-			"Chat [#cardoso.grazieli/$gabrielsan;81ef2618fc9a6343] at 15:39:46 21/02/2011\n" +
+			"Chat topic: FOO\n"+
+			"Chat [#camaron.goo/$goofoo;81ef2618fc9a6343] at 2011/03/21 15:39:46\n" +
+			"Chat members: [camaron.goo,goofoo]\n"+
 			"[919,918,917]\n" +
-			"[15:14:18] Gabriel Takeuchi: qual a instância de homologação?\n" +
-			"[15:14:24] ... ng-01, 02 ou 03?\n" +
-			"[15:18:16] Grazieli: as tres";
+			"[15:14:18] Goo Foo: what's up\n" +
+			"[15:14:24] ... doing fine??\n" +
+			"[15:18:16] Camaron: so far so good";
 		
 		Assert.assertEquals(expected, actual);
 	}

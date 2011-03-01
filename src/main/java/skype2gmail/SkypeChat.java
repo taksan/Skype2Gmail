@@ -1,9 +1,18 @@
 package skype2gmail;
 
+import java.util.Date;
 import java.util.List;
 
 public interface SkypeChat {
 
-	List<? extends SkypeChatMessage> getChatMessages();
+	List<SkypeChatMessage> getChatMessages();
+
+	String getId();
+
+	Date getTime();
+
+	String getTopic();
+
+	List<String> getMembersIds();
 
 }
