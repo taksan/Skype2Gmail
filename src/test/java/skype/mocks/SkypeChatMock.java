@@ -1,4 +1,4 @@
-package skype2gmail.mocks;
+package skype.mocks;
 
 import java.text.ParseException;
 import java.util.Arrays;

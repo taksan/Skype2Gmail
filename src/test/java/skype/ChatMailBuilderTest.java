@@ -1,4 +1,4 @@
-package skype2gmail;
+package skype;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -8,7 +8,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import skype.ChatMailBuilder;
-import skype2gmail.mocks.SkypeChatMock;
+import skype.mocks.SkypeChatMock;
 
 public class ChatMailBuilderTest {
 
