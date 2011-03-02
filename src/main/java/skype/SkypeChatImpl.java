@@ -1,6 +1,5 @@
 package skype;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class SkypeChatImpl implements SkypeChat {
 			for (User user : allMembers) {
 				memberIds.add(user.getId());
 			}
-			
+
 			createMessageListFromChatMessages(allChatMessages);
 		} catch (SkypeException e) {
 			throw new IllegalStateException(e);
@@ -38,14 +37,12 @@ public class SkypeChatImpl implements SkypeChat {
 
 	private void createMessageListFromChatMessages(ChatMessage[] allChatMessages) {
 		chatMessageList = new LinkedList<SkypeChatMessage>();
-		for (ChatMessage chatMessage : allChatMessages) {
-			try {
+		try {
+			for (ChatMessage chatMessage : allChatMessages) {
 				chatMessageList.add(new SkypeChatMessageData(chatMessage));
-			} catch (ParseException e) {
-				throw new IllegalStateException(e);
-			} catch (SkypeException e) {
-				throw new IllegalStateException(e);
 			}
+		} catch (Exception e) {
+			throw new IllegalStateException(e);
 		}
 	}
 
