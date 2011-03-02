@@ -42,9 +42,13 @@ public class SkypeHistory {
         for(Chat chat: allRecentChats) {
             ChatMailBuilder chatMailBuilder = new ChatMailBuilder(new SkypeChatImpl(chat));
             
-            File chatFile = new File(dumpdir, chat.getId());
+            File chatFile = new File(dumpdir, createChatDumpName(chat));
             FileUtils.writeStringToFile(chatFile, chatMailBuilder.toChatText()+"\n");
         }
         LOGGER.info("Done.");
+	}
+
+	private static String createChatDumpName(Chat chat) {
+		return chat.getId().replace("#", "").replace("$", "$");
 	}
 }
