@@ -34,7 +34,7 @@ public class SkypeHistory {
 		
 		dumpdir.mkdirs();
 		Skype.getAllRecentChats();
-		Thread.sleep(1000);
+		Thread.sleep(100);
 		
 		Chat[] allRecentChats = Skype.getAllRecentChats();
 		LOGGER.info(String.format("Found %d chats.", allRecentChats.length));
@@ -49,6 +49,6 @@ public class SkypeHistory {
 	}
 
 	private static String createChatDumpName(Chat chat) {
-		return chat.getId().replace("#", "").replace("$", "$");
+		return chat.getId().replaceAll("[#$;]", "_");
 	}
 }
