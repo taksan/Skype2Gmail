@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import com.skype.Chat;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
@@ -19,31 +21,33 @@ public class SkypeChatImpl implements SkypeChat {
 
 	public SkypeChatImpl(Chat chat) {
 		try {
-			ChatMessage[] allChatMessages = chat.getAllChatMessages();
 			chatId = chat.getId();
 			chatTime = chat.getTime();
 			topic = chat.getWindowTitle();
-			User[] allMembers = chat.getAllMembers();
-			memberIds = new LinkedList<String>();
-			for (User user : allMembers) {
-				memberIds.add(user.getId());
-			}
 
-			createMessageListFromChatMessages(allChatMessages);
+			memberIds = new LinkedList<String>();
+			populateUserList(chat);
+			
+			chatMessageList = new LinkedList<SkypeChatMessage>();
+			populateChatList(chat);
 		} catch (SkypeException e) {
 			throw new IllegalStateException(e);
 		}
 	}
 
-	private void createMessageListFromChatMessages(ChatMessage[] allChatMessages) {
-		chatMessageList = new LinkedList<SkypeChatMessage>();
-		try {
-			for (ChatMessage chatMessage : allChatMessages) {
-				chatMessageList.add(new SkypeChatMessageData(chatMessage));
-			}
-		} catch (Exception e) {
-			throw new IllegalStateException(e);
-		}
+	
+	SkypeChatImpl(
+		final String chatId,
+		final Date chatTime,
+		final String topic,
+		final List<String> memberIds,
+		List<SkypeChatMessage> chatMessageList
+	) {
+		this.chatId = chatId;
+		this.chatTime = chatTime;
+		this.topic = topic;
+		this.memberIds = memberIds;
+		this.chatMessageList = chatMessageList;
 	}
 
 	@Override
@@ -70,5 +74,31 @@ public class SkypeChatImpl implements SkypeChat {
 	public List<String> getMembersIds() {
 		return memberIds;
 	}
+	
+	public void accept(SkypeChatUsersVisitor skypeChatUsersVisitor) {
+		throw new NotImplementedException();
+	}
 
+	public void accept(SkypeChatMessageVisitor skypeChatMessageVisitor) {
+		throw new NotImplementedException();
+	}
+
+	private void populateUserList(Chat chat) throws SkypeException {
+		User[] allMembers = chat.getAllMembers();
+		for (User user : allMembers) {
+			memberIds.add(user.getId());
+		}
+	}
+
+	private void populateChatList(Chat chat) throws SkypeException {
+		ChatMessage[] allChatMessages = chat.getAllChatMessages();
+		try {
+			for (ChatMessage chatMessage : allChatMessages) {
+				chatMessageList.add(new SkypeChatMessageData(this, chatMessage));
+			}
+			
+		} catch (Exception e) {
+			throw new IllegalStateException(e);
+		}
+	}
 }

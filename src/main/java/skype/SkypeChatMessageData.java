@@ -17,9 +17,9 @@ public class SkypeChatMessageData implements SkypeChatMessage {
 	private final String userId;
 
 	
-	public SkypeChatMessageData(ChatMessage chatMessage) throws ParseException, SkypeException {
+	public SkypeChatMessageData(SkypeChat skypeChat, ChatMessage chatMessage) throws ParseException, SkypeException {
 		this(
-			chatMessage.getId(),
+			skypeChat,
 			chatMessage.getSenderId(),
 			chatMessage.getSenderDisplayName(),
 			chatMessage.getContent(),
@@ -27,15 +27,16 @@ public class SkypeChatMessageData implements SkypeChatMessage {
 			);
 	}
 	
-	public SkypeChatMessageData(String msgId, String userId,
+	public SkypeChatMessageData(SkypeChat skypeChat, String userId,
 			String userDisplay, String message, Date time) throws ParseException {
-		this.msgId = msgId;
+		long millis = time.getTime() - skypeChat.getTime().getTime();
+		this.msgId = String.valueOf(millis);
 		this.userDisplay = userDisplay;
 		this.message = message;
 		this.date = time;
 		this.userId = userId;
+		
 	}
-
 
 	@Override
 	public String getDisplayUsername() {
@@ -64,7 +65,7 @@ public class SkypeChatMessageData implements SkypeChatMessage {
 
 	@Override
 	public String messageText(boolean printSender) {
-		String formattedTime = new SimpleDateFormat("H:m:s").format(this.getDate());
+		String formattedTime = new SimpleDateFormat("HH:mm:ss").format(this.getDate());
 		final String senderDisplayName;
 		if (printSender)
 			senderDisplayName = this.getDisplayUsername()+":";
@@ -78,4 +79,8 @@ public class SkypeChatMessageData implements SkypeChatMessage {
 				);
 	}
 
+	@Override
+	public String toString() {
+		return this.messageText(true);
+	}
 }
