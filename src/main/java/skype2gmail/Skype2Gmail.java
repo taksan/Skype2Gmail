@@ -22,6 +22,7 @@ public class Skype2Gmail implements SkypeHistoryRecorder {
 		throw new NotImplementedException();
 	}
 
+	@SuppressWarnings("unused")
 	private Store getGmailStorage(String username, String password) {
 		Properties props = System.getProperties();
 		props.setProperty("mail.store.protocol", "imaps");
