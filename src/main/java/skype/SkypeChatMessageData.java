@@ -54,7 +54,7 @@ public class SkypeChatMessageData implements SkypeChatMessage {
 	}
 
 	@Override
-	public Date getDate() {
+	public Date getTime() {
 		return this.date;
 	}
 
@@ -65,7 +65,7 @@ public class SkypeChatMessageData implements SkypeChatMessage {
 
 	@Override
 	public String messageText(boolean printSender) {
-		String formattedTime = new SimpleDateFormat("HH:mm:ss").format(this.getDate());
+		String formattedTime = new SimpleDateFormat("HH:mm:ss").format(this.getTime());
 		final String senderDisplayName;
 		if (printSender)
 			senderDisplayName = this.getDisplayUsername()+":";

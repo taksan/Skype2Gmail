@@ -68,6 +68,7 @@ public class FileDumpEntryBuilderTest {
 				"Messages Ids: [858000,864000]\n" + 
 				"[15:14:18] MOE: Hya\n" + 
 				"[15:14:24] JOE: Howdy\n" + 
+				"Last modified:2011/04/21 15:14:24\n"+
 				"@StorageEntryMock: ------\n" + 
 				"chatId:73, topic:FOO, date:2011/04/21 15:00:00\n" + 
 				"Chat topic: FOO\n" + 
@@ -75,7 +76,8 @@ public class FileDumpEntryBuilderTest {
 				"Chat members: [john,doe]\n" + 
 				"Messages Ids: [858000,864000]\n" + 
 				"[15:14:18] JOHN: Hya\n" + 
-				"[15:14:24] DOE: Howdy";
+				"[15:14:24] DOE: Howdy\n"+
+				"Last modified:2011/04/21 15:14:24";
 		Assert.assertEquals(expected , actual);
 	}
 }

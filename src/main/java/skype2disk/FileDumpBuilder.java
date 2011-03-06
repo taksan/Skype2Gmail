@@ -53,7 +53,7 @@ public class FileDumpBuilder {
 		Collections.sort(this.chatMessages, new Comparator<SkypeChatMessage>() {
 			@Override
 			public int compare(SkypeChatMessage o1, SkypeChatMessage o2) {
-				return o1.getDate().compareTo(o2.getDate());
+				return o1.getTime().compareTo(o2.getTime());
 			}
 		});
 	}	

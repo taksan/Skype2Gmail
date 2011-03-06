@@ -10,9 +10,9 @@ import com.skype.SkypeException;
 public class SkypeApiImpl implements SkypeApi {
 
 	@Override
-	public SkypeChat[] getAllRecentChats() {
+	public SkypeChat[] getAllChats() {
 		try {
-			Chat[] allRecentChats = Skype.getAllRecentChats();
+			Chat[] allRecentChats = Skype.getAllChats();
 			
 			List<SkypeChat> skypeChats = new LinkedList<SkypeChat>();
 			for (Chat chat : allRecentChats) {

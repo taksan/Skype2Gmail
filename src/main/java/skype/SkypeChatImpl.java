@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import com.skype.Chat;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
@@ -34,20 +32,10 @@ public class SkypeChatImpl implements SkypeChat {
 			throw new IllegalStateException(e);
 		}
 	}
-
 	
-	SkypeChatImpl(
-		final String chatId,
-		final Date chatTime,
-		final String topic,
-		final List<String> memberIds,
-		List<SkypeChatMessage> chatMessageList
-	) {
-		this.chatId = chatId;
-		this.chatTime = chatTime;
-		this.topic = topic;
-		this.memberIds = memberIds;
-		this.chatMessageList = chatMessageList;
+	@Override
+	public List<String> getMembersIds() {
+		return memberIds;
 	}
 
 	@Override
@@ -68,19 +56,6 @@ public class SkypeChatImpl implements SkypeChat {
 	@Override
 	public String getTopic() {
 		return this.topic;
-	}
-
-	@Override
-	public List<String> getMembersIds() {
-		return memberIds;
-	}
-	
-	public void accept(SkypeChatUsersVisitor skypeChatUsersVisitor) {
-		throw new NotImplementedException();
-	}
-
-	public void accept(SkypeChatMessageVisitor skypeChatMessageVisitor) {
-		throw new NotImplementedException();
 	}
 
 	private void populateUserList(Chat chat) throws SkypeException {

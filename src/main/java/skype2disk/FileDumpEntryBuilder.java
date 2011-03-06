@@ -13,10 +13,13 @@ import skype.SkypeChatMessage;
 public class FileDumpEntryBuilder implements ChatEntryBuilder {
 
 	private final SkypeChat chat;
+	private List<SkypeChatMessage> chatMessages;
 
 	public FileDumpEntryBuilder(SkypeChat chat) {
 		this.chat = chat;
 
+		chatMessages = this.chat.getChatMessages();
+		sortChatMessagesByTime(chatMessages);
 	}
 
 	@Override
@@ -27,8 +30,6 @@ public class FileDumpEntryBuilder implements ChatEntryBuilder {
 		appendChatId(chat, messageText);
 		appendChatMembers(chat, messageText);
 
-		List<SkypeChatMessage> chatMessages = this.chat.getChatMessages();
-		sortChatMessagesByTime(chatMessages);
 		int messageCount = chatMessages.size();
 		messageText.append("Messages Ids: [");
 		for (SkypeChatMessage aChatMessage : chatMessages) {
@@ -51,12 +52,18 @@ public class FileDumpEntryBuilder implements ChatEntryBuilder {
 
 		return messageText.toString().trim();
 	}
+	
+
+	@Override
+	public SkypeChatMessage getMostRecentMessage() {
+		return chatMessages.get(chatMessages.size()-1);
+	}
 
 	private void sortChatMessagesByTime(List<SkypeChatMessage> chatMessages) {
 		Collections.sort(chatMessages, new Comparator<SkypeChatMessage>() {
 			@Override
 			public int compare(SkypeChatMessage o1, SkypeChatMessage o2) {
-				return o1.getDate().compareTo(o2.getDate());
+				return o1.getTime().compareTo(o2.getTime());
 			}
 		});
 	}
@@ -89,5 +96,4 @@ public class FileDumpEntryBuilder implements ChatEntryBuilder {
 			printSender = true;
 		return printSender;
 	}
-
 }

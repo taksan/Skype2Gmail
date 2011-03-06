@@ -1,5 +1,7 @@
 package skype.mocks;
 
+import java.util.Date;
+
 import skype.SkypeChat;
 import skype.SkypeChatMessage;
 import skype.StorageEntry;
@@ -8,6 +10,7 @@ public class StorageEntryMock implements StorageEntry {
 
 	private final SkypeStorageMock skypeStorageMock;
 	private final StringBuilder stringBuilder;
+	private Date lastModificationTime;
 
 	public StorageEntryMock(SkypeStorageMock skypeStorageMock, SkypeChat chat) {
 		this.skypeStorageMock = skypeStorageMock;
@@ -30,8 +33,16 @@ public class StorageEntryMock implements StorageEntry {
 
 	@Override
 	public void save() {
+		stringBuilder.append("Last modified:");
+		stringBuilder.append(SkypeChatMessage.dateFormat.format(this.lastModificationTime));
+		this.stringBuilder.append("\n");
 		String stringfiedContent = stringBuilder.toString();
 		this.skypeStorageMock.addEntryResult(stringfiedContent);
+	}
+
+	@Override
+	public void setLastModificationTime(Date time) {
+		this.lastModificationTime = time;
 	}
 
 }

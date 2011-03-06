@@ -12,7 +12,7 @@ public interface SkypeChatMessage {
 
 	String getId();
 
-	Date getDate();
+	Date getTime();
 
 	String getUserId();
 

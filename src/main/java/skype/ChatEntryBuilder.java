@@ -4,4 +4,6 @@ public interface ChatEntryBuilder {
 
 	String getContent();
 
+	SkypeChatMessage getMostRecentMessage();
+
 }

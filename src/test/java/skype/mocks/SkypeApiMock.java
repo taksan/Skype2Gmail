@@ -12,7 +12,7 @@ public class SkypeApiMock implements SkypeApi {
 	private List<SkypeChatMock> mockChatList = new LinkedList<SkypeChatMock>();
 
 	@Override
-	public SkypeChat[] getAllRecentChats() {
+	public SkypeChat[] getAllChats() {
 		
 		
 		return mockChatList.toArray(new SkypeChatMock[0]);

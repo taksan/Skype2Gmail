@@ -22,17 +22,18 @@ public class SkypeRecorder implements SkypeHistoryRecorder {
 
 	@Override
 	public void record() {
-		SkypeChat[] allRecentChats;
-		allRecentChats = skypeApi.getAllRecentChats();
-		LOGGER.info(String.format("Found %d chats.", allRecentChats.length));
+		SkypeChat[] allChats;
+		allChats = skypeApi.getAllChats();
+		LOGGER.info(String.format("Found %d chats.", allChats.length));
 
-		for (SkypeChat chat : allRecentChats) {
+		for (SkypeChat chat : allChats) {
 			ChatEntryBuilder chatEntryBuilder = chatEntryBuilderFactory
 					.produce(chat);
 
 			StorageEntry storageEntry = skypeMedium.newEntry(chat);
 
 			storageEntry.write(chatEntryBuilder.getContent());
+			storageEntry.setLastModificationTime(chatEntryBuilder.getMostRecentMessage().getTime());
 			storageEntry.save();
 		}
 		LOGGER.info("Done.");
