@@ -30,13 +30,13 @@ public class FileSystemStorageEntry implements StorageEntry {
 	public void save() {
 		try {
 			FileUtils.writeStringToFile(entryFile, entryContent.toString());
-			setLastModificationTimeIfPossible();
+			setLastModificationTimeIfNeeded();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private void setLastModificationTimeIfPossible() {
+	private void setLastModificationTimeIfNeeded() {
 		if (this.lastModificationTime != null)
 			this.entryFile.setLastModified(this.lastModificationTime.getTime());
 	}
