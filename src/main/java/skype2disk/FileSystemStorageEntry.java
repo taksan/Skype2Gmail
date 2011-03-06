@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.NotImplementedException;
 
 import skype.SkypeChat;
 import skype.StorageEntry;
@@ -31,10 +30,15 @@ public class FileSystemStorageEntry implements StorageEntry {
 	public void save() {
 		try {
 			FileUtils.writeStringToFile(entryFile, entryContent.toString());
-			this.entryFile.setLastModified(this.lastModificationTime.getTime());
+			setLastModificationTimeIfPossible();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private void setLastModificationTimeIfPossible() {
+		if (this.lastModificationTime != null)
+			this.entryFile.setLastModified(this.lastModificationTime.getTime());
 	}
 	
 	@Override
