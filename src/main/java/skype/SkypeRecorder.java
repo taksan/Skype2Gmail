@@ -7,17 +7,17 @@ import com.google.inject.Inject;
 public class SkypeRecorder implements SkypeHistoryRecorder {
 	private static final Logger LOGGER = Logger.getLogger(SkypeRecorder.class);
 	private final SkypeStorage skypeMedium;
-	private final ChatEntryBuilderFactory chatEntryBuilderFactory;
+	private final ChatContentBuilderFactory chatContentBuilderFactory;
 	private final SkypeApi skypeApi;
 
 	@Inject
 	public SkypeRecorder(
 			SkypeApi skypeApi,
 			SkypeStorage skypeStorage,
-			ChatEntryBuilderFactory chatEntryBuilderFactory) {
+			ChatContentBuilderFactory chatEntryBuilderFactory) {
 		this.skypeApi = skypeApi;
 		this.skypeMedium = skypeStorage;
-		this.chatEntryBuilderFactory = chatEntryBuilderFactory;
+		this.chatContentBuilderFactory = chatEntryBuilderFactory;
 	}
 
 	@Override
@@ -27,13 +27,13 @@ public class SkypeRecorder implements SkypeHistoryRecorder {
 		LOGGER.info(String.format("Found %d chats.", allChats.length));
 
 		for (SkypeChat chat : allChats) {
-			ChatEntryBuilder chatEntryBuilder = chatEntryBuilderFactory
+			ChatContentBuilder chatContentBuilder = chatContentBuilderFactory
 					.produce(chat);
 
 			StorageEntry storageEntry = skypeMedium.newEntry(chat);
 
-			storageEntry.write(chatEntryBuilder.getContent());
-			storageEntry.setLastModificationTime(chatEntryBuilder.getMostRecentMessage().getTime());
+			storageEntry.write(chatContentBuilder.getContent());
+			storageEntry.setLastModificationTime(chatContentBuilder.getLastModificationTime());
 			storageEntry.save();
 		}
 		LOGGER.info("Done.");

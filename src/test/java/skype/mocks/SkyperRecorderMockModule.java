@@ -1,6 +1,6 @@
 package skype.mocks;
 
-import skype.ChatEntryBuilderFactory;
+import skype.ChatContentBuilderFactory;
 import skype.SkypeApi;
 import skype.SkypeHistoryRecorder;
 import skype.SkypeRecorder;
@@ -16,7 +16,7 @@ public class SkyperRecorderMockModule extends AbstractModule {
 	protected void configure() {
 		bind(SkypeHistoryRecorder.class).to(SkypeRecorder.class);
 		bind(SkypeStorage.class).toInstance(new SkypeStorageMock());
-		bind(ChatEntryBuilderFactory.class).to(ChatEntryBuilderFactoryMock.class);
+		bind(ChatContentBuilderFactory.class).to(ChatContentBuilderFactoryMock.class);
 	}
 	
 	@Provides

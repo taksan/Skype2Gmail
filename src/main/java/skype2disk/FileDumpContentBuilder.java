@@ -2,20 +2,21 @@ package skype2disk;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import skype.ChatEntryBuilder;
+import skype.ChatContentBuilder;
 import skype.SkypeChat;
 import skype.SkypeChatMessage;
 
-public class FileDumpEntryBuilder implements ChatEntryBuilder {
+public class FileDumpContentBuilder implements ChatContentBuilder {
 
 	private final SkypeChat chat;
 	private List<SkypeChatMessage> chatMessages;
 
-	public FileDumpEntryBuilder(SkypeChat chat) {
+	public FileDumpContentBuilder(SkypeChat chat) {
 		this.chat = chat;
 
 		chatMessages = this.chat.getChatMessages();
@@ -55,7 +56,11 @@ public class FileDumpEntryBuilder implements ChatEntryBuilder {
 	
 
 	@Override
-	public SkypeChatMessage getMostRecentMessage() {
+	public Date getLastModificationTime() {
+		return getMostRecentMessage().getTime();
+	}
+
+	private SkypeChatMessage getMostRecentMessage() {
 		return chatMessages.get(chatMessages.size()-1);
 	}
 
@@ -96,4 +101,5 @@ public class FileDumpEntryBuilder implements ChatEntryBuilder {
 			printSender = true;
 		return printSender;
 	}
+
 }

@@ -1,18 +1,17 @@
 package skype.mocks;
 
+import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.NotImplementedException;
-
-import skype.ChatEntryBuilder;
+import skype.ChatContentBuilder;
 import skype.SkypeChat;
 import skype.SkypeChatMessage;
 
-public class ChatEntryBuilderMock implements ChatEntryBuilder {
+public class ChatContentBuilderMock implements ChatContentBuilder {
 
 	private final SkypeChat chat;
 
-	public ChatEntryBuilderMock(SkypeChat chat) {
+	public ChatContentBuilderMock(SkypeChat chat) {
 		this.chat = chat;
 	}
 
@@ -21,8 +20,13 @@ public class ChatEntryBuilderMock implements ChatEntryBuilder {
 		return chat.toString();
 	}
 
+
 	@Override
-	public SkypeChatMessage getMostRecentMessage() {
+	public Date getLastModificationTime() {
+		return getMostRecentMessage().getTime();
+	}
+	
+	private SkypeChatMessage getMostRecentMessage() {
 		List<SkypeChatMessage> chatMessages = chat.getChatMessages();
 		
 		return chatMessages.get(chatMessages.size()-1);

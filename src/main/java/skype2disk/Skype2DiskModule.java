@@ -1,6 +1,6 @@
 package skype2disk;
 
-import skype.ChatEntryBuilderFactory;
+import skype.ChatContentBuilderFactory;
 import skype.SkypeApi;
 import skype.SkypeApiImpl;
 import skype.SkypeHistoryRecorder;
@@ -30,7 +30,7 @@ public class Skype2DiskModule extends AbstractModule {
 		bind(SkypeApi.class).to(SkypeApiImpl.class);
 		bind(SkypeHistoryRecorder.class).to(SkypeRecorder.class);
 		bind(SkypeStorage.class).toInstance(new FileSystemStorage(this.dumpTarget));
-		bind(ChatEntryBuilderFactory.class).to(FileDumpEntryBuilderFactory.class);
+		bind(ChatContentBuilderFactory.class).to(FileDumpContentBuilderFactory.class);
 	}
 
 }

@@ -4,7 +4,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import skype.mocks.ChatEntryBuilderFactoryMock;
+import skype.mocks.ChatContentBuilderFactoryMock;
 import skype.mocks.SkypeApiMock;
 import skype.mocks.SkypeStorageMock;
 import skype.mocks.SkyperRecorderMockModule;
@@ -22,7 +22,7 @@ public class SkypeRecorderTest {
 		skypeApi.addMockChat(SkypeApiMock.produceChatMock("73","john","doe"));
 		
 		SkypeStorage skypeStorage = new SkypeStorageMock();
-		ChatEntryBuilderFactory chatEntryBuilderFactory = new ChatEntryBuilderFactoryMock();
+		ChatContentBuilderFactory chatEntryBuilderFactory = new ChatContentBuilderFactoryMock();
 		
 		SkypeRecorder skypeRecorder_SUBJECT = new SkypeRecorder(skypeApi, skypeStorage, chatEntryBuilderFactory);
 		skypeRecorder_SUBJECT.record();

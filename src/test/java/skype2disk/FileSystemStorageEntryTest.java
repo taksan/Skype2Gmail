@@ -1,16 +1,14 @@
 package skype2disk;
 
 import java.io.File;
-import java.util.Calendar;
 import java.util.Date;
-
-import org.junit.Test;
 
 import junit.framework.Assert;
 
+import org.junit.Test;
+
 import skype.SkypeChat;
 import skype.mocks.SkypeApiMock;
-import skype.mocks.SkypeChatMock;
 import testutils.DateHelper;
 import testutils.IOHelper;
 

@@ -6,7 +6,7 @@ import java.util.Date;
 import org.junit.Assert;
 import org.junit.Test;
 
-import skype.ChatEntryBuilderFactory;
+import skype.ChatContentBuilderFactory;
 import skype.SkypeRecorder;
 import skype.SkypeStorage;
 import skype.mocks.SkypeApiMock;
@@ -28,7 +28,7 @@ public class FileDumpEntryBuilderTest {
 			addMockMessage("2011/03/21 15:18:16", "camaron.goo", "Camaron", "so far so good").
 			addMockMessage("2011/03/21 15:14:24", "goofoo", "Goo Foo", "doing fine??");
 
-		FileDumpEntryBuilder fileDumpEntryBuilder = new FileDumpEntryBuilder(chat);
+		FileDumpContentBuilder fileDumpEntryBuilder = new FileDumpContentBuilder(chat);
 
 		String actual = fileDumpEntryBuilder.getContent();
 		String expected = 
@@ -51,7 +51,7 @@ public class FileDumpEntryBuilderTest {
 		skypeApi.addMockChat(SkypeApiMock.produceChatMock("73","john","doe"));
 		
 		SkypeStorage skypeStorage = new SkypeStorageMock();
-		ChatEntryBuilderFactory chatEntryBuilderFactory = new FileDumpEntryBuilderFactory();
+		ChatContentBuilderFactory chatEntryBuilderFactory = new FileDumpContentBuilderFactory();
 		
 		SkypeRecorder skypeRecorder = new SkypeRecorder(skypeApi, skypeStorage, chatEntryBuilderFactory);
 		skypeRecorder.record();
