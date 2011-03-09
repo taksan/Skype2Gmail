@@ -13,8 +13,10 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class CreateAMessageTest {
 	@Test
 	public void createOneMessageImap() throws MessagingException, IOException {
