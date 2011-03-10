@@ -40,4 +40,9 @@ public class SkypeApiMock implements SkypeApi {
 			String time, String message) {
 		return chat.addMockMessage(time, memberId, memberId.toUpperCase(), message);
 	}
+
+	@Override
+	public boolean isRunning() {
+		return true;
+	}
 }

@@ -5,9 +5,25 @@
 	<appender name="ConsoleAppender" class="org.apache.log4j.ConsoleAppender">
 		<layout class="org.apache.log4j.SimpleLayout" />
 	</appender>
+
+	<appender name="SkypeFrameworkLog" class="org.apache.log4j.RollingFileAppender">
+		<param name="MaxFileSize" value="15MB" />
+		<param name="MaxBackupIndex" value="12" />
+		<param name="File" value="skypeFramework.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p %d %m [%t] %C.%M(%F:%L) %c%n" />
+		</layout>
+	</appender>
+
+	<logger name="skype-framework-native" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="SkypeFrameworkLog" />
+	</logger>
 	
 	<root>
-		<priority value="info" />
+		<level value="info" />
 		<appender-ref ref="ConsoleAppender" />
 	</root>
+
 </log4j:configuration>

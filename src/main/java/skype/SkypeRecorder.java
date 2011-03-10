@@ -11,9 +11,7 @@ public class SkypeRecorder implements SkypeHistoryRecorder {
 	private final SkypeApi skypeApi;
 
 	@Inject
-	public SkypeRecorder(
-			SkypeApi skypeApi,
-			SkypeStorage skypeStorage,
+	public SkypeRecorder(SkypeApi skypeApi, SkypeStorage skypeStorage,
 			ChatContentBuilderFactory chatEntryBuilderFactory) {
 		this.skypeApi = skypeApi;
 		this.skypeMedium = skypeStorage;
@@ -23,6 +21,10 @@ public class SkypeRecorder implements SkypeHistoryRecorder {
 	@Override
 	public void record() {
 		SkypeChat[] allChats;
+		if (!skypeApi.isRunning()) {
+			LOGGER.error("Skype must be running to run Skype2Gmail!");
+			return;
+		}
 		allChats = skypeApi.getAllChats();
 		LOGGER.info(String.format("Found %d chats.", allChats.length));
 
@@ -33,7 +35,8 @@ public class SkypeRecorder implements SkypeHistoryRecorder {
 			StorageEntry storageEntry = skypeMedium.newEntry(chat);
 
 			storageEntry.write(chatContentBuilder.getContent());
-			storageEntry.setLastModificationTime(chatContentBuilder.getLastModificationTime());
+			storageEntry.setLastModificationTime(chatContentBuilder
+					.getLastModificationTime());
 			storageEntry.save();
 		}
 		LOGGER.info("Done.");

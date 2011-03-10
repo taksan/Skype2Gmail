@@ -27,6 +27,14 @@ public class SkypeApiImpl implements SkypeApi {
 			}
 
 			return skypeChats.toArray(new SkypeChat[0]);
+		}catch(SkypeException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+	@Override
+	public boolean isRunning() {
+		try {
+			return Skype.isRunning();
 		} catch (SkypeException e) {
 			throw new IllegalStateException(e);
 		}
