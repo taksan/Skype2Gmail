@@ -12,7 +12,7 @@
 		<param name="File" value="skypeFramework.log" />
 		<param name="Append" value="true" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%-5p %d %m [%t] %C.%M(%F:%L) %c%n" />
+			<param name="ConversionPattern" value="%-5p %d [%c][%t] %m  %C.%M(%F:%L) %n" />
 		</layout>
 	</appender>
 
