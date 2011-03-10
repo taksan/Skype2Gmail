@@ -25,7 +25,7 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 	}
 	
 	private List<String> populateUserList(Chat chat) throws SkypeException {
-		User[] allMembers = chat.getAllMembers();
+		User[] allMembers = chat.getAllPosters();
 		LinkedList<String> memberIds = new LinkedList<String>();
 		for (User user : allMembers) {
 			memberIds.add(user.getId());
