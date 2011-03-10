@@ -1,11 +1,11 @@
 package skype.mocks;
 
 import java.util.Date;
-import java.util.List;
 
 import skype.ChatContentBuilder;
 import skype.SkypeChat;
 import skype.SkypeChatMessage;
+import skype.TimeSortedMessages;
 
 public class ChatContentBuilderMock implements ChatContentBuilder {
 
@@ -27,9 +27,9 @@ public class ChatContentBuilderMock implements ChatContentBuilder {
 	}
 	
 	private SkypeChatMessage getMostRecentMessage() {
-		List<SkypeChatMessage> chatMessages = chat.getChatMessages();
+		TimeSortedMessages chatMessages = chat.getChatMessages();
 		
-		return chatMessages.get(chatMessages.size()-1);
+		return chatMessages.last();
 	}
 
 }

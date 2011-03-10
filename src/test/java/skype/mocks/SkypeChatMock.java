@@ -3,20 +3,21 @@ package skype.mocks;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.StringUtils;
 
 import skype.SkypeChat;
 import skype.SkypeChatMessage;
 import skype.SkypeChatMessageData;
+import skype.TimeSortedMessages;
 
 public class SkypeChatMock implements SkypeChat {
 
 	private final String chatId;
 	private final Date chatDate;
-	private final List<SkypeChatMessage> messageList = new LinkedList<SkypeChatMessage>();
+	private final TimeSortedMessages messageList = new TimeSortedMessages();
 	private final String topic;
 	private final List<String> members;
 
@@ -29,7 +30,7 @@ public class SkypeChatMock implements SkypeChat {
 	}
 
 	@Override
-	public List<SkypeChatMessage> getChatMessages() {
+	public TimeSortedMessages getChatMessages() {
 		return messageList;
 	}
 
@@ -37,8 +38,7 @@ public class SkypeChatMock implements SkypeChat {
 			String userDisplay, String message) {
 		try {
 			Date dateTime = SkypeChatMessage.dateFormat.parse(time);
-			SkypeChatMessageData msgMock = new SkypeChatMessageData(this,
-					userId, userDisplay, message, dateTime);
+			SkypeChatMessageData msgMock = new SkypeChatMessageData(userId, userDisplay, message, dateTime);
 			messageList.add(msgMock);
 
 			return this;
@@ -78,5 +78,10 @@ public class SkypeChatMock implements SkypeChat {
 		result.append(StringUtils.join(messageList,"").trim());
 		
 		return result.toString();
+	}
+
+	@Override
+	public String getChatContentId() {
+		throw new NotImplementedException();
 	}
 }

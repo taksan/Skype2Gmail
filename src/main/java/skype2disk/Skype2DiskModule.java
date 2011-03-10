@@ -3,6 +3,8 @@ package skype2disk;
 import skype.ChatContentBuilderFactory;
 import skype.SkypeApi;
 import skype.SkypeApiImpl;
+import skype.SkypeChatFactory;
+import skype.SkypeChatFactoryImpl;
 import skype.SkypeHistoryRecorder;
 import skype.SkypeRecorder;
 import skype.SkypeStorage;
@@ -28,6 +30,7 @@ public class Skype2DiskModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		bind(SkypeApi.class).to(SkypeApiImpl.class);
+		bind(SkypeChatFactory.class).to(SkypeChatFactoryImpl.class);
 		bind(SkypeHistoryRecorder.class).to(SkypeRecorder.class);
 		bind(SkypeStorage.class).toInstance(new FileSystemStorage(this.dumpTarget));
 		bind(ChatContentBuilderFactory.class).to(FileDumpContentBuilderFactory.class);

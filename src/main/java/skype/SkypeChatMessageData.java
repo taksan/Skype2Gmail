@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.commons.codec.digest.DigestUtils;
+import utils.DigestProvider;
 
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
@@ -19,9 +19,8 @@ public class SkypeChatMessageData implements SkypeChatMessage {
 	private final String userId;
 
 	
-	public SkypeChatMessageData(SkypeChat skypeChat, ChatMessage chatMessage) throws ParseException, SkypeException {
+	public SkypeChatMessageData(ChatMessage chatMessage) throws ParseException, SkypeException {
 		this(
-			skypeChat,
 			chatMessage.getSenderId(),
 			chatMessage.getSenderDisplayName(),
 			chatMessage.getContent(),
@@ -29,10 +28,10 @@ public class SkypeChatMessageData implements SkypeChatMessage {
 			);
 	}
 	
-	public SkypeChatMessageData(SkypeChat skypeChat, String userId,
+	public SkypeChatMessageData(String userId,
 			String userDisplay, String message, Date time) throws ParseException {
-		String md5Seed = userId+"/"+message;
-		this.msgId = DigestUtils.md5Hex(md5Seed);
+		String encodingData = userId+"/"+message;
+		this.msgId = DigestProvider.instance.encode(encodingData);
 		this.userDisplay = userDisplay;
 		this.message = message;
 		this.date = time;

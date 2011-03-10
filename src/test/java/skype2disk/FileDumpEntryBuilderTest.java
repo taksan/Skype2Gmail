@@ -1,7 +1,6 @@
 package skype2disk;
 
 import java.text.ParseException;
-import java.util.Date;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,21 +11,13 @@ import skype.SkypeStorage;
 import skype.mocks.SkypeApiMock;
 import skype.mocks.SkypeChatMock;
 import skype.mocks.SkypeStorageMock;
-import testutils.DateHelper;
+import testutils.SkypeChatHelper;
 
 public class FileDumpEntryBuilderTest {
 
 	@Test
 	public void happyDayTest() throws ParseException {
-		String chatId = "#camaron.goo/$goofoo;81ef2618fc9a6343";
-		Date chatDate = DateHelper.makeDate(2011, 02, 21, 15, 00, 00);
-		String[] members = new String[]{"camaron.goo","goofoo"};
-		SkypeChatMock chat = new SkypeChatMock(chatId, chatDate, "FOO", members);
-
-		chat.
-			addMockMessage("2011/03/21 15:14:18", "goofoo", "Goo Foo", "what's up").
-			addMockMessage("2011/03/21 15:18:16", "camaron.goo", "Camaron", "so far so good").
-			addMockMessage("2011/03/21 15:14:24", "goofoo", "Goo Foo", "doing fine??");
+		SkypeChatMock chat = SkypeChatHelper.createSkypeTestEnvironment();
 
 		FileDumpContentBuilder fileDumpEntryBuilder = new FileDumpContentBuilder(chat);
 
@@ -42,6 +33,7 @@ public class FileDumpEntryBuilderTest {
 		
 		Assert.assertEquals(expected, actual);
 	}
+
 	
 	@Test
 	public void fileRecorderTest()

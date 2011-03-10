@@ -1,7 +1,5 @@
 package skype2disk;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -10,17 +8,17 @@ import org.apache.commons.lang.StringUtils;
 import skype.ChatContentBuilder;
 import skype.SkypeChat;
 import skype.SkypeChatMessage;
+import skype.TimeSortedMessages;
 
 public class FileDumpContentBuilder implements ChatContentBuilder {
 
 	private final SkypeChat chat;
-	private List<SkypeChatMessage> chatMessages;
+	private TimeSortedMessages chatMessages;
 
 	public FileDumpContentBuilder(SkypeChat chat) {
 		this.chat = chat;
 
 		chatMessages = this.chat.getChatMessages();
-		sortChatMessagesByTime(chatMessages);
 	}
 
 	@Override
@@ -61,16 +59,7 @@ public class FileDumpContentBuilder implements ChatContentBuilder {
 	}
 
 	private SkypeChatMessage getMostRecentMessage() {
-		return chatMessages.get(chatMessages.size()-1);
-	}
-
-	private void sortChatMessagesByTime(List<SkypeChatMessage> chatMessages) {
-		Collections.sort(chatMessages, new Comparator<SkypeChatMessage>() {
-			@Override
-			public int compare(SkypeChatMessage o1, SkypeChatMessage o2) {
-				return o1.getTime().compareTo(o2.getTime());
-			}
-		});
+		return chatMessages.last();
 	}
 
 	private void appendChatTopic(SkypeChat chat, StringBuilder messageText) {

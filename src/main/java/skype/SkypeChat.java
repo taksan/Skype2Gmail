@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface SkypeChat {
 
-	List<SkypeChatMessage> getChatMessages();
+	TimeSortedMessages getChatMessages();
 	
 	List<String> getMembersIds();
 
@@ -14,4 +14,6 @@ public interface SkypeChat {
 	Date getTime();
 
 	String getTopic();
+
+	String getChatContentId();
 }
