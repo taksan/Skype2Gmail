@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
 
@@ -29,8 +31,8 @@ public class SkypeChatMessageData implements SkypeChatMessage {
 	
 	public SkypeChatMessageData(SkypeChat skypeChat, String userId,
 			String userDisplay, String message, Date time) throws ParseException {
-		long millis = time.getTime() - skypeChat.getTime().getTime();
-		this.msgId = String.valueOf(millis);
+		String md5Seed = userId+"/"+message;
+		this.msgId = DigestUtils.md5Hex(md5Seed);
 		this.userDisplay = userDisplay;
 		this.message = message;
 		this.date = time;

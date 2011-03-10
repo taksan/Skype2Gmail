@@ -29,7 +29,7 @@ public class SkypeChatMessageDataTest {
 		Assert.assertEquals(expectedWithouSender, messageWithoutSender);
 		
 		final String messageId = skypeChatMessageData.getId();
-		final String timespanInMillis = "5400000";
-		Assert.assertEquals(timespanInMillis, messageId);
+		final String msgMd5 = "6c87fe864a2b8251203e6edd8fa5f0cf";
+		Assert.assertEquals(msgMd5, messageId);
 	}
 }
