@@ -35,8 +35,8 @@ public class SkypeRecorder implements SkypeHistoryRecorder {
 			StorageEntry storageEntry = skypeMedium.newEntry(chat);
 
 			storageEntry.write(chatContentBuilder.getContent());
-			storageEntry.setLastModificationTime(chatContentBuilder
-					.getLastModificationTime());
+			storageEntry.setLastModificationTime(
+					chatContentBuilder.getLastModificationTime());
 			storageEntry.save();
 		}
 		LOGGER.info("Done.");

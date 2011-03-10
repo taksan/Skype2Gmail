@@ -23,6 +23,7 @@ public class FileDumpEntryBuilderTest {
 
 		String actual = fileDumpEntryBuilder.getContent();
 		String expected = 
+			"Chat Content Code: content-id-mock\n" + 
 			"Chat topic: FOO\n" + 
 			"Chat [#camaron.goo/$goofoo;81ef2618fc9a6343] at 2011/03/21 15:00:00\n" + 
 			"Chat members: [camaron.goo,goofoo]\n" + 
@@ -54,6 +55,7 @@ public class FileDumpEntryBuilderTest {
 				"@SkypeStorageMock:\n" + 
 				"@StorageEntryMock: ------\n" + 
 				"chatId:42, topic:FOO, date:2011/04/21 15:00:00\n" + 
+				"Chat Content Code: content-id-mock\n" + 
 				"Chat topic: FOO\n" + 
 				"Chat [42] at 2011/04/21 15:00:00\n" + 
 				"Chat members: [moe,joe]\n" + 
@@ -63,6 +65,7 @@ public class FileDumpEntryBuilderTest {
 				"Last modified:2011/04/21 15:14:24\n" + 
 				"@StorageEntryMock: ------\n" + 
 				"chatId:73, topic:FOO, date:2011/04/21 15:00:00\n" + 
+				"Chat Content Code: content-id-mock\n" + 
 				"Chat topic: FOO\n" + 
 				"Chat [73] at 2011/04/21 15:00:00\n" + 
 				"Chat members: [john,doe]\n" + 

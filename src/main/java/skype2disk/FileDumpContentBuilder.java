@@ -26,7 +26,7 @@ public class FileDumpContentBuilder implements ChatContentBuilder {
 		final StringBuilder messageText = new StringBuilder();
 
 		appendChatTopic(chat, messageText);
-		appendChatId(chat, messageText);
+		appendChatDate(chat, messageText);
 		appendChatMembers(chat, messageText);
 
 		int messageCount = chatMessages.size();
@@ -63,6 +63,7 @@ public class FileDumpContentBuilder implements ChatContentBuilder {
 	}
 
 	private void appendChatTopic(SkypeChat chat, StringBuilder messageText) {
+		messageText.append("Chat Content Code: " + chat.getChatContentId() + "\n");
 		messageText.append("Chat topic: " + chat.getTopic() + "\n");
 	}
 
@@ -74,7 +75,7 @@ public class FileDumpContentBuilder implements ChatContentBuilder {
 		messageText.append("]\n");
 	}
 
-	private void appendChatId(SkypeChat chat, StringBuilder messageText) {
+	private void appendChatDate(SkypeChat chat, StringBuilder messageText) {
 		String formattedTime = SkypeChatMessage.dateFormat.format(chat
 				.getTime());
 		messageText.append(String.format("Chat [%s] at %s\n", chat.getId(),
