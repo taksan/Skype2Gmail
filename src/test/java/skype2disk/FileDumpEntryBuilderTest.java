@@ -43,10 +43,10 @@ public class FileDumpEntryBuilderTest {
 		skypeApi.addMockChat(SkypeApiMock.produceChatMock("42","moe","joe"));
 		skypeApi.addMockChat(SkypeApiMock.produceChatMock("73","john","doe"));
 		
-		SkypeStorage skypeStorage = new SkypeStorageMock();
 		ChatContentBuilderFactory chatEntryBuilderFactory = new FileDumpContentBuilderFactory();
+		SkypeStorage skypeStorage = new SkypeStorageMock(chatEntryBuilderFactory);
 		
-		SkypeRecorder skypeRecorder = new SkypeRecorder(skypeApi, skypeStorage, chatEntryBuilderFactory);
+		SkypeRecorder skypeRecorder = new SkypeRecorder(skypeApi, skypeStorage);
 		skypeRecorder.record();
 		
 		String actual = skypeStorage.toString().trim();

@@ -5,19 +5,27 @@ import java.util.LinkedList;
 import java.util.List;
 
 import skype.SkypeApi;
+import skype.SkypeApiChatVisitor;
 import skype.SkypeChat;
 import testutils.DateHelper;
 
 public class SkypeApiMock implements SkypeApi {
 	private List<SkypeChatMock> mockChatList = new LinkedList<SkypeChatMock>();
+	
 
 	@Override
-	public SkypeChat[] getAllChats() {
-		
-		
-		return mockChatList.toArray(new SkypeChatMock[0]);
+	public boolean isRunning() {
+		return true;
 	}
-	
+
+
+	@Override
+	public void accept(SkypeApiChatVisitor visitor) {
+		for (SkypeChat skypeChat : mockChatList) {
+			visitor.visit(skypeChat);
+		}
+	}
+
 	public void addMockChat(SkypeChatMock mockChat){
 		mockChatList.add(mockChat);
 	}
@@ -41,8 +49,4 @@ public class SkypeApiMock implements SkypeApi {
 		return chat.addMockMessage(time, memberId, memberId.toUpperCase(), message);
 	}
 
-	@Override
-	public boolean isRunning() {
-		return true;
-	}
 }

@@ -10,7 +10,7 @@ import com.google.inject.Injector;
 public class Skype2DiskModuleTest {
 
 	@Test
-	public void happyDay() {
+	public void testInjections() {
 		Injector injector = Guice.createInjector(new Skype2DiskModule(""));
 
 		injector.getInstance(SkypeHistoryRecorder.class);

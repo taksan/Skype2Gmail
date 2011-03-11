@@ -2,6 +2,8 @@ package skype.mocks;
 
 import java.util.Date;
 
+import skype.ChatContentBuilder;
+import skype.ChatContentBuilderFactory;
 import skype.SkypeChat;
 import skype.SkypeChatMessage;
 import skype.StorageEntry;
@@ -11,9 +13,11 @@ public class StorageEntryMock implements StorageEntry {
 	private final SkypeStorageMock skypeStorageMock;
 	private final StringBuilder stringBuilder;
 	private Date lastModificationTime;
+	private final ChatContentBuilderFactory chatContentBuilderFactory;
 
-	public StorageEntryMock(SkypeStorageMock skypeStorageMock, SkypeChat chat) {
+	public StorageEntryMock(SkypeStorageMock skypeStorageMock, SkypeChat chat, ChatContentBuilderFactory chatContentBuilderFactory) {
 		this.skypeStorageMock = skypeStorageMock;
+		this.chatContentBuilderFactory = chatContentBuilderFactory;
 		this.stringBuilder = new StringBuilder();
 		this.stringBuilder.append("@StorageEntryMock: ------\n");
 		this.stringBuilder.append("chatId:");
@@ -26,8 +30,9 @@ public class StorageEntryMock implements StorageEntry {
 	}
 
 	@Override
-	public void write(String content) {
-		stringBuilder.append(content);
+	public void write(SkypeChat content) {
+		ChatContentBuilder produce = this.chatContentBuilderFactory.produce(content);
+		stringBuilder.append(produce.getContent());
 		stringBuilder.append("\n");
 	}
 

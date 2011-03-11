@@ -87,4 +87,9 @@ public class SkypeChatMock implements SkypeChat {
 	public String getChatContentId() {
 		return "content-id-mock";
 	}
+
+	@Override
+	public Date getLastModificationTime() {
+		return this.messageList.last().getTime();
+	}
 }

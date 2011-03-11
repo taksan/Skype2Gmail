@@ -1,9 +1,7 @@
 package skype;
 
-
-
 public interface SkypeApi {
-	SkypeChat[] getAllChats();
-
 	boolean isRunning();
+	
+	void accept(SkypeApiChatVisitor visitor);
 }

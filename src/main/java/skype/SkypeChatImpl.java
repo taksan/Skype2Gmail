@@ -75,4 +75,9 @@ public class SkypeChatImpl implements SkypeChat {
 		digestProvider.extendedEncode(data);
 		return fullChatLen + "#" + digestProvider.extendedEncode(data);
 	}
+
+	@Override
+	public Date getLastModificationTime() {
+		return this.chatMessageList.last().getTime();
+	}
 }

@@ -14,7 +14,7 @@ public class GmailStorageEntry implements StorageEntry {
 	}
 
 	@Override
-	public void write(String content) {
+	public void write(SkypeChat content) {
 		throw new NotImplementedException();
 	}
 

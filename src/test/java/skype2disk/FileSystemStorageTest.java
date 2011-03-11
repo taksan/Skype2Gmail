@@ -27,11 +27,19 @@ public class FileSystemStorageTest {
 			
 			Assert.assertEquals(baseDir.toString(), entryFile.getParent());
 			Assert.assertEquals("42foo", entryFile.getName());
-			newEntry.write("foo");
+			newEntry.write(chat);
 			newEntry.save();
 			
-			String contents = FileUtils.readFileToString(entryFile);
-			Assert.assertEquals("foo", contents);
+			final String contents = FileUtils.readFileToString(entryFile);
+			final String expected = 
+					"Chat Content Code: content-id-mock\n" + 
+					"Chat topic: FOO\n" + 
+					"Chat [#42;$foo] at 2011/04/21 15:00:00\n" + 
+					"Chat members: [moe,joe]\n" + 
+					"Messages Ids: [17f4007f9024da870afae8e60f6635fd,49b2215b046c7df8f731b7a0f48416e1]\n" + 
+					"[15:14:18] MOE: Hya\n" + 
+					"[15:14:24] JOE: Howdy";
+			Assert.assertEquals(expected, contents);
 		}finally {
 			baseDir.delete();
 		}

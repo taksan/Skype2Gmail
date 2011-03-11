@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 
+import skype.ChatContentBuilder;
 import skype.SkypeChat;
 import skype.StorageEntry;
 
@@ -22,8 +23,9 @@ public class FileSystemStorageEntry implements StorageEntry {
 	}
 
 	@Override
-	public void write(String content) {
-		entryContent.append(content);
+	public void write(SkypeChat chat) {
+		ChatContentBuilder contentBuilder = new FileDumpContentBuilder(chat);
+		entryContent.append(contentBuilder.getContent());
 	}
 
 	@Override

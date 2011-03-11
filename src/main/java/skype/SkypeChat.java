@@ -16,4 +16,6 @@ public interface SkypeChat {
 	String getTopic();
 
 	String getChatContentId();
+
+	Date getLastModificationTime();
 }
