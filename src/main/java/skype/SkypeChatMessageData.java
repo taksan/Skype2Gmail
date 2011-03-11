@@ -19,8 +19,9 @@ public class SkypeChatMessageData implements SkypeChatMessage {
 	private final String userId;
 
 	
-	public SkypeChatMessageData(ChatMessage chatMessage) throws ParseException, SkypeException {
+	public SkypeChatMessageData(DigestProvider digestProvider, ChatMessage chatMessage) throws ParseException, SkypeException {
 		this(
+			digestProvider,			
 			chatMessage.getSenderId(),
 			chatMessage.getSenderDisplayName(),
 			chatMessage.getContent(),
@@ -28,10 +29,10 @@ public class SkypeChatMessageData implements SkypeChatMessage {
 			);
 	}
 	
-	public SkypeChatMessageData(String userId,
+	public SkypeChatMessageData(DigestProvider digestProvider, String userId,
 			String userDisplay, String message, Date time) throws ParseException {
-		String encodingData = userId+"/"+message;
-		this.msgId = DigestProvider.instance.encode(encodingData);
+		final String encodingData = userId+"/"+message;
+		this.msgId = digestProvider.encode(encodingData);
 		this.userDisplay = userDisplay;
 		this.message = message;
 		this.date = time;

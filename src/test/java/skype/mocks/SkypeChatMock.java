@@ -11,6 +11,7 @@ import skype.SkypeChat;
 import skype.SkypeChatMessage;
 import skype.SkypeChatMessageData;
 import skype.TimeSortedMessages;
+import utils.DigestProvider;
 
 public class SkypeChatMock implements SkypeChat {
 
@@ -19,9 +20,11 @@ public class SkypeChatMock implements SkypeChat {
 	private final TimeSortedMessages messageList = new TimeSortedMessages();
 	private final String topic;
 	private final List<String> members;
+	private final DigestProvider digestProvider;
 
 	public SkypeChatMock(String chatId, Date date, String topic,
 			String[] members) {
+		digestProvider = new DigestProvider();
 		this.chatId = chatId;
 		this.chatDate = date;
 		this.topic = topic;
@@ -37,7 +40,7 @@ public class SkypeChatMock implements SkypeChat {
 			String userDisplay, String message) {
 		try {
 			Date dateTime = SkypeChatMessage.dateFormat.parse(time);
-			SkypeChatMessageData msgMock = new SkypeChatMessageData(userId, userDisplay, message, dateTime);
+			SkypeChatMessageData msgMock = new SkypeChatMessageData(digestProvider, userId, userDisplay, message, dateTime);
 			messageList.add(msgMock);
 
 			return this;

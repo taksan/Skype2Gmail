@@ -6,13 +6,19 @@ import org.junit.Test;
 
 import skype.mocks.SkypeChatMock;
 import testutils.SkypeChatHelper;
+import utils.DigestProvider;
 
 public class SkypeChatImplTest {
 	@Test
 	public void testBodyContentId() {
 		SkypeChatMock chat = SkypeChatHelper.createSkypeTestEnvironment();
 		
-		SkypeChatImpl skypeChatImpl = new SkypeChatImpl(chat.getId(), chat.getTime(), chat.getTopic(), chat.getMembersIds(), 
+		SkypeChatImpl skypeChatImpl = new SkypeChatImpl(
+				new DigestProvider(), 
+				chat.getId(), 
+				chat.getTime(), 
+				chat.getTopic(), 
+				chat.getMembersIds(), 
 				chat.getChatMessages());
 		
 		String chatContentId = skypeChatImpl.getChatContentId();

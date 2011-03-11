@@ -3,17 +3,30 @@ package skype;
 import java.util.LinkedList;
 import java.util.List;
 
+import utils.DigestProvider;
+
+import com.google.inject.Inject;
 import com.skype.Chat;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import com.skype.User;
 
 public class SkypeChatFactoryImpl implements SkypeChatFactory {
+	
+	private final DigestProvider digestProvider;
+
+	@Inject
+	public SkypeChatFactoryImpl(DigestProvider digestProvider)
+	{
+		this.digestProvider = digestProvider;
+		
+	}
 
 	@Override
 	public SkypeChat produce(Chat chat) {
 		try {
 			return new SkypeChatImpl(
+					this.digestProvider,
 					chat.getId(), 
 					chat.getTime(), 
 					chat.getWindowTitle(), 
@@ -38,8 +51,8 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 		TimeSortedMessages chatMessageList = new TimeSortedMessages();
 		try {
 			for (ChatMessage chatMessage : allChatMessages) {
-				chatMessageList
-						.add(new SkypeChatMessageData(chatMessage));
+				final SkypeChatMessageData skypeChatMessageData = new SkypeChatMessageData(digestProvider, chatMessage);
+				chatMessageList.add(skypeChatMessageData);
 			}
 
 		} catch (Exception e) {

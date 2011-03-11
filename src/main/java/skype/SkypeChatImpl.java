@@ -12,9 +12,11 @@ public class SkypeChatImpl implements SkypeChat {
 	private final Date chatTime;
 	private final String topic;
 	private final List<String> memberIds;
+	private final DigestProvider digestProvider;
 	private String messagesEncodedId;
 
-	public SkypeChatImpl(String chatId, Date chatTime, String topic, List<String> userIds, TimeSortedMessages timeSortedMessages) {
+	public SkypeChatImpl(DigestProvider digestProvider, String chatId, Date chatTime, String topic, List<String> userIds, TimeSortedMessages timeSortedMessages) {
+		this.digestProvider = digestProvider;
 		this.chatId = chatId;
 		this.chatTime = chatTime;
 		this.topic = topic;
@@ -25,6 +27,8 @@ public class SkypeChatImpl implements SkypeChat {
 		chatMessageList = timeSortedMessages;
 		// populateChatList(chat);
 	}
+	
+	
 
 	@Override
 	public List<String> getMembersIds() {
@@ -68,6 +72,7 @@ public class SkypeChatImpl implements SkypeChat {
 			fullChatLen = aMessage.getMessageBody().length();
 		}
 		final String data = this.chatId+fullChatIds;
-		return fullChatLen+"#"+DigestProvider.instance.extendedEncode(data);
+		digestProvider.extendedEncode(data);
+		return fullChatLen + "#" + digestProvider.extendedEncode(data);
 	}
 }

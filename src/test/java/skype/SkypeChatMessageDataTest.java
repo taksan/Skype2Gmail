@@ -8,13 +8,15 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import testutils.DateHelper;
+import utils.DigestProvider;
 
 public class SkypeChatMessageDataTest {
 
 	@Test
 	public void happyDayTest() throws ParseException {
+		final DigestProvider digestProvider = new DigestProvider();
 		Date messageTime = DateHelper.makeDate(2011, 01, 01, 03, 30, 00);
-		SkypeChatMessageData skypeChatMessageData = new SkypeChatMessageData("foosan", "Foo San", "dono foo", messageTime);
+		SkypeChatMessageData skypeChatMessageData = new SkypeChatMessageData(digestProvider, "foosan", "Foo San", "dono foo", messageTime);
 		
 		
 		final String messageWithSender = skypeChatMessageData.messageText(true);
