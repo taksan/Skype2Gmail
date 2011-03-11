@@ -5,6 +5,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import skype.mocks.SkypeChatMock;
+import testutils.DigestProviderForTestFactory;
 import testutils.SkypeChatHelper;
 import utils.DigestProvider;
 
@@ -13,8 +14,9 @@ public class SkypeChatImplTest {
 	public void testBodyContentId() {
 		SkypeChatMock chat = SkypeChatHelper.createSkypeTestEnvironment();
 		
+		final DigestProvider digestProvider = DigestProviderForTestFactory.getInstance();
 		SkypeChatImpl skypeChatImpl = new SkypeChatImpl(
-				new DigestProvider(), 
+				digestProvider, 
 				chat.getId(), 
 				chat.getTime(), 
 				chat.getTopic(), 

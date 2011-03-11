@@ -19,7 +19,6 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 	public SkypeChatFactoryImpl(DigestProvider digestProvider)
 	{
 		this.digestProvider = digestProvider;
-		
 	}
 
 	@Override

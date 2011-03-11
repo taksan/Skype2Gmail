@@ -11,6 +11,7 @@ import skype.SkypeChat;
 import skype.SkypeChatMessage;
 import skype.SkypeChatMessageData;
 import skype.TimeSortedMessages;
+import testutils.DigestProviderForTestFactory;
 import utils.DigestProvider;
 
 public class SkypeChatMock implements SkypeChat {
@@ -24,7 +25,7 @@ public class SkypeChatMock implements SkypeChat {
 
 	public SkypeChatMock(String chatId, Date date, String topic,
 			String[] members) {
-		digestProvider = new DigestProvider();
+		digestProvider = DigestProviderForTestFactory.getInstance();
 		this.chatId = chatId;
 		this.chatDate = date;
 		this.topic = topic;
