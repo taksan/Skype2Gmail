@@ -25,12 +25,12 @@ public class SkypeChatImplTest {
 				chat.getMembersIds(), 
 				chat.getChatMessages());
 		
-		final String chatContentId = skypeChatImpl.getChatContentId();
+		final String chatContentId = skypeChatImpl.getBodySignature();
 		final String expected="14#35ff9458ed508c794ad0c309e12902f452cdc25cd5991bc2422cd51f7c4272fd";
 		Assert.assertEquals(expected, chatContentId);
 		
 		final Date lastModificationTime = skypeChatImpl.getLastModificationTime();
-		final String actualTime = SkypeChatMessage.dateFormat.format(lastModificationTime);
+		final String actualTime = SkypeChatMessage.chatDateFormat.format(lastModificationTime);
 		final String expectedTime = "2011/03/21 15:18:16";
 		Assert.assertEquals(expectedTime , actualTime);
 	}

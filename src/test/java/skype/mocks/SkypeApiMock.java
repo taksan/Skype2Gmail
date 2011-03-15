@@ -39,7 +39,7 @@ public class SkypeApiMock implements SkypeApi {
 		SkypeChatMock chat = new SkypeChatMock(chatId, aDate, "FOO", members);
 		
 		createMockMessage(member1, chat, "2011/04/21 15:14:18", "Hya");
-		createMockMessage(member2, chat, "2011/04/21 15:14:24", "Howdy");
+		createMockMessage(member2, chat, "2011/04/21 15:14:24", "Howdy\n	I'm doing fine");
 		
 		return chat;
 	}

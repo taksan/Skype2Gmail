@@ -8,15 +8,15 @@ import skype.SkypeChat;
 import skype.SkypeChatMessage;
 import skype.StorageEntry;
 
-public class StorageEntryMock implements StorageEntry {
+public class StorageEntryMock implements StorageEntry, Comparable<StorageEntryMock> {
 
-	private final SkypeStorageMock skypeStorageMock;
 	private final StringBuilder stringBuilder;
 	private Date lastModificationTime;
 	private final ChatContentBuilderFactory chatContentBuilderFactory;
+	private final SkypeChat chat;
 
-	public StorageEntryMock(SkypeStorageMock skypeStorageMock, SkypeChat chat, ChatContentBuilderFactory chatContentBuilderFactory) {
-		this.skypeStorageMock = skypeStorageMock;
+	public StorageEntryMock(SkypeChat chat, ChatContentBuilderFactory chatContentBuilderFactory) {
+		this.chat = chat;
 		this.chatContentBuilderFactory = chatContentBuilderFactory;
 		this.stringBuilder = new StringBuilder();
 		this.stringBuilder.append("@StorageEntryMock: ------\n");
@@ -25,12 +25,12 @@ public class StorageEntryMock implements StorageEntry {
 		this.stringBuilder.append(", topic:");
 		this.stringBuilder.append(chat.getTopic());
 		this.stringBuilder.append(", date:");
-		this.stringBuilder.append(SkypeChatMessage.dateFormat.format(chat.getTime()));
+		this.stringBuilder.append(SkypeChatMessage.chatDateFormat.format(chat.getTime()));
 		this.stringBuilder.append("\n");
 	}
 
 	@Override
-	public void write(SkypeChat content) {
+	public void store(SkypeChat content) {
 		ChatContentBuilder produce = this.chatContentBuilderFactory.produce(content);
 		stringBuilder.append(produce.getContent());
 		stringBuilder.append("\n");
@@ -39,10 +39,8 @@ public class StorageEntryMock implements StorageEntry {
 	@Override
 	public void save() {
 		stringBuilder.append("Last modified:");
-		stringBuilder.append(SkypeChatMessage.dateFormat.format(this.lastModificationTime));
+		stringBuilder.append(SkypeChatMessage.chatDateFormat.format(this.lastModificationTime));
 		this.stringBuilder.append("\n");
-		String stringfiedContent = stringBuilder.toString();
-		this.skypeStorageMock.addEntryResult(stringfiedContent);
 	}
 
 	@Override
@@ -50,4 +48,17 @@ public class StorageEntryMock implements StorageEntry {
 		this.lastModificationTime = time;
 	}
 
+	@Override
+	public int compareTo(StorageEntryMock paramT) {
+		return this.toString().compareTo(paramT.toString());
+	}
+
+	@Override
+	public String toString() {
+		return this.stringBuilder.toString();
+	}
+
+	public SkypeChat getChat() {
+		return chat;
+	}
 }

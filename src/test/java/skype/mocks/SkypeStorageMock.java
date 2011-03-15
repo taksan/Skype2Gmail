@@ -1,14 +1,20 @@
 package skype.mocks;
 
-import com.google.inject.Inject;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import skype.ChatContentBuilderFactory;
+import skype.EmptySkypeChat;
 import skype.SkypeChat;
 import skype.SkypeStorage;
 import skype.StorageEntry;
 
+import com.google.inject.Inject;
+
 public class SkypeStorageMock implements SkypeStorage {
-	final StringBuilder result = new StringBuilder();
+	final List<StorageEntryMock> recordedChats = new LinkedList<StorageEntryMock>();
+	
 	private final ChatContentBuilderFactory chatContentBuilderFactoryMock;
 
 	@Inject
@@ -18,16 +24,30 @@ public class SkypeStorageMock implements SkypeStorage {
 
 	@Override
 	public StorageEntry newEntry(SkypeChat chat) {
-		return new StorageEntryMock(this, chat, this.chatContentBuilderFactoryMock);
+		final StorageEntryMock storageEntryMock = new StorageEntryMock(chat, this.chatContentBuilderFactoryMock);
+		recordedChats.add(storageEntryMock);
+		return storageEntryMock;
 	}
 
-	public void addEntryResult(String result) {
-		this.result.append(result);
+	@Override
+	public StorageEntry retrievePreviousEntryFor(SkypeChat skypeChat) {
+		for (StorageEntryMock storageEntry : recordedChats) {
+			if (storageEntry.getChat().getId().equals(skypeChat.getId())) {
+				return storageEntry;
+			}
+		}
+		return new StorageEntryMock(new EmptySkypeChat(), chatContentBuilderFactoryMock);
 	}
 	
 	@Override
 	public String toString() {
-		return "@SkypeStorageMock:\n" + this.result.toString();
+		final StringBuilder result = new StringBuilder();
+		Collections.sort(recordedChats);
+		
+		for (StorageEntry storageEntry : recordedChats) {
+			result.append(storageEntry.toString());
+		}
+		
+		return "@SkypeStorageMock:\n" + result.toString();
 	}
-
 }

@@ -1,17 +1,18 @@
 package skype.mocks;
 
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.StringUtils;
 
 import skype.SkypeChat;
 import skype.SkypeChatMessage;
 import skype.SkypeChatMessageData;
 import skype.TimeSortedMessages;
+import skype.UsersSortedByUserId;
 import testutils.DigestProviderForTestFactory;
+import testutils.SkypeChatHelper;
 import utils.DigestProvider;
 
 public class SkypeChatMock implements SkypeChat {
@@ -20,7 +21,7 @@ public class SkypeChatMock implements SkypeChat {
 	private final Date chatDate;
 	private final TimeSortedMessages messageList = new TimeSortedMessages();
 	private final String topic;
-	private final List<String> members;
+	private final UsersSortedByUserId members;
 	private final DigestProvider digestProvider;
 
 	public SkypeChatMock(String chatId, Date date, String topic,
@@ -29,7 +30,11 @@ public class SkypeChatMock implements SkypeChat {
 		this.chatId = chatId;
 		this.chatDate = date;
 		this.topic = topic;
-		this.members = Arrays.asList(members);
+		this.members = makeUserList(members);
+	}
+
+	private UsersSortedByUserId makeUserList(String[] members) {
+		return SkypeChatHelper.makeUserList(members);
 	}
 
 	@Override
@@ -40,7 +45,7 @@ public class SkypeChatMock implements SkypeChat {
 	public SkypeChatMock addMockMessage(String time, String userId,
 			String userDisplay, String message) {
 		try {
-			Date dateTime = SkypeChatMessage.dateFormat.parse(time);
+			Date dateTime = SkypeChatMessage.chatDateFormat.parse(time);
 			SkypeChatMessageData msgMock = new SkypeChatMessageData(digestProvider, userId, userDisplay, message, dateTime);
 			messageList.add(msgMock);
 
@@ -66,7 +71,7 @@ public class SkypeChatMock implements SkypeChat {
 	}
 
 	@Override
-	public List<String> getMembersIds() {
+	public UsersSortedByUserId getMembersIds() {
 		return members;
 	}
 
@@ -84,12 +89,17 @@ public class SkypeChatMock implements SkypeChat {
 	}
 
 	@Override
-	public String getChatContentId() {
+	public String getBodySignature() {
 		return "content-id-mock";
 	}
 
 	@Override
 	public Date getLastModificationTime() {
 		return this.messageList.last().getTime();
+	}
+
+	@Override
+	public SkypeChat merge(SkypeChat skypeChat) {
+		throw new NotImplementedException();
 	}
 }

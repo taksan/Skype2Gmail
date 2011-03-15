@@ -14,7 +14,7 @@ public class GmailStorageEntry implements StorageEntry {
 	}
 
 	@Override
-	public void write(SkypeChat content) {
+	public void store(SkypeChat content) {
 		throw new NotImplementedException();
 	}
 
@@ -25,6 +25,11 @@ public class GmailStorageEntry implements StorageEntry {
 
 	@Override
 	public void setLastModificationTime(Date time) {
+		throw new NotImplementedException();
+	}
+
+	@Override
+	public SkypeChat getChat() {
 		throw new NotImplementedException();
 	}
 

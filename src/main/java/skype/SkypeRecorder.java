@@ -6,13 +6,13 @@ import com.google.inject.Inject;
 
 public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor {
 	private static final Logger LOGGER = Logger.getLogger(SkypeRecorder.class);
-	private final SkypeStorage skypeMedium;
+	private final SkypeStorage skypeStorage;
 	private final SkypeApi skypeApi;
 
 	@Inject
 	public SkypeRecorder(SkypeApi skypeApi, SkypeStorage skypeStorage) {
 		this.skypeApi = skypeApi;
-		this.skypeMedium = skypeStorage;
+		this.skypeStorage = skypeStorage;
 	}
 
 	@Override
@@ -29,16 +29,19 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 	
 	@Override
 	public void visit(SkypeChat skypeChat) {
-		StorageEntry storageEntry = skypeMedium.newEntry(skypeChat);
-
-		storageEntry.write(skypeChat);
+		final StorageEntry previousEntry = skypeStorage.retrievePreviousEntryFor(skypeChat);
+		boolean chatIsAlreadyRecorded = previousEntry.getChat().getBodySignature().equals(skypeChat.getBodySignature());
+		if (chatIsAlreadyRecorded)
+			return;
 		
+		final SkypeChat newChat = previousEntry.getChat().merge(skypeChat);
+		
+		final StorageEntry storageEntry = skypeStorage.newEntry(newChat);
+
+		storageEntry.store(skypeChat);
 		storageEntry.setLastModificationTime(skypeChat.getLastModificationTime());
 		storageEntry.save();
+		
 		LOGGER.info("Entry " + skypeChat.getId() + " written");
-	}
-
-	public SkypeStorage getSkypeStorage() {
-		return this.skypeMedium;
 	}
 }

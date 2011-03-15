@@ -1,13 +1,12 @@
 package skype;
 
 import java.util.Date;
-import java.util.List;
 
 public interface SkypeChat {
 
 	TimeSortedMessages getChatMessages();
 	
-	List<String> getMembersIds();
+	UsersSortedByUserId getMembersIds();
 
 	String getId();
 
@@ -15,7 +14,9 @@ public interface SkypeChat {
 
 	String getTopic();
 
-	String getChatContentId();
+	String getBodySignature();
 
 	Date getLastModificationTime();
+
+	SkypeChat merge(SkypeChat skypeChat);
 }

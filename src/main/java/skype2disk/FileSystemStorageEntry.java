@@ -11,31 +11,48 @@ import skype.SkypeChat;
 import skype.StorageEntry;
 
 public class FileSystemStorageEntry implements StorageEntry {
-
 	private final File entryFile;
-	private final StringBuilder entryContent;
 	private Date lastModificationTime;
+	private final SkypeChat chat;
 
 	public FileSystemStorageEntry(SkypeChat chat, File basedir) {
-		String preparedFileName = getFilenameFor(chat);
+		this.chat = chat;
+		String preparedFileName = getFilenameFor(chat.getId());
 		this.entryFile = new File(basedir, preparedFileName);
-		this.entryContent = new StringBuilder();
 	}
 
 	@Override
-	public void write(SkypeChat chat) {
-		ChatContentBuilder contentBuilder = new FileDumpContentBuilder(chat);
-		entryContent.append(contentBuilder.getContent());
+	public void store(SkypeChat chat) {
+	}
+	
+	@Override
+	public SkypeChat getChat() {
+		return this.chat;
 	}
 
 	@Override
 	public void save() {
 		try {
-			FileUtils.writeStringToFile(entryFile, entryContent.toString());
+			ChatContentBuilder contentBuilder = new FileDumpContentBuilder(chat);
+			FileUtils.writeStringToFile(entryFile, contentBuilder.getContent());
 			setLastModificationTimeIfNeeded();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	@Override
+	public void setLastModificationTime(Date time) {
+		this.lastModificationTime = time;
+	}
+
+
+	public static String getFilenameFor(String chatId) {
+		return chatId.replaceAll("[#$;]", "");
+	}
+	
+	File getGeneratedFile() {
+		return this.entryFile;
 	}
 
 	private void setLastModificationTimeIfNeeded() {
@@ -43,17 +60,4 @@ public class FileSystemStorageEntry implements StorageEntry {
 			this.entryFile.setLastModified(this.lastModificationTime.getTime());
 	}
 	
-	@Override
-	public void setLastModificationTime(Date time) {
-		this.lastModificationTime = time;
-	}
-
-	File getFile() {
-		return this.entryFile;
-	}
-
-
-	private String getFilenameFor(SkypeChat chat) {
-		return chat.getId().replaceAll("[#$;]", "");
-	}
 }

@@ -11,26 +11,26 @@ import skype.SkypeStorage;
 import skype.mocks.SkypeApiMock;
 import skype.mocks.SkypeChatMock;
 import skype.mocks.SkypeStorageMock;
-import testutils.SkypeChatHelper;
 
-public class FileDumpEntryBuilderTest {
+public class FileDumpContentBuilderTest {
 
 	@Test
 	public void happyDayTest() throws ParseException {
-		SkypeChatMock chat = SkypeChatHelper.createSkypeTestEnvironment();
-
+		SkypeChatMock chat = SkypeApiMock.produceChatMock("#42;$foo","moe","joe");
 		FileDumpContentBuilder fileDumpEntryBuilder = new FileDumpContentBuilder(chat);
-
 		String actual = fileDumpEntryBuilder.getContent();
-		String expected = 
-			"Chat Content Code: content-id-mock\n" + 
+		
+		final String expected = 
+			"Chat Id: #42;$foo\n" + 
+			"Chat Time: 2011/04/21 15:00:00\n" + 
+			"Chat Body Signature: content-id-mock\n" + 
+			"Messages signatures: [17f4007f9024da870afae8e60f6635fd,d6bbf5c7f50d1a96fcc3a2156dbf2b86]\n" + 
 			"Chat topic: FOO\n" + 
-			"Chat [#camaron.goo/$goofoo;81ef2618fc9a6343] at 2011/03/21 15:00:00\n" + 
-			"Chat members: [camaron.goo,goofoo]\n" + 
-			"Messages Ids: [27288b44332db94f9504fb818e87b729,b441672185df75d24fcc66b170549b91,a2d6287a58c2eb8e342921ae9e3dbbe1]\n" + 
-			"[15:14:18] Goo Foo: what's up\n" + 
-			"[15:14:24] ... doing fine??\n" + 
-			"[15:18:16] Camaron: so far so good";
+			"Poster: id=joe; display=JOE\n" + 
+			"Poster: id=moe; display=MOE\n" + 
+			"[15:14:18] MOE: Hya\n" + 
+			"[15:14:24] JOE: Howdy\n" + 
+			"	I'm doing fine";
 		
 		Assert.assertEquals(expected, actual);
 	}
@@ -39,39 +39,46 @@ public class FileDumpEntryBuilderTest {
 	@Test
 	public void fileRecorderTest()
 	{
+		ChatContentBuilderFactory chatEntryBuilderFactory = new FileDumpContentBuilderFactory();
+		
+		SkypeStorage skypeStorage = new SkypeStorageMock(chatEntryBuilderFactory);
+		
 		SkypeApiMock skypeApi = new SkypeApiMock();
 		skypeApi.addMockChat(SkypeApiMock.produceChatMock("42","moe","joe"));
 		skypeApi.addMockChat(SkypeApiMock.produceChatMock("73","john","doe"));
 		
-		ChatContentBuilderFactory chatEntryBuilderFactory = new FileDumpContentBuilderFactory();
-		SkypeStorage skypeStorage = new SkypeStorageMock(chatEntryBuilderFactory);
-		
 		SkypeRecorder skypeRecorder = new SkypeRecorder(skypeApi, skypeStorage);
 		skypeRecorder.record();
 		
-		String actual = skypeStorage.toString().trim();
+		final String actual = skypeStorage.toString().trim();
 		
 		String expected = 
 				"@SkypeStorageMock:\n" + 
 				"@StorageEntryMock: ------\n" + 
 				"chatId:42, topic:FOO, date:2011/04/21 15:00:00\n" + 
-				"Chat Content Code: content-id-mock\n" + 
+				"Chat Id: 42\n" + 
+				"Chat Time: 2011/04/21 15:00:00\n" + 
+				"Chat Body Signature: content-id-mock\n" + 
+				"Messages signatures: [17f4007f9024da870afae8e60f6635fd,d6bbf5c7f50d1a96fcc3a2156dbf2b86]\n" + 
 				"Chat topic: FOO\n" + 
-				"Chat [42] at 2011/04/21 15:00:00\n" + 
-				"Chat members: [moe,joe]\n" + 
-				"Messages Ids: [17f4007f9024da870afae8e60f6635fd,49b2215b046c7df8f731b7a0f48416e1]\n" + 
+				"Poster: id=joe; display=JOE\n" + 
+				"Poster: id=moe; display=MOE\n" + 
 				"[15:14:18] MOE: Hya\n" + 
 				"[15:14:24] JOE: Howdy\n" + 
+				"	I'm doing fine\n" + 
 				"Last modified:2011/04/21 15:14:24\n" + 
 				"@StorageEntryMock: ------\n" + 
 				"chatId:73, topic:FOO, date:2011/04/21 15:00:00\n" + 
-				"Chat Content Code: content-id-mock\n" + 
+				"Chat Id: 73\n" + 
+				"Chat Time: 2011/04/21 15:00:00\n" + 
+				"Chat Body Signature: content-id-mock\n" + 
+				"Messages signatures: [c0687481b3f39aac8fd1ad874f604301,38e57729cade7223217d12bee978a509]\n" + 
 				"Chat topic: FOO\n" + 
-				"Chat [73] at 2011/04/21 15:00:00\n" + 
-				"Chat members: [john,doe]\n" + 
-				"Messages Ids: [c0687481b3f39aac8fd1ad874f604301,ed3cab6f55e984fd9537e7ae008ad21c]\n" + 
+				"Poster: id=doe; display=DOE\n" + 
+				"Poster: id=john; display=JOHN\n" + 
 				"[15:14:18] JOHN: Hya\n" + 
 				"[15:14:24] DOE: Howdy\n" + 
+				"	I'm doing fine\n" + 
 				"Last modified:2011/04/21 15:14:24";
 		Assert.assertEquals(expected , actual);
 	}

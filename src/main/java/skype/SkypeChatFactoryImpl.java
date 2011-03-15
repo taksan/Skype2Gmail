@@ -1,7 +1,6 @@
 package skype;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Date;
 
 import utils.DigestProvider;
 
@@ -14,11 +13,13 @@ import com.skype.User;
 public class SkypeChatFactoryImpl implements SkypeChatFactory {
 	
 	private final DigestProvider digestProvider;
+	private final SkypeChatMessageDataFactory skypeChatMessageFactory;
 
 	@Inject
-	public SkypeChatFactoryImpl(DigestProvider digestProvider)
+	public SkypeChatFactoryImpl(DigestProvider digestProvider, SkypeChatMessageDataFactory skypeChatMessageFactory)
 	{
 		this.digestProvider = digestProvider;
+		this.skypeChatMessageFactory = skypeChatMessageFactory;
 	}
 
 	@Override
@@ -36,13 +37,24 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 		}
 	}
 	
-	private List<String> populateUserList(Chat chat) throws SkypeException {
+	public SkypeChat produce(String chatId, Date chatTime, String topic, UsersSortedByUserId userList, TimeSortedMessages messageList) {
+		return new SkypeChatImpl(
+				this.digestProvider,
+				chatId, 
+				chatTime, 
+				topic, 
+				userList, 
+				messageList);
+	}
+	
+	private UsersSortedByUserId populateUserList(Chat chat) throws SkypeException {
 		User[] allMembers = chat.getAllPosters();
-		LinkedList<String> memberIds = new LinkedList<String>();
+		UsersSortedByUserId chatUsers = new UsersSortedByUserId();
 		for (User user : allMembers) {
-			memberIds.add(user.getId());
+			SkypeUserImpl skypeUser = new SkypeUserImpl(user.getId(), user.getDisplayName());
+			chatUsers.add(skypeUser);
 		}
-		return memberIds;
+		return chatUsers;
 	}
 
 	private TimeSortedMessages populateChatList(Chat chat) throws SkypeException {
@@ -50,7 +62,9 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 		TimeSortedMessages chatMessageList = new TimeSortedMessages();
 		try {
 			for (ChatMessage chatMessage : allChatMessages) {
-				final SkypeChatMessageData skypeChatMessageData = new SkypeChatMessageData(digestProvider, chatMessage);
+				final SkypeChatMessageData skypeChatMessageData =
+					this.skypeChatMessageFactory.produce(chatMessage);
+				
 				chatMessageList.add(skypeChatMessageData);
 			}
 

@@ -11,18 +11,11 @@ public class SkypeApiImpl implements SkypeApi {
 
 	private static final Logger LOGGER = Logger.getLogger(SkypeApiImpl.class);
 	private final SkypeChatFactory chatFactory;
-	private final Chat[] allRecentChats;
+	private Chat[] allChats;
 	
 	@Inject
 	public SkypeApiImpl(SkypeChatFactory chatFactory) {
 		this.chatFactory = chatFactory;
-		try {
-			allRecentChats = Skype.getAllChats();
-			
-			LOGGER.info(String.format("Found %d chats.", allRecentChats.length));
-		}catch(SkypeException e) {
-			throw new IllegalStateException(e);
-		}
 	}
 	
 	@Override
@@ -36,10 +29,24 @@ public class SkypeApiImpl implements SkypeApi {
 
 	@Override
 	public void accept(SkypeApiChatVisitor visitor) {
-		for (Chat chat : allRecentChats) {
+		try {
+			Chat[] allChatsArray = getAllChats();
+			
+			LOGGER.info(String.format("Found %d chats.", allChatsArray.length));
+		}catch(SkypeException e) {
+			throw new IllegalStateException(e);
+		}
+		for (Chat chat : allChats) {
 			final SkypeChat skypeChat = chatFactory.produce(chat);
 			visitor.visit(skypeChat);
 		}
+	}
+
+	private Chat[] getAllChats() throws SkypeException {
+		if (allChats != null)
+			return allChats;
+		allChats = Skype.getAllChats();
+		return allChats;
 	}
 
 }

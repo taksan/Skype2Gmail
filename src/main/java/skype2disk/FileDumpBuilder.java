@@ -1,12 +1,11 @@
 package skype2disk;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 
 import skype.SkypeChat;
 import skype.SkypeChatMessage;
 import skype.TimeSortedMessages;
+import skype.UsersSortedByUserId;
 
 
 public class FileDumpBuilder {
@@ -40,7 +39,7 @@ public class FileDumpBuilder {
 		for (SkypeChatMessage aChatMessage : this.chatMessages) {
 			boolean printSender = shouldPrintSender(previousSender, aChatMessage);
 			
-			previousSender = aChatMessage.getUserId();
+			previousSender = aChatMessage.getSenderId();
 			messageText.append(aChatMessage.messageText(printSender));
 		}
 		
@@ -53,7 +52,7 @@ public class FileDumpBuilder {
 
 	private void appendChatMembers(SkypeChat chat, StringBuilder messageText) {
 		messageText.append("Chat members: [");
-		List<String> memberIds = chat.getMembersIds();
+		UsersSortedByUserId memberIds = chat.getMembersIds();
 		
 		messageText.append(StringUtils.join(memberIds, ","));
 		messageText.append("]\n");
@@ -61,7 +60,7 @@ public class FileDumpBuilder {
 
 
 	private void appendChatId(SkypeChat chat, StringBuilder messageText) {
-		String formattedTime = SkypeChatMessage.dateFormat.format(chat.getTime());
+		String formattedTime = SkypeChatMessage.chatDateFormat.format(chat.getTime());
 		messageText.append(
 				String.format("Chat [%s] at %s\n", chat.getId(), formattedTime)
 				);
@@ -70,7 +69,7 @@ public class FileDumpBuilder {
 	private boolean shouldPrintSender(String previousSender,
 			SkypeChatMessage aChatMessage) {
 		boolean printSender;
-		if (previousSender == aChatMessage.getUserId())
+		if (previousSender == aChatMessage.getSenderId())
 			printSender = false;
 		else
 			printSender = true;

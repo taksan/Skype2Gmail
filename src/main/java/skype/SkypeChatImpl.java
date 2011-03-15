@@ -1,37 +1,36 @@
 package skype;
 
 import java.util.Date;
-import java.util.List;
+
+import org.apache.commons.lang.NotImplementedException;
 
 import utils.DigestProvider;
 
 public class SkypeChatImpl implements SkypeChat {
 
 	private TimeSortedMessages chatMessageList;
+	private final UsersSortedByUserId memberIds;
+	
 	private final String chatId;
 	private final Date chatTime;
 	private final String topic;
-	private final List<String> memberIds;
 	private final DigestProvider digestProvider;
-	private String messagesEncodedId;
+	private String bodySignature;
 
-	public SkypeChatImpl(DigestProvider digestProvider, String chatId, Date chatTime, String topic, List<String> userIds, TimeSortedMessages timeSortedMessages) {
+	public SkypeChatImpl(DigestProvider digestProvider, String chatId, Date chatTime, String topic, UsersSortedByUserId userIds, TimeSortedMessages timeSortedMessages) {
 		this.digestProvider = digestProvider;
 		this.chatId = chatId;
 		this.chatTime = chatTime;
 		this.topic = topic;
 
 		memberIds = userIds;
-		// populateUserList(chat);
-
 		chatMessageList = timeSortedMessages;
-		// populateChatList(chat);
 	}
 	
 	
 
 	@Override
-	public List<String> getMembersIds() {
+	public UsersSortedByUserId getMembersIds() {
 		return memberIds;
 	}
 
@@ -56,22 +55,22 @@ public class SkypeChatImpl implements SkypeChat {
 	}
 
 	@Override
-	public String getChatContentId() {
-		if (this.messagesEncodedId != null) {
-			return this.messagesEncodedId;
+	public String getBodySignature() {
+		if (this.bodySignature != null) {
+			return this.bodySignature;
 		}
-		this.messagesEncodedId = this.calcIdentifierOfMessagesIds();
-		return this.messagesEncodedId;
+		this.bodySignature = this.calcBodySignature();
+		return this.bodySignature;
 	}
 
-	private String calcIdentifierOfMessagesIds() {
-		String fullChatIds = "";
+	private String calcBodySignature() {
+		String concatenatedMessagesSignatures = "";
 		int fullChatLen = 0;
 		for (SkypeChatMessage aMessage : this.chatMessageList) {
-			fullChatIds += aMessage.getId();
+			concatenatedMessagesSignatures += aMessage.getId();
 			fullChatLen = aMessage.getMessageBody().length();
 		}
-		final String data = this.chatId+fullChatIds;
+		final String data = this.chatId+concatenatedMessagesSignatures;
 		digestProvider.extendedEncode(data);
 		return fullChatLen + "#" + digestProvider.extendedEncode(data);
 	}
@@ -79,5 +78,12 @@ public class SkypeChatImpl implements SkypeChat {
 	@Override
 	public Date getLastModificationTime() {
 		return this.chatMessageList.last().getTime();
+	}
+
+
+
+	@Override
+	public SkypeChat merge(SkypeChat skypeChat) {
+		throw new NotImplementedException();
 	}
 }

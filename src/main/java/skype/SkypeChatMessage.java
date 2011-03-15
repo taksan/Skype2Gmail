@@ -4,17 +4,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public interface SkypeChatMessage {
-	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	public static final SimpleDateFormat chatDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	public static final SimpleDateFormat chatMessageDateFormat = new SimpleDateFormat("[HH:mm:ss]");
+	
+	String getSenderId();
 
-	String getDisplayUsername();
+	String getSenderDisplayname();
 
 	String getMessageBody();
 
 	String getId();
 
 	Date getTime();
-
-	String getUserId();
 
 	String messageText(boolean printUser);
 }
