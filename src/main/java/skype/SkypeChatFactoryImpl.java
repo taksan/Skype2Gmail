@@ -51,7 +51,7 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 		User[] allMembers = chat.getAllPosters();
 		UsersSortedByUserId chatUsers = new UsersSortedByUserId();
 		for (User user : allMembers) {
-			SkypeUserImpl skypeUser = new SkypeUserImpl(user.getId(), user.getDisplayName());
+			SkypeUserImpl skypeUser = new SkypeUserImpl(user.getId(), user.getFullName());
 			chatUsers.add(skypeUser);
 		}
 		return chatUsers;

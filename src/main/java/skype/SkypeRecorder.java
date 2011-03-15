@@ -31,8 +31,10 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 	public void visit(SkypeChat skypeChat) {
 		final StorageEntry previousEntry = skypeStorage.retrievePreviousEntryFor(skypeChat);
 		boolean chatIsAlreadyRecorded = previousEntry.getChat().getBodySignature().equals(skypeChat.getBodySignature());
-		if (chatIsAlreadyRecorded)
+		if (chatIsAlreadyRecorded) {
+			LOGGER.info("Entry " + skypeChat.getId() + " already up to date. Skipping.");
 			return;
+		}
 		
 		final SkypeChat newChat = previousEntry.getChat().merge(skypeChat);
 		

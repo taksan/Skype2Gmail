@@ -95,8 +95,14 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 
 	private SkypeChatMessage makeMessage(String line,
 			UsersSortedByUserId userList, String previousPosterDisplay) {
-		String[] lineParts = line.split("(: |\\.{3} )");
-		String message = lineParts[1];
+		String[] lineParts = line.split("(: |\\.{3} |:$)");
+		String message;
+		if (lineParts.length < 2) {
+			message = "";
+		}
+		else {
+			message = lineParts[1];
+		}
 
 		final String[] timeAndUserInfo = lineParts[0].split(" (?=[^0-9])", 2);
 		final String userDisplay;
@@ -107,6 +113,9 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 			userDisplay = previousPosterDisplay;
 		}
 		final SkypeUser skypeUser = userList.findByDisplayName(userDisplay);
+		if (skypeUser == null) {
+			throw new IllegalStateException(String.format("User %s was found on chat, but was not among its posters!", userDisplay));
+		}
 		
 		final String userId = skypeUser.getUserId();
 

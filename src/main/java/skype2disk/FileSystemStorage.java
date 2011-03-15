@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 
 import skype.EmptySkypeChat;
 import skype.SkypeChat;
@@ -15,6 +16,7 @@ import com.google.inject.name.Named;
 
 public class FileSystemStorage implements SkypeStorage {
 
+	private static final Logger LOGGER = Logger.getLogger(FileSystemStorage.class);
 	private final File basedir;
 	private final FileDumpContentParser fileDumpContentParser;
 
@@ -39,7 +41,7 @@ public class FileSystemStorage implements SkypeStorage {
 		if (!previousFile.exists()) {
 			return new FileSystemStorageEntry(new EmptySkypeChat(), basedir);
 		}
-		
+		LOGGER.info("Found previous chat file: " + entryName);
 		return new FileSystemStorageEntry(makeEntryFromFile(previousFile), basedir);
 	}
 

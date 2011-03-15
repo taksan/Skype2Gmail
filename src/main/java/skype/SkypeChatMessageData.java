@@ -19,7 +19,7 @@ public class SkypeChatMessageData implements SkypeChatMessage {
 		this(
 			digestProvider,			
 			chatMessage.getSenderId(),
-			chatMessage.getSenderDisplayName(),
+			chatMessage.getSender().getFullName(),
 			chatMessage.getContent(),
 			chatMessage.getTime()
 			);
