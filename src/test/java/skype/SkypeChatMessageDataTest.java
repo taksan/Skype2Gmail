@@ -28,7 +28,7 @@ public class SkypeChatMessageDataTest {
 		final String expectedWithouSender = "[2011/02/01 03:30:00] ... dono foo\n";
 		Assert.assertEquals(expectedWithouSender, messageWithoutSender);
 		
-		final String messageId = skypeChatMessageData.getId();
+		final String messageId = skypeChatMessageData.getSignature();
 		final String msgContentId = "6c87fe864a2b8251203e6edd8fa5f0cf";
 		Assert.assertEquals(msgContentId, messageId);
 	}

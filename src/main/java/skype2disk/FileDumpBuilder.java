@@ -27,7 +27,7 @@ public class FileDumpBuilder {
 		int messageCount = this.chatMessages.size();
 		messageText.append("[");
 		for (SkypeChatMessage aChatMessage : this.chatMessages) {
-			messageText.append(aChatMessage.getId());
+			messageText.append(aChatMessage.getSignature());
 			messageCount--;
 			if (messageCount > 0) {
 				messageText.append(",");

@@ -67,7 +67,7 @@ public class SkypeChatImpl implements SkypeChat {
 		String concatenatedMessagesSignatures = "";
 		int fullChatLen = 0;
 		for (SkypeChatMessage aMessage : this.chatMessageList) {
-			concatenatedMessagesSignatures += aMessage.getId();
+			concatenatedMessagesSignatures += aMessage.getSignature();
 			fullChatLen = aMessage.getMessageBody().length();
 		}
 		final String data = this.chatId+concatenatedMessagesSignatures;

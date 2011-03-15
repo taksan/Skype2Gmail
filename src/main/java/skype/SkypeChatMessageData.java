@@ -19,7 +19,7 @@ public class SkypeChatMessageData implements SkypeChatMessage {
 		this(
 			digestProvider,			
 			chatMessage.getSenderId(),
-			chatMessage.getSender().getFullName(),
+			chatMessage.getSenderDisplayName(),
 			chatMessage.getContent(),
 			chatMessage.getTime()
 			);
@@ -50,7 +50,7 @@ public class SkypeChatMessageData implements SkypeChatMessage {
 	}
 
 	@Override
-	public String getId() {
+	public String getSignature() {
 		return this.msgId;
 	}
 

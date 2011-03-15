@@ -13,7 +13,7 @@ public interface SkypeChatMessage {
 
 	String getMessageBody();
 
-	String getId();
+	String getSignature();
 
 	Date getTime();
 

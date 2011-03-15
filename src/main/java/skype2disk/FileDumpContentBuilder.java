@@ -47,7 +47,7 @@ public class FileDumpContentBuilder implements ChatContentBuilder {
 		int messageCount = chatMessages.size();
 		messageText.append("Messages signatures: [");
 		for (SkypeChatMessage aChatMessage : chatMessages) {
-			messageText.append(aChatMessage.getId());
+			messageText.append(aChatMessage.getSignature());
 			messageCount--;
 			if (messageCount > 0) {
 				messageText.append(",");

@@ -1,6 +1,8 @@
 package skype;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import utils.DigestProvider;
 
@@ -25,13 +27,16 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 	@Override
 	public SkypeChat produce(Chat chat) {
 		try {
+			TimeSortedMessages chatMessages = populateChatList(chat);
+			UsersSortedByUserId chatPosters = populateUserList(chatMessages);
+			
 			return new SkypeChatImpl(
 					this.digestProvider,
 					chat.getId(), 
 					chat.getTime(), 
 					chat.getWindowTitle(), 
-					populateUserList(chat), 
-					populateChatList(chat));
+					chatPosters, 
+					chatMessages);
 		} catch (SkypeException e) {
 			throw new IllegalStateException(e);
 		}
@@ -47,14 +52,32 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 				messageList);
 	}
 	
-	private UsersSortedByUserId populateUserList(Chat chat) throws SkypeException {
-		User[] allMembers = chat.getAllPosters();
+	private UsersSortedByUserId populateUserList(TimeSortedMessages chatMessages) throws SkypeException {
 		UsersSortedByUserId chatUsers = new UsersSortedByUserId();
+		Map<String, String> users = extractPostersFromMessages(chatMessages);
+		for (String userId : users.keySet()) {
+			SkypeUserImpl skypeUser = new SkypeUserImpl(userId, users.get(userId));
+			chatUsers.add(skypeUser);
+		}
+		
+		return chatUsers;
+	}
+
+	private Map<String, String> extractPostersFromMessages(
+			TimeSortedMessages chatMessages) {
+		Map<String, String> users = new LinkedHashMap<String, String>();
+		for (SkypeChatMessage skypeChatMessage : chatMessages) {
+			users.put(skypeChatMessage.getSenderId(), skypeChatMessage.getSenderDisplayname());
+		}
+		return users;
+	}
+
+	private void addUsersFromArray(UsersSortedByUserId chatUsers,
+			User[] allMembers) throws SkypeException {
 		for (User user : allMembers) {
 			SkypeUserImpl skypeUser = new SkypeUserImpl(user.getId(), user.getFullName());
 			chatUsers.add(skypeUser);
 		}
-		return chatUsers;
 	}
 
 	private TimeSortedMessages populateChatList(Chat chat) throws SkypeException {

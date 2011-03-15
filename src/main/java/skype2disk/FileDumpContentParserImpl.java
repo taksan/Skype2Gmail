@@ -58,8 +58,11 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 
 		final Map<String, String> parsedContents = extractHeaders(headerSection);
 		final UsersSortedByUserId userList = makeUserList(posters);
+		
+		final String [] messageSignatures = parsedContents.get("Messages signatures").
+			replaceAll("[\\[\\]]", "").split(",");
 
-		final TimeSortedMessages messageList = makeMessageList(messageTimePattern, bodySection, userList);
+		final TimeSortedMessages messageList = makeMessageList(messageTimePattern, bodySection, userList, messageSignatures);
 
 		final Date chatTime = makeChatTime(parsedContents.get("Chat Time"));
 		final String chatId = parsedContents.get("Chat Id");
@@ -70,10 +73,9 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 		final String parsedSignature = parsedContents.get("Chat Body Signature");
 		final String recalculatedSignature = skypeChat.getBodySignature();
 		if (!recalculatedSignature.equals(parsedSignature)) {
-			throw new IllegalStateException(
-					String.format(
-							"Created chat does not match informed body signature (expected: %s, actual: %s)!",
-							parsedSignature, recalculatedSignature));
+			throw new SkypeMessageParsingException(
+						"Created chat does not match informed body signature (expected: %s, actual: %s)!",
+						parsedSignature, recalculatedSignature);
 		}
 
 		return skypeChat;
@@ -81,12 +83,25 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 
 	private TimeSortedMessages makeMessageList(final String messageTimePattern,
 			final String bodySection, 
-			UsersSortedByUserId userList) {
+			UsersSortedByUserId userList, String[] messageSignatures) {
 		TimeSortedMessages messageList = new TimeSortedMessages();
 		String[] lines = bodySection.split(messageTimePattern);
+		
+		if (lines.length != messageSignatures.length) {
+			throw new SkypeMessageParsingException("Malformed message! Amount of messages doesn't match amount of signatures");
+		}
+		
 		String previousPosterDisplay = null;
+		int messagePosition = 0;
 		for (String messageLine : lines) {
 			final SkypeChatMessage skypeChatMessage = makeMessage(messageLine, userList, previousPosterDisplay);
+			final String expectedSignature = messageSignatures[messagePosition];
+			messagePosition++;
+			if (!skypeChatMessage.getSignature().equals(expectedSignature)) {
+				throw new SkypeMessageParsingException(
+						"Message signature doesn't match original (expected: %s, actual: %s, message: %s)",
+						expectedSignature, skypeChatMessage.getSignature(), messageLine);
+			}
 			previousPosterDisplay = skypeChatMessage.getSenderDisplayname();
 			messageList.add(skypeChatMessage);
 		}
@@ -95,7 +110,7 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 
 	private SkypeChatMessage makeMessage(String line,
 			UsersSortedByUserId userList, String previousPosterDisplay) {
-		String[] lineParts = line.split("(: |\\.{3} |:$)");
+		String[] lineParts = line.split("(: |\\.{3}( |$)|:$)", 2);
 		String message;
 		if (lineParts.length < 2) {
 			message = "";
@@ -114,7 +129,7 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 		}
 		final SkypeUser skypeUser = userList.findByDisplayName(userDisplay);
 		if (skypeUser == null) {
-			throw new IllegalStateException(String.format("User %s was found on chat, but was not among its posters!", userDisplay));
+			throw new SkypeMessageParsingException("User %s was found on chat, but was not among its posters!", userDisplay);
 		}
 		
 		final String userId = skypeUser.getUserId();
@@ -145,14 +160,14 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 	private UsersSortedByUserId makeUserList(String userLines) {
 		final String[] posters = userLines.split("\n");
 		final Pattern pattern = Pattern
-				.compile("Poster: id=([a-z0-9]*); display=(.*)");
+				.compile("Poster: id=([a-z0-9._]*); display=(.*)");
 
 		UsersSortedByUserId skypeUserList = new UsersSortedByUserId();
 		for (String posterLine : posters) {
 			Matcher matcher = pattern.matcher(posterLine);
 			if (!matcher.find()) {
-				throw new IllegalStateException(
-						"Invalid poster pattern found: " + posterLine);
+				throw new SkypeMessageParsingException(
+						"Invalid poster pattern found: %s", posterLine);
 			}
 			skypeUserList.add(new SkypeUserImpl(matcher.group(1), matcher
 					.group(2)));
