@@ -29,15 +29,15 @@ public class SkypeRecorderTest {
 				"@StorageEntryMock: ------\n" + 
 				"chatId:42, topic:FOO, date:2011/04/21 15:00:00\n" + 
 				"members: id=joe; displayName=JOE,id=moe; displayName=MOE\n" + 
-				"[15:14:18] MOE: Hya\n" + 
-				"[15:14:24] JOE: Howdy\n" + 
+				"[2011/04/21 15:14:18] MOE: Hya\n" + 
+				"[2011/04/21 15:14:24] JOE: Howdy\n" + 
 				"	I'm doing fine\n" + 
 				"Last modified:2011/04/21 15:14:24\n" + 
 				"@StorageEntryMock: ------\n" + 
 				"chatId:73, topic:FOO, date:2011/04/21 15:00:00\n" + 
 				"members: id=doe; displayName=DOE,id=john; displayName=JOHN\n" + 
-				"[15:14:18] JOHN: Hya\n" + 
-				"[15:14:24] DOE: Howdy\n" + 
+				"[2011/04/21 15:14:18] JOHN: Hya\n" + 
+				"[2011/04/21 15:14:24] DOE: Howdy\n" + 
 				"	I'm doing fine\n" + 
 				"Last modified:2011/04/21 15:14:24";
 		Assert.assertEquals(expected , actualForFirstRecord);
@@ -47,5 +47,7 @@ public class SkypeRecorderTest {
 		final String actualForSencodRecord = skypeStorage.toString().trim();
 		
 		Assert.assertEquals(expected , actualForSencodRecord);
+		
+		skypeRecorder_SUBJECT.record();
 	}
 }

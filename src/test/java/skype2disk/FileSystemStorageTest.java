@@ -7,7 +7,6 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import skype.EmptySkypeChat;
 import skype.SkypeChat;
 import skype.mocks.PreviousSkypeChatMock;
 import skype.mocks.SkypeApiMock;

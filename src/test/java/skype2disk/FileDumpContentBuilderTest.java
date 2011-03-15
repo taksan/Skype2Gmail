@@ -28,8 +28,8 @@ public class FileDumpContentBuilderTest {
 			"Chat topic: FOO\n" + 
 			"Poster: id=joe; display=JOE\n" + 
 			"Poster: id=moe; display=MOE\n" + 
-			"[15:14:18] MOE: Hya\n" + 
-			"[15:14:24] JOE: Howdy\n" + 
+			"[2011/04/21 15:14:18] MOE: Hya\n" + 
+			"[2011/04/21 15:14:24] JOE: Howdy\n" + 
 			"	I'm doing fine";
 		
 		Assert.assertEquals(expected, actual);
@@ -63,8 +63,8 @@ public class FileDumpContentBuilderTest {
 				"Chat topic: FOO\n" + 
 				"Poster: id=joe; display=JOE\n" + 
 				"Poster: id=moe; display=MOE\n" + 
-				"[15:14:18] MOE: Hya\n" + 
-				"[15:14:24] JOE: Howdy\n" + 
+				"[2011/04/21 15:14:18] MOE: Hya\n" + 
+				"[2011/04/21 15:14:24] JOE: Howdy\n" + 
 				"	I'm doing fine\n" + 
 				"Last modified:2011/04/21 15:14:24\n" + 
 				"@StorageEntryMock: ------\n" + 
@@ -76,8 +76,8 @@ public class FileDumpContentBuilderTest {
 				"Chat topic: FOO\n" + 
 				"Poster: id=doe; display=DOE\n" + 
 				"Poster: id=john; display=JOHN\n" + 
-				"[15:14:18] JOHN: Hya\n" + 
-				"[15:14:24] DOE: Howdy\n" + 
+				"[2011/04/21 15:14:18] JOHN: Hya\n" + 
+				"[2011/04/21 15:14:24] DOE: Howdy\n" + 
 				"	I'm doing fine\n" + 
 				"Last modified:2011/04/21 15:14:24";
 		Assert.assertEquals(expected , actual);

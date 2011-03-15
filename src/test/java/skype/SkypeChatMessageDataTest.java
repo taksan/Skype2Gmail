@@ -21,11 +21,11 @@ public class SkypeChatMessageDataTest {
 		
 		
 		final String messageWithSender = skypeChatMessageData.messageText(true);
-		final String expected = "[03:30:00] Foo San: dono foo\n";
+		final String expected = "[2011/02/01 03:30:00] Foo San: dono foo\n";
 		Assert.assertEquals(expected , messageWithSender);
 		
 		final String messageWithoutSender = skypeChatMessageData.messageText(false);
-		final String expectedWithouSender = "[03:30:00] ... dono foo\n";
+		final String expectedWithouSender = "[2011/02/01 03:30:00] ... dono foo\n";
 		Assert.assertEquals(expectedWithouSender, messageWithoutSender);
 		
 		final String messageId = skypeChatMessageData.getId();

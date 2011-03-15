@@ -53,8 +53,8 @@ public class Skype2DiskModuleTest {
 					"Chat topic: foo\n" + 
 					"Poster: id=joe; display=JOE\n" + 
 					"Poster: id=moe; display=MOE\n" + 
-					"[15:01:00] JOE: howdy\n" + 
-					"[15:02:00] MOE: hiiya";
+					"[2011/03/21 15:01:00] JOE: howdy\n" + 
+					"[2011/03/21 15:02:00] MOE: hiiya";
 			Assert.assertEquals(expectedFoo42Contents, foo42Contents);
 		}finally
 		{
