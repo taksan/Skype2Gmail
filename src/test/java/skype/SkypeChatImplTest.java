@@ -13,7 +13,7 @@ import utils.DigestProvider;
 
 public class SkypeChatImplTest {
 	@Test
-	public void testBodyContentId() {
+	public void testBodyContentSignature() {
 		final SkypeChatMock chat = SkypeChatHelper.createSkypeTestEnvironment();
 		
 		final DigestProvider digestProvider = DigestProviderForTestFactory.getInstance();

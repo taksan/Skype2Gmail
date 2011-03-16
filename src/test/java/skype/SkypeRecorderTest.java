@@ -44,9 +44,9 @@ public class SkypeRecorderTest {
 		
 		skypeRecorder_SUBJECT.record();
 		
-		final String actualForSencodRecord = skypeStorage.toString().trim();
+		final String actualForSecondRecord = skypeStorage.toString().trim();
 		
-		Assert.assertEquals(expected , actualForSencodRecord);
+		Assert.assertEquals(expected , actualForSecondRecord);
 		
 		skypeRecorder_SUBJECT.record();
 	}

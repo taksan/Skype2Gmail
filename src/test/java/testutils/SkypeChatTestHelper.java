@@ -33,7 +33,7 @@ abstract public class SkypeChatTestHelper {
 	}
 
 
-	protected void addMessage(String userId, String message, int day,int minute, int second) {
+	public void addMessage(String userId, String message, int day,int minute, int second) {
 		Date firstMessageTime = DateHelper.makeDate(2011, 3, day, 15, minute,
 				second);
 		SkypeChatMessage firstMessage = skypeChatMessageFactory.produce(userId,
