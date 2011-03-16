@@ -116,7 +116,7 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 			message = "";
 		}
 		else {
-			message = lineParts[1];
+			message = FileDumpContentBuilder.unescape(lineParts[1]);
 		}
 
 		final String[] timeAndUserInfo = lineParts[0].split(" (?=[^0-9])", 2);
@@ -135,7 +135,7 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 		final String userId = skypeUser.getUserId();
 
 		Date time = makeTimeFrom(timeAndUserInfo[0]);
-
+		
 		final SkypeChatMessage skypeChatMessage = skypeChatMessageDataFactory
 				.produce(userId, userDisplay, message, time);
 		return skypeChatMessage;

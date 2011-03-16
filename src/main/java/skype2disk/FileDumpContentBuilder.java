@@ -13,6 +13,16 @@ public class FileDumpContentBuilder implements ChatContentBuilder {
 
 	private final SkypeChat chat;
 	private TimeSortedMessages chatMessages;
+	
+
+	public static String escape(String messageLine) {
+		return messageLine.replaceAll("(?m)\n(\\[|\\\\)", "\n\\\\$1");
+	}
+	
+	public static String unescape(String message) {
+		return message.replaceAll("(?m)\n\\\\", "\n");
+	}	
+
 
 	public FileDumpContentBuilder(SkypeChat chat) {
 		this.chat = chat;
@@ -31,16 +41,22 @@ public class FileDumpContentBuilder implements ChatContentBuilder {
 		appendChatMembers(chat, messageText);
 
 
+		createMessageBody(messageText);
+
+		return messageText.toString().trim();
+	}
+
+	private void createMessageBody(final StringBuilder messageText) {
 		String previousSender = "";
 		for (SkypeChatMessage aChatMessage : chatMessages) {
 			boolean printSender = shouldPrintSender(previousSender,
 					aChatMessage);
 
 			previousSender = aChatMessage.getSenderId();
-			messageText.append(aChatMessage.messageText(printSender));
+			String messageLine = aChatMessage.messageText(printSender);
+			messageLine = FileDumpContentBuilder.escape(messageLine);
+			messageText.append(messageLine);
 		}
-
-		return messageText.toString().trim();
 	}
 
 	private void appendMessagesIds(final StringBuilder messageText) {

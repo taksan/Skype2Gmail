@@ -28,14 +28,14 @@ public class FileDumpContentParserTest {
 				addMessage("joe", "fellow", 21, 15, 15, 18);
 				addMessage("joe", "", 21, 15, 15, 19);
 				addMessage("moe", "Howdy\n	I'm doing fine", 21, 15, 24, 18);
-				addMessage("joe", "A day has passed", 22, 15, 24, 18);
+				addMessage("moe", "\n[2011/03/16 11:49:10] bla said", 21, 15, 24, 19);
+				addMessage("joe", "A day has passed", 22, 15, 24, 20);
 			}
 		};
 
 		SkypeChatImpl chatImpl = chatHelper.getChat(chatId, topic);
 
-		FileDumpContentBuilder fileDumpEntryBuilder = new FileDumpContentBuilder(
-				chatImpl);
+		final FileDumpContentBuilder fileDumpEntryBuilder = new FileDumpContentBuilder(chatImpl);
 		final String fileContents = fileDumpEntryBuilder.getContent();
 
 		FileDumpContentParser fileDumpContentParser = new FileDumpContentParserImpl(
@@ -56,7 +56,7 @@ public class FileDumpContentParserTest {
 				users);
 
 		TimeSortedMessages chatMessages = skypeChat.getChatMessages();
-		Assert.assertEquals(6, chatMessages.size());
+		Assert.assertEquals(7, chatMessages.size());
 		SkypeChatMessage lastMessage = chatMessages.last();
 
 		Assert.assertEquals("501fb6ccae7c8806d56daa1ee89ba949",
