@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.TreeSet;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
 
 import utils.DigestProvider;
@@ -119,15 +118,8 @@ public class SkypeChatImpl implements SkypeChat {
 		}
 		
 		return mergedChat;
-		
 	}
-	private boolean messageIsPresentInOtherChat(
-			LinkedBlockingQueue<SkypeChatMessage> messagesToMerge) {
-		throw new NotImplementedException();
-	}
-
-
-
+	
 	public SkypeChat merge2(SkypeChat skypeChat) {
 		TreeSet<SkypeChatMessage> mergeSet = new TreeSet<SkypeChatMessage>(new Comparator<SkypeChatMessage>() {
 

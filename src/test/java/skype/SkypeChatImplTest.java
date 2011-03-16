@@ -8,11 +8,9 @@ import org.junit.Test;
 
 import skype.mocks.SkypeChatMock;
 import skype2disk.FileDumpContentBuilder;
-import skype2disk.FileDumpContentParser;
-import skype2disk.FileDumpContentParserImpl;
 import testutils.DigestProviderForTestFactory;
-import testutils.SkypeChatHelper;
 import testutils.SkypeChatBuilderHelper;
+import testutils.SkypeChatHelper;
 import utils.DigestProvider;
 
 public class SkypeChatImplTest {
