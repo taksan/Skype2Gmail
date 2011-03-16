@@ -10,7 +10,6 @@ import com.google.inject.Inject;
 import com.skype.Chat;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
-import com.skype.User;
 
 public class SkypeChatFactoryImpl implements SkypeChatFactory {
 	
@@ -70,14 +69,6 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 			users.put(skypeChatMessage.getSenderId(), skypeChatMessage.getSenderDisplayname());
 		}
 		return users;
-	}
-
-	private void addUsersFromArray(UsersSortedByUserId chatUsers,
-			User[] allMembers) throws SkypeException {
-		for (User user : allMembers) {
-			SkypeUserImpl skypeUser = new SkypeUserImpl(user.getId(), user.getFullName());
-			chatUsers.add(skypeUser);
-		}
 	}
 
 	private TimeSortedMessages populateChatList(Chat chat) throws SkypeException {

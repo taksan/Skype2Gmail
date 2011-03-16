@@ -14,7 +14,10 @@ public class TimeSortedMessages extends TreeSet<SkypeChatMessage> {
 
 			@Override
 			public int compare(SkypeChatMessage o1, SkypeChatMessage o2) {
-				return o1.getTime().compareTo(o2.getTime());
+				int timeComparison = o1.getTime().compareTo(o2.getTime());
+				if (timeComparison != 0)
+					return timeComparison;
+				return o1.getSignature().compareTo(o1.getSignature());
 			}
 		};
 	}

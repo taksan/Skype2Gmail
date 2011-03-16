@@ -3,11 +3,16 @@ package skype;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.TreeSet;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import org.apache.commons.lang.NotImplementedException;
+import org.apache.log4j.Logger;
 
 import utils.DigestProvider;
 
 public class SkypeChatImpl implements SkypeChat {
 
+	private static final Logger LOGGER = Logger.getLogger(SkypeChat.class);
 	private TimeSortedMessages chatMessageList;
 	private final UsersSortedByUserId memberIds;
 	
@@ -82,6 +87,48 @@ public class SkypeChatImpl implements SkypeChat {
 
 	@Override
 	public SkypeChat merge(SkypeChat skypeChat) {
+		loggerInfo("Previous chat found. Merging chats");
+		final TimeSortedMessages mergedMessages = new TimeSortedMessages();
+		
+		LinkedBlockingQueue<SkypeChatMessage> messagesToMerge = new LinkedBlockingQueue<SkypeChatMessage>();
+		messagesToMerge.addAll(skypeChat.getChatMessages());
+		
+		for (SkypeChatMessage skypeChatMessage : this.getChatMessages()) {
+			mergedMessages.add(skypeChatMessage);
+			if (skypeChatMessage.equals(messagesToMerge.element())) {
+				messagesToMerge.poll();
+			}
+			else {
+				if (messagesToMerge.contains(skypeChatMessage)) {
+					while (!messagesToMerge.peek().equals(skypeChatMessage)) {
+						mergedMessages.add(messagesToMerge.poll());
+					}
+					mergedMessages.add(messagesToMerge.poll());
+				}
+			}
+		}
+		while(!messagesToMerge.isEmpty()) {
+			mergedMessages.add(messagesToMerge.poll());
+		}
+		
+		final SkypeChatImpl mergedChat = new SkypeChatImpl(digestProvider, chatId, chatTime, topic, memberIds, mergedMessages);
+		
+		if (mergedChat.getBodySignature().equals(this.getBodySignature())) {
+			loggerInfo("New chat was actually contained on previous chat. Update skipped.");
+			return this;
+		}
+		
+		return mergedChat;
+		
+	}
+	private boolean messageIsPresentInOtherChat(
+			LinkedBlockingQueue<SkypeChatMessage> messagesToMerge) {
+		throw new NotImplementedException();
+	}
+
+
+
+	public SkypeChat merge2(SkypeChat skypeChat) {
 		TreeSet<SkypeChatMessage> mergeSet = new TreeSet<SkypeChatMessage>(new Comparator<SkypeChatMessage>() {
 
 			@Override
@@ -95,6 +142,19 @@ public class SkypeChatImpl implements SkypeChat {
 		final TimeSortedMessages mergedMessages = new TimeSortedMessages();
 		mergedMessages.addAll(mergeSet);
 		
-		return new SkypeChatImpl(digestProvider, chatId, chatTime, topic, memberIds, mergedMessages);
+		final SkypeChatImpl mergedChat = new SkypeChatImpl(digestProvider, chatId, chatTime, topic, memberIds, mergedMessages);
+		
+		if (mergedChat.getBodySignature().equals(this.getBodySignature())) {
+			loggerInfo("New chat was actually contained on previous chat. Update skipped.");
+			return this;
+		}
+		
+		return mergedChat;
+	}
+
+
+
+	private void loggerInfo(String message) {
+		LOGGER.info(String.format("<%s> %s", this.getId(), message));
 	}
 }

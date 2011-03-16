@@ -10,13 +10,13 @@ import skype.TimeSortedMessages;
 import skype.UsersSortedByUserId;
 import utils.DigestProvider;
 
-abstract public class SkypeChatTestHelper {
+abstract public class SkypeChatBuilderHelper {
 	public final DigestProvider digestProvider;
 	public final SkypeChatMessageDataFactory skypeChatMessageFactory;
 	public final SkypeChatFactoryImpl skypeChatFactoryImpl;
 	private  final TimeSortedMessages messageList;
 
-	public SkypeChatTestHelper() {
+	public SkypeChatBuilderHelper() {
 		digestProvider = new DigestProvider();
 		skypeChatMessageFactory = new SkypeChatMessageDataFactory(digestProvider);
 		skypeChatFactoryImpl = new SkypeChatFactoryImpl(digestProvider, skypeChatMessageFactory);

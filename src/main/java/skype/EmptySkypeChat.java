@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.apache.log4j.Logger;
 
 public class EmptySkypeChat implements SkypeChat {
 
@@ -45,6 +46,7 @@ public class EmptySkypeChat implements SkypeChat {
 
 	@Override
 	public SkypeChat merge(SkypeChat skypeChat) {
+		Logger.getLogger(SkypeChat.class).info("New chat created");
 		return skypeChat;
 	}
 }

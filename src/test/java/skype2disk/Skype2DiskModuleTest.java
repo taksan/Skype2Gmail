@@ -13,7 +13,7 @@ import skype.SkypeHistoryRecorder;
 import skype.mocks.Skype2DiskModuleMockingSkypeApi;
 import skype.mocks.SkypeApiImplMock;
 import testutils.IOHelper;
-import testutils.SkypeChatTestHelper;
+import testutils.SkypeChatBuilderHelper;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -38,7 +38,7 @@ public class Skype2DiskModuleTest {
 			
 			final SkypeApiImplMock skypeApi = (SkypeApiImplMock) injector.getInstance(SkypeApi.class);
 			
-			SkypeChatTestHelper chatHelper = new SkypeChatTestHelper() {
+			SkypeChatBuilderHelper chatHelper = new SkypeChatBuilderHelper() {
 				@Override
 				public void addChatMessages() {
 					addMessage("joe", "howdy", 21, 15, 01, 00);

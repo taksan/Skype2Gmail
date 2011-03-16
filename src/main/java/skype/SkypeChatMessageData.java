@@ -84,4 +84,8 @@ public class SkypeChatMessageData implements SkypeChatMessage {
 	public String toString() {
 		return this.messageText(true);
 	}
+	
+	public int hashCode() {
+		return this.getSignature().hashCode();
+	}
 }

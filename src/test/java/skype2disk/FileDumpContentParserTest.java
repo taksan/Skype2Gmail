@@ -10,7 +10,7 @@ import skype.SkypeChatImpl;
 import skype.SkypeChatMessage;
 import skype.TimeSortedMessages;
 import skype.UsersSortedByUserId;
-import testutils.SkypeChatTestHelper;
+import testutils.SkypeChatBuilderHelper;
 
 public class FileDumpContentParserTest {
 	@Test
@@ -19,7 +19,7 @@ public class FileDumpContentParserTest {
 		final String chatId = "#42;$foo";
 		final String topic = "FOO";
 
-		SkypeChatTestHelper chatHelper = new SkypeChatTestHelper() {
+		SkypeChatBuilderHelper chatHelper = new SkypeChatBuilderHelper() {
 
 			@Override
 			public void addChatMessages() {
@@ -84,7 +84,7 @@ public class FileDumpContentParserTest {
 	}
 
 	private void testParserOnMessage(String chatSample) {
-		SkypeChatTestHelper chatHelper = new SkypeChatTestHelper() {
+		SkypeChatBuilderHelper chatHelper = new SkypeChatBuilderHelper() {
 			@Override
 			public void addChatMessages() {
 			}
