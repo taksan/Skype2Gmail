@@ -48,8 +48,7 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 	@Override
 	public SkypeChat parse(String fileContents) {
 
-		final String messageTimePattern = "\n(?=\\[\\d{4}/\\d{2}/\\d{2} \\d{2}:\\d{2}:\\d{2}])";
-		String[] messageSections = fileContents.split(messageTimePattern, 2);
+		String[] messageSections = fileContents.split(FileDumpContentBuilder.MESSAGE_TIME_FORMAT_FOR_PARSING, 2);
 
 		final String[] headersSections = messageSections[0].split("(?=Poster:.*)", 2);
 		final String headerSection = headersSections[0];
@@ -62,7 +61,7 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 		final String [] messageSignatures = parsedContents.get("Messages signatures").
 			replaceAll("[\\[\\]]", "").split(",");
 
-		final TimeSortedMessages messageList = makeMessageList(messageTimePattern, bodySection, userList, messageSignatures);
+		final TimeSortedMessages messageList = makeMessageList(bodySection, userList, messageSignatures);
 
 		final Date chatTime = makeChatTime(parsedContents.get("Chat Time"));
 		final String chatId = parsedContents.get("Chat Id");
@@ -81,11 +80,11 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 		return skypeChat;
 	}
 
-	private TimeSortedMessages makeMessageList(final String messageTimePattern,
-			final String bodySection, 
-			UsersSortedByUserId userList, String[] messageSignatures) {
+	private TimeSortedMessages makeMessageList(final String bodySection,
+			UsersSortedByUserId userList, 
+			String[] messageSignatures) {
 		TimeSortedMessages messageList = new TimeSortedMessages();
-		String[] lines = bodySection.split(messageTimePattern);
+		String[] lines = bodySection.split(FileDumpContentBuilder.MESSAGE_TIME_FORMAT_FOR_PARSING);
 		
 		if (lines.length != messageSignatures.length) {
 			throw new SkypeMessageParsingException("Malformed message! Amount of messages doesn't match amount of signatures");

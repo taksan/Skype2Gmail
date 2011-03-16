@@ -65,6 +65,52 @@ public class FileDumpContentParserTest {
 		Assert.assertEquals("JOE", lastMessage.getSenderDisplayname());
 		Assert.assertEquals("A day has passed", lastMessage.getMessageBody());
 	}
+	
+	@Test
+	public void testParseAndEscaping() {
+
+		final String chatId = "#42;$foo";
+		final String topic = "FOO";
+
+		SkypeChatBuilderHelper chatHelper = new SkypeChatBuilderHelper() {
+
+			@Override
+			public void addChatMessages() {
+				addMessage("moe", "\n[2011/03/16 11:49:10] bla said", 21, 15, 24, 19);
+				addMessage("moe", "\n[11:49:10] bla said", 21, 15, 24, 20);
+			}
+		};
+
+		SkypeChatImpl chatImpl = chatHelper.getChat(chatId, topic);
+
+		final FileDumpContentBuilder fileDumpEntryBuilder = new FileDumpContentBuilder(chatImpl);
+		final String fileContents = fileDumpEntryBuilder.getContent();
+
+		FileDumpContentParser fileDumpContentParser = new FileDumpContentParserImpl(
+				chatHelper.skypeChatFactoryImpl,
+				chatHelper.skypeChatMessageFactory,
+				SkypeChatMessage.chatDateFormat,
+				SkypeChatMessage.chatMessageDateFormat);
+
+		SkypeChat parsedChat = fileDumpContentParser.parse(fileContents);
+
+		final FileDumpContentBuilder parsedChatBuilder = new FileDumpContentBuilder(parsedChat);
+		
+		String expected = "Chat Id: #42;$foo\n" + 
+				"Chat Time: 2011/04/21 15:00:00\n" + 
+				"Chat Body Signature: 20#76ec9465d068ca51035fa9e083851f3b107e1ee87dd98ea7c6a092ea5e5429b9\n" + 
+				"Messages signatures: [e134071f020f5efaf163415317580194,055bb32f383cc8d37656f9223e704b95]\n" + 
+				"Chat topic: FOO\n" + 
+				"Poster: id=joe; display=JOE\n" + 
+				"Poster: id=moe; display=MOE\n" + 
+				"[2011/04/21 15:24:19] MOE: \n" + 
+				"\\[2011/03/16 11:49:10] bla said\n" + 
+				"[2011/04/21 15:24:20] ... \n" + 
+				"[11:49:10] bla said";
+		
+		Assert.assertEquals(expected, parsedChatBuilder.getContent());
+	}
+
 
 	@Test
 	public void testParsingOnActualText() {

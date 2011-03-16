@@ -13,10 +13,12 @@ public class FileDumpContentBuilder implements ChatContentBuilder {
 
 	private final SkypeChat chat;
 	private TimeSortedMessages chatMessages;
+	public static final String MESSAGE_TIME_FORMAT = "\\[\\d{4}/\\d{2}/\\d{2} \\d{2}:\\d{2}:\\d{2}]";
+	public static final String MESSAGE_TIME_FORMAT_FOR_PARSING = "\n(?="+MESSAGE_TIME_FORMAT+")";
 	
 
 	public static String escape(String messageLine) {
-		return messageLine.replaceAll("(?m)\n(\\[|\\\\)", "\n\\\\$1");
+		return messageLine.replaceAll("(?m)\n("+MESSAGE_TIME_FORMAT+"|\\\\)", "\n\\\\$1");
 	}
 	
 	public static String unescape(String message) {
