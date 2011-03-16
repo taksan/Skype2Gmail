@@ -1,8 +1,8 @@
 package skype;
 
+import java.util.Comparator;
 import java.util.Date;
-
-import org.apache.commons.lang.NotImplementedException;
+import java.util.TreeSet;
 
 import utils.DigestProvider;
 
@@ -80,10 +80,21 @@ public class SkypeChatImpl implements SkypeChat {
 		return this.chatMessageList.last().getTime();
 	}
 
-
-
 	@Override
 	public SkypeChat merge(SkypeChat skypeChat) {
-		throw new NotImplementedException();
+		TreeSet<SkypeChatMessage> mergeSet = new TreeSet<SkypeChatMessage>(new Comparator<SkypeChatMessage>() {
+
+			@Override
+			public int compare(SkypeChatMessage o1, SkypeChatMessage o2) {
+				return o1.getSignature().compareTo(o2.getSignature());
+			}
+		});
+		mergeSet.addAll(this.getChatMessages());
+		mergeSet.addAll(skypeChat.getChatMessages());
+		
+		final TimeSortedMessages mergedMessages = new TimeSortedMessages();
+		mergedMessages.addAll(mergeSet);
+		
+		return new SkypeChatImpl(digestProvider, chatId, chatTime, topic, memberIds, mergedMessages);
 	}
 }

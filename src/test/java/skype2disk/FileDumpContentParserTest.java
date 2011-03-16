@@ -23,12 +23,12 @@ public class FileDumpContentParserTest {
 
 			@Override
 			public void addChatMessages() {
-				addMessage("moe", "", 21, 14, 10);
-				addMessage("joe", "Hya : ) ...", 21, 14, 18);
-				addMessage("joe", "fellow", 21, 15, 18);
-				addMessage("joe", "", 21, 15, 19);
-				addMessage("moe", "Howdy\n	I'm doing fine", 21, 24, 18);
-				addMessage("joe", "A day has passed", 22, 24, 18);
+				addMessage("moe", "", 21, 15, 14, 10);
+				addMessage("joe", "Hya : ) ...", 21, 15, 14, 18);
+				addMessage("joe", "fellow", 21, 15, 15, 18);
+				addMessage("joe", "", 21, 15, 15, 19);
+				addMessage("moe", "Howdy\n	I'm doing fine", 21, 15, 24, 18);
+				addMessage("joe", "A day has passed", 22, 15, 24, 18);
 			}
 		};
 
