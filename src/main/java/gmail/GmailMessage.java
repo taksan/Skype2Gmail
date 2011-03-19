@@ -13,8 +13,6 @@ import javax.mail.internet.MimeMessage.RecipientType;
 import skype.SkypeUser;
 
 public class GmailMessage {
-
-	
 	private MimeMessage mimeMessage;
 	public static final String X_MESSAGES_SIGNATURES = "X-SKYPE-MESSAGES-SIGNATURES";
 	public static final String X_BODY_SIGNATURE = "X-SKYPE-BODY-SIGNATURE";
@@ -138,14 +136,6 @@ public class GmailMessage {
 		return this.getHeader(X_SKYPE_POSTERS);
 	}
 
-
-	private String getFirstHeaderOrNull(String headerName) {
-		String[] header = this.getHeader(headerName);
-		if(header == null)
-			return null;
-		return header[0];
-	}
-
 	public void addPoster(SkypeUser skypeUser) {
 		try {
 			this.mimeMessage.addHeader(X_SKYPE_POSTERS, skypeUser.getPosterHeader());
@@ -170,4 +160,18 @@ public class GmailMessage {
 		}
 	}
 
+	public void setDate(String timeAsString) {
+		try {
+			mimeMessage.setHeader("Date", timeAsString);
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private String getFirstHeaderOrNull(String headerName) {
+		String[] header = this.getHeader(headerName);
+		if(header == null)
+			return null;
+		return header[0];
+	}
 }

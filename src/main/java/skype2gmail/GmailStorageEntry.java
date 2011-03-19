@@ -7,6 +7,8 @@ import java.util.Date;
 
 import javax.mail.Session;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import skype.MessageBodyBuilder;
 import skype.SkypeChat;
 import skype.SkypeChatDateFormat;
@@ -60,6 +62,7 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 		if (gmailMessage == null) {
 			throw new IllegalStateException("You must store the message before invoking setLastModificationTime");
 		}
+		gmailMessage.setDate(skypeChatDateFormat.format(time));
 	}
 
 	@Override
@@ -116,6 +119,6 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 
 	@Override
 	public void visitLastModifiedDate(Date time) {
-		gmailMessage.setHeader("Date", skypeChatDateFormat.format(time));
+		this.setLastModificationTime(time);
 	}
 }
