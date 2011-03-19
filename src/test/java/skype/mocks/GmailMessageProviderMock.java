@@ -1,7 +1,6 @@
 package skype.mocks;
 
-import javax.mail.Message;
-
+import gmail.GmailMessage;
 import skype2gmail.GmailMessageProvider;
 import skype2gmail.RootFolderProvider;
 
@@ -18,7 +17,7 @@ public class GmailMessageProviderMock implements GmailMessageProvider {
 	}
 
 	@Override
-	public Message[] getMessages() {
+	public GmailMessage[] getMessages() {
 		return rootFolderProvider.getInstance().getMessages();
 	}
 

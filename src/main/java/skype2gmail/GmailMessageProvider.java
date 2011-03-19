@@ -1,9 +1,9 @@
 package skype2gmail;
 
-import javax.mail.Message;
+import gmail.GmailMessage;
 
 public interface GmailMessageProvider {
 
-	Message[] getMessages();
+	GmailMessage[] getMessages();
 
 }

@@ -27,6 +27,6 @@ public class MessageBodyBuilder {
 	}
 
 	public String getMessageBody() {
-		return this.messageText.toString();
+		return this.messageText.toString().trim();
 	}
 }

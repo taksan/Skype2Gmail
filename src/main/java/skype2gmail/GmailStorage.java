@@ -1,10 +1,6 @@
 package skype2gmail;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-
-import org.apache.commons.lang.NotImplementedException;
-
+import gmail.GmailMessage;
 import skype.EmptySkypeChat;
 import skype.SkypeChat;
 import skype.SkypeStorage;
@@ -14,18 +10,17 @@ import com.google.inject.Inject;
 
 public class GmailStorage implements SkypeStorage {
 
-	public static final String X_MESSAGE_ID = "X-SKYPE-MESSAGE-ID";
-	public static final String X_BODY_SIGNATURE = "X-SKYPE-BODY-SIGNATURE";
-	public static final String X_MESSAGES_SIGNATURES = "X-SKYPE-MESSAGES-SIGNATURES";
-	
 	private final GmailStorageEntryFactory entryFactory;
 	private final GmailMessageProvider gmailMessageProvider;
-	private Message[] storedMessages;
+	private final GmailMessageChatParser gmailMessageChatParser;
 
 	@Inject
-	public GmailStorage(GmailStorageEntryFactory entryFactory, GmailMessageProvider gmailMessageProvider) {
+	public GmailStorage(GmailStorageEntryFactory entryFactory,
+			GmailMessageProvider gmailMessageProvider,
+			GmailMessageChatParser gmailMessageChatParser) {
 		this.entryFactory = entryFactory;
 		this.gmailMessageProvider = gmailMessageProvider;
+		this.gmailMessageChatParser = gmailMessageChatParser;
 	}
 
 	@Override
@@ -35,28 +30,22 @@ public class GmailStorage implements SkypeStorage {
 
 	@Override
 	public StorageEntry retrievePreviousEntryFor(SkypeChat skypeChat) {
-		try {
-			Message[] storedMessages = getStoreMessages();
-			for (Message message : storedMessages) {
-				String[] header = message.getHeader(X_MESSAGE_ID);
-				if (header == null) 
-					continue;
-				if (skypeChat.getId().equals(header[0])) {
-					SkypeChat previousChat = makeSkypeChat(message);
-					return entryFactory.produce(previousChat);
-				}
+		GmailMessage[] storedMessages = getStoreMessages();
+		for (GmailMessage message : storedMessages) {
+			String chatId = message.getChatId();
+			if (skypeChat.getId().equals(chatId)) {
+				SkypeChat previousChat = makeSkypeChat(message);
+				return entryFactory.produce(previousChat);
 			}
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
 		}
 		return entryFactory.produce(new EmptySkypeChat());
 	}
 
-	private SkypeChat makeSkypeChat(Message message) {
-		throw new NotImplementedException();
+	private SkypeChat makeSkypeChat(GmailMessage message) {
+		return gmailMessageChatParser.parse(message);
 	}
 
-	private Message[] getStoreMessages() throws MessagingException {
+	private GmailMessage[] getStoreMessages() {
 		return gmailMessageProvider.getMessages();
 	}
 

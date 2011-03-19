@@ -8,6 +8,7 @@ import org.junit.Test;
 import skype.SkypeChat;
 import skype.SkypeChatImpl;
 import skype.SkypeChatMessage;
+import skype.SkypeChatWithBodyParserFactory;
 import skype.SkypeUserFactory;
 import skype.TimeSortedMessages;
 import skype.UsersSortedByUserId;
@@ -35,20 +36,7 @@ public class FileDumpContentParserTest {
 			}
 		};
 
-		SkypeChatImpl chatImpl = chatHelper.getChat(chatId, topic);
-
-		final FileDumpContentBuilder fileDumpEntryBuilder = new FileDumpContentBuilder(chatImpl);
-		final String fileContents = fileDumpEntryBuilder.getContent();
-
-		SkypeUserFactory skypeUserFactory = new SkypeUserFactoryMock();
-		FileDumpContentParser fileDumpContentParser = new FileDumpContentParserImpl(
-				chatHelper.skypeChatFactoryImpl,
-				chatHelper.skypeChatMessageFactory,
-				SkypeChatMessage.chatDateFormat,
-				SkypeChatMessage.chatMessageDateFormat,
-				skypeUserFactory );
-
-		SkypeChat skypeChat = fileDumpContentParser.parse(fileContents);
+		SkypeChat skypeChat = buildTextAndParseBackToSkypeChat(chatId, topic, chatHelper);
 
 		Assert.assertEquals(chatId, skypeChat.getId());
 		Assert.assertEquals(topic, skypeChat.getTopic());
@@ -63,8 +51,7 @@ public class FileDumpContentParserTest {
 		Assert.assertEquals(7, chatMessages.size());
 		SkypeChatMessage lastMessage = chatMessages.last();
 
-		Assert.assertEquals("501fb6ccae7c8806d56daa1ee89ba949",
-				lastMessage.getSignature());
+		Assert.assertEquals("501fb6ccae7c8806d56daa1ee89ba949", lastMessage.getSignature());
 		Assert.assertEquals("joe", lastMessage.getSenderId());
 		Assert.assertEquals("JOE", lastMessage.getSenderDisplayname());
 		Assert.assertEquals("A day has passed", lastMessage.getMessageBody());
@@ -85,20 +72,7 @@ public class FileDumpContentParserTest {
 			}
 		};
 
-		SkypeChatImpl chatImpl = chatHelper.getChat(chatId, topic);
-
-		final FileDumpContentBuilder fileDumpEntryBuilder = new FileDumpContentBuilder(chatImpl);
-		final String fileContents = fileDumpEntryBuilder.getContent();
-
-		SkypeUserFactory skypeUserFactory = new SkypeUserFactoryMock();
-		FileDumpContentParser fileDumpContentParser = new FileDumpContentParserImpl(
-				chatHelper.skypeChatFactoryImpl,
-				chatHelper.skypeChatMessageFactory,
-				SkypeChatMessage.chatDateFormat,
-				SkypeChatMessage.chatMessageDateFormat,
-				skypeUserFactory );
-
-		SkypeChat parsedChat = fileDumpContentParser.parse(fileContents);
+		SkypeChat parsedChat = buildTextAndParseBackToSkypeChat(chatId, topic, chatHelper);
 
 		final FileDumpContentBuilder parsedChatBuilder = new FileDumpContentBuilder(parsedChat);
 		
@@ -115,6 +89,16 @@ public class FileDumpContentParserTest {
 				"[11:49:10] bla said";
 		
 		Assert.assertEquals(expected, parsedChatBuilder.getContent());
+	}
+
+	private SkypeChat buildTextAndParseBackToSkypeChat(final String chatId,
+			final String topic, SkypeChatBuilderHelper chatHelper) {
+		SkypeChatImpl chatImpl = chatHelper.getChat(chatId, topic);
+		final FileDumpContentBuilder fileDumpEntryBuilder = new FileDumpContentBuilder(chatImpl);
+		final String fileContents = fileDumpEntryBuilder.getContent();
+		FileDumpContentParser fileDumpContentParser = createDumpParser(chatHelper);
+		SkypeChat parsedChat = fileDumpContentParser.parse(fileContents);
+		return parsedChat;
 	}
 
 
@@ -142,14 +126,7 @@ public class FileDumpContentParserTest {
 			}
 		};
 
-		SkypeUserFactory skypeUserFactory = new SkypeUserFactoryMock();
-		FileDumpContentParser fileDumpContentParser = new FileDumpContentParserImpl(
-				chatHelper.skypeChatFactoryImpl,
-				chatHelper.skypeChatMessageFactory,
-				SkypeChatMessage.chatDateFormat,
-				SkypeChatMessage.chatMessageDateFormat,
-				skypeUserFactory);
-
+		FileDumpContentParser fileDumpContentParser = createDumpParser(chatHelper);
 		fileDumpContentParser.parse(chatSample);
 	}
 
@@ -157,4 +134,19 @@ public class FileDumpContentParserTest {
 		return skypeChat.getPosters();
 	}
 
+	private FileDumpContentParser createDumpParser(
+			SkypeChatBuilderHelper chatHelper) {
+		
+		MessageBodyParserFactory messageBodyParserFactory = 
+			new MessageBodyParserFactoryImpl(chatHelper.skypeChatMessageFactory, SkypeChatMessage.chatMessageDateFormat);
+		
+		SkypeUserFactory skypeUserFactory = new SkypeUserFactoryMock();
+		SkypeChatWithBodyParserFactory skypeChatWithBodyParserFactory = new SkypeChatWithBodyParserFactory(
+				chatHelper.skypeChatFactoryImpl, messageBodyParserFactory, skypeUserFactory);
+		
+		FileDumpContentParser fileDumpContentParser = new FileDumpContentParserImpl(
+				SkypeChatMessage.chatDateFormat,
+				skypeChatWithBodyParserFactory);
+		return fileDumpContentParser;
+	}
 }

@@ -1,8 +1,7 @@
 package skype2gmail;
 
 import gmail.GmailFolder;
-
-import javax.mail.Message;
+import gmail.GmailMessage;
 
 import com.google.inject.Inject;
 
@@ -17,7 +16,7 @@ public class GmailMessageProviderImpl implements GmailMessageProvider {
 	}
 
 	@Override
-	public Message[] getMessages() {
+	public GmailMessage[] getMessages() {
 		GmailFolder root = this.rootFolderProvider.getInstance();
 		return root.getMessages();
 	}

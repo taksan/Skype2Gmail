@@ -1,11 +1,15 @@
 package skype2gmail;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import gmail.GmailFolder;
 import gmail.GmailMessage;
 
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 public class GmailFolderImpl implements GmailFolder {
 
@@ -17,7 +21,7 @@ public class GmailFolderImpl implements GmailFolder {
 
 	@Override
 	public void appendMessage(GmailMessage gmailMessage) {
-		Message[] msgs = new javax.mail.Message[] { gmailMessage.toMimeMessage() };
+		Message[] msgs = new javax.mail.Message[] { gmailMessage.getMimeMessage() };
 		try {
 			root.appendMessages(msgs);
 		} catch (MessagingException e) {
@@ -26,9 +30,13 @@ public class GmailFolderImpl implements GmailFolder {
 	}
 
 	@Override
-	public javax.mail.Message[] getMessages() {
+	public GmailMessage[] getMessages() {
 		try {
-			return root.getMessages();
+			List<GmailMessage> gmailMessages = new LinkedList<GmailMessage>();
+			for (Message message : root.getMessages()) {
+				gmailMessages.add(new GmailMessage((MimeMessage)message));
+			}
+			return gmailMessages.toArray(new GmailMessage[0]);
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}

@@ -5,4 +5,5 @@ public interface SkypeUser {
 	public String getDisplayName();
 	public boolean isCurrentUser();
 	public String getMailAddress();
+	public String getPosterHeader();
 }

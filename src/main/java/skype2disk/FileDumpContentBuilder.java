@@ -46,7 +46,7 @@ public class FileDumpContentBuilder implements ChatContentBuilder, SkypeChatSett
 		new SkypeChatSetter(chat).accept(this);
 		messageText.append(messageBodyBuilder.getMessageBody());
 
-		return messageText.toString().trim();
+		return messageText.toString();
 	}
 
 	// SkypeChatSetterVisitor implementation
@@ -85,13 +85,8 @@ public class FileDumpContentBuilder implements ChatContentBuilder, SkypeChatSett
 	
 	@Override
 	public void visitPoster(SkypeUser skypeUser) {
-		messageText.append(
-				String.format(
-					"Poster: id=%s; display=%s\n", 
-					skypeUser.getUserId(),
-					skypeUser.getDisplayName()
-				)
-			);
+		messageText.append(skypeUser.getPosterHeader());
+		messageText.append("\n");
 	}
 	 
 	@Override

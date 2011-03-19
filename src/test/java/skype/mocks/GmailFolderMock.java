@@ -6,25 +6,22 @@ import gmail.GmailMessage;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.mail.Message;
-import javax.mail.internet.MimeMessage;
-
 public class GmailFolderMock implements GmailFolder {
 	
-	private final List<MimeMessage> messageList;
+	private final List<GmailMessage> messageList;
 
 	public GmailFolderMock() {
-		messageList = new LinkedList<MimeMessage>();
+		messageList = new LinkedList<GmailMessage>();
 	}
 
 	@Override
 	public void appendMessage(GmailMessage gmailMessage) {
-		messageList.add(gmailMessage.toMimeMessage());
+		messageList.add(gmailMessage);
 	}
 
 	@Override
-	public Message[] getMessages() {
-		return messageList.toArray(new MimeMessage[0]);
+	public GmailMessage[] getMessages() {
+		return messageList.toArray(new GmailMessage[0]);
 	}
 
 }

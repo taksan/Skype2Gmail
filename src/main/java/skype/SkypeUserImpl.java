@@ -1,6 +1,7 @@
 package skype;
 
 
+
 public class SkypeUserImpl implements SkypeUser {
 
 	private final String userId;
@@ -50,5 +51,14 @@ public class SkypeUserImpl implements SkypeUser {
 	@Override
 	public String getMailAddress() {
 		return this.getUserId();
+	}
+
+	@Override
+	public String getPosterHeader() {
+		return String.format(
+				"Poster: id=%s; display=%s", 
+				this.getUserId(),
+				this.getDisplayName()
+			);
 	}
 }

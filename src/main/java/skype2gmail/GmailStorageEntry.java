@@ -46,7 +46,7 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 		gmailMessage = new GmailMessage(session);
 		content.accept(this);
 		
-		gmailMessage.setText(messageBodyBuilder.getMessageBody());
+		gmailMessage.setBody(messageBodyBuilder.getMessageBody());
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 
 	@Override
 	public void visitChatId(String id) {
-		gmailMessage.setHeader(GmailStorage.X_MESSAGE_ID, id);
+		gmailMessage.setChatId(id);
 	}
 
 	@Override
@@ -84,12 +84,12 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 
 	@Override
 	public void visitBodySignature(String bodySignature) {
-		gmailMessage.setHeader(GmailStorage.X_BODY_SIGNATURE, bodySignature);
+		gmailMessage.setBodySignature(bodySignature);
 	}
 
 	@Override
 	public void visitMessagesSignatures(String signatures) {
-		gmailMessage.setHeader(GmailStorage.X_MESSAGES_SIGNATURES, signatures);
+		gmailMessage.setMessagesSignatures(signatures);
 	}
 
 	@Override
@@ -100,6 +100,7 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 	private boolean wasSenderVisited = false;
 	@Override
 	public void visitPoster(SkypeUser skypeUser) {
+		gmailMessage.addPoster(skypeUser);
 		if (!wasSenderVisited && !skypeUser.isCurrentUser()) {
 			wasSenderVisited = true;
 		}
