@@ -40,7 +40,7 @@ public class EmptySkypeChat implements SkypeChat {
 	}
 
 	@Override
-	public UsersSortedByUserId getMembersIds() {
+	public UsersSortedByUserId getPosters() {
 		throw new NotImplementedException();
 	}
 
@@ -48,5 +48,10 @@ public class EmptySkypeChat implements SkypeChat {
 	public SkypeChat merge(SkypeChat skypeChat) {
 		Logger.getLogger(SkypeChat.class).info("New chat created");
 		return skypeChat;
+	}
+
+	@Override
+	public String getChatAuthor() {
+		throw new NotImplementedException();
 	}
 }

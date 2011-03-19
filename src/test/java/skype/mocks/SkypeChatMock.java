@@ -1,6 +1,5 @@
 package skype.mocks;
 
-import java.text.ParseException;
 import java.util.Date;
 
 import org.apache.commons.lang.NotImplementedException;
@@ -44,15 +43,11 @@ public class SkypeChatMock implements SkypeChat {
 
 	public SkypeChatMock addMockMessage(String time, String userId,
 			String userDisplay, String message) {
-		try {
 			Date dateTime = SkypeChatMessage.chatDateFormat.parse(time);
 			SkypeChatMessageData msgMock = new SkypeChatMessageData(digestProvider, userId, userDisplay, message, dateTime);
 			messageList.add(msgMock);
 
 			return this;
-		} catch (ParseException ex) {
-			throw new RuntimeException(ex);
-		}
 	}
 
 	@Override
@@ -71,7 +66,7 @@ public class SkypeChatMock implements SkypeChat {
 	}
 
 	@Override
-	public UsersSortedByUserId getMembersIds() {
+	public UsersSortedByUserId getPosters() {
 		return members;
 	}
 
@@ -83,8 +78,8 @@ public class SkypeChatMock implements SkypeChat {
 		result.append(StringUtils.join(members,","));
 		result.append("\n");
 		
-		result.append(StringUtils.join(messageList,"").trim());
-		
+		result.append(StringUtils.join(messageList, "").trim());
+
 		return result.toString();
 	}
 
@@ -101,5 +96,10 @@ public class SkypeChatMock implements SkypeChat {
 	@Override
 	public SkypeChat merge(SkypeChat skypeChat) {
 		throw new NotImplementedException();
+	}
+
+	@Override
+	public String getChatAuthor() {
+		return "";
 	}
 }

@@ -1,11 +1,10 @@
 package skype;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public interface SkypeChatMessage {
-	public static final SimpleDateFormat chatDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-	public static final SimpleDateFormat chatMessageDateFormat = new SimpleDateFormat("[yyyy/MM/dd HH:mm:ss]");
+	public static final SkypeChatDateFormat chatDateFormat = new SkypeChatDateFormatImpl();
+	public static final SkypeMessageDateFormat chatMessageDateFormat = new SkypeMessageDateFormatImpl();
 	
 	String getSenderId();
 

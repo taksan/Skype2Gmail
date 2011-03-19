@@ -6,7 +6,7 @@ public interface SkypeChat {
 
 	TimeSortedMessages getChatMessages();
 	
-	UsersSortedByUserId getMembersIds();
+	UsersSortedByUserId getPosters();
 
 	String getId();
 
@@ -19,4 +19,6 @@ public interface SkypeChat {
 	Date getLastModificationTime();
 
 	SkypeChat merge(SkypeChat skypeChat);
+
+	String getChatAuthor();
 }

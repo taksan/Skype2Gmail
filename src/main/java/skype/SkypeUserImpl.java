@@ -5,10 +5,12 @@ public class SkypeUserImpl implements SkypeUser {
 
 	private final String userId;
 	private final String displayName;
+	private final boolean isCurrentUser;
 
-	public SkypeUserImpl(String id, String displayName) {
+	public SkypeUserImpl(String id, String displayName, boolean isCurrentUser) {
 		this.userId = id;
 		this.displayName = displayName;
+		this.isCurrentUser = isCurrentUser;
 		
 	}
 
@@ -21,8 +23,32 @@ public class SkypeUserImpl implements SkypeUser {
 	public String getDisplayName() {
 		return this.displayName;
 	}
+	
+	@Override
+	public int hashCode() {
+		return this.getUserId().hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (!(other instanceof SkypeUser)) {
+			return false;
+		}
+		SkypeUser otherUser = (SkypeUser) other;
+		return this.getUserId().equals(otherUser.getUserId());
+	}
 
 	public String toString() {
 		return String.format("id=%s; displayName=%s", this.userId, this.displayName);
+	}
+
+	@Override
+	public boolean isCurrentUser() {
+		return this.isCurrentUser;
+	}
+
+	@Override
+	public String getMailAddress() {
+		return this.getUserId();
 	}
 }

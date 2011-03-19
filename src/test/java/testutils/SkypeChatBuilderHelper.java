@@ -6,8 +6,10 @@ import skype.SkypeChatFactoryImpl;
 import skype.SkypeChatImpl;
 import skype.SkypeChatMessage;
 import skype.SkypeChatMessageDataFactory;
+import skype.SkypeUserFactory;
 import skype.TimeSortedMessages;
 import skype.UsersSortedByUserId;
+import skype.mocks.SkypeUserFactoryMock;
 import utils.DigestProvider;
 
 abstract public class SkypeChatBuilderHelper {
@@ -19,7 +21,8 @@ abstract public class SkypeChatBuilderHelper {
 	public SkypeChatBuilderHelper() {
 		digestProvider = new DigestProvider();
 		skypeChatMessageFactory = new SkypeChatMessageDataFactory(digestProvider);
-		skypeChatFactoryImpl = new SkypeChatFactoryImpl(digestProvider, skypeChatMessageFactory);
+		SkypeUserFactory skypeUserFactory = new SkypeUserFactoryMock();
+		skypeChatFactoryImpl = new SkypeChatFactoryImpl(digestProvider, skypeChatMessageFactory, skypeUserFactory);
 		messageList = new TimeSortedMessages();
 	}
 	public abstract void addChatMessages();

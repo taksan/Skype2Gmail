@@ -40,7 +40,7 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 		
 		final StorageEntry storageEntry = skypeStorage.newEntry(newChat);
 
-		storageEntry.store(skypeChat);
+		storageEntry.store(new SkypeChatSetter(skypeChat));
 		storageEntry.setLastModificationTime(skypeChat.getLastModificationTime());
 		storageEntry.save();
 		

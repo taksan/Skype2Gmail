@@ -1,7 +1,5 @@
 package skype2disk;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -9,34 +7,38 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import skype.SkypeChat;
+import skype.SkypeChatDateFormat;
 import skype.SkypeChatFactoryImpl;
 import skype.SkypeChatMessage;
 import skype.SkypeChatMessageDataFactory;
+import skype.SkypeMessageDateFormat;
 import skype.SkypeUser;
-import skype.SkypeUserImpl;
+import skype.SkypeUserFactory;
 import skype.TimeSortedMessages;
 import skype.UsersSortedByUserId;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public class FileDumpContentParserImpl implements FileDumpContentParser {
 
 	private final SkypeChatMessageDataFactory skypeChatMessageDataFactory;
 	private final SkypeChatFactoryImpl skypeChatFactoryImpl;
-	private final DateFormat skypeChatDateFormat;
-	private final DateFormat skypeMessageDateFormat;
+	private final SkypeChatDateFormat skypeChatDateFormat;
+	private final SkypeMessageDateFormat skypeMessageDateFormat;
+	private final SkypeUserFactory skypeUserFactory;
 
 	@Inject
-	public FileDumpContentParserImpl(
-			SkypeChatFactoryImpl skypeChatFactoryImpl,
+	public FileDumpContentParserImpl(SkypeChatFactoryImpl skypeChatFactoryImpl,
 			SkypeChatMessageDataFactory skypeChatMessageData,
-			@Named("Skype Chat Date Format") DateFormat skypeChatDateFormat,
-			@Named("Skype Message Date Format") DateFormat skypeMessageDateFormat) {
+			SkypeChatDateFormat skypeChatDateFormat,
+			SkypeMessageDateFormat skypeMessageDateFormat,
+			SkypeUserFactory skypeUserFactory) 
+	{
 		this.skypeChatFactoryImpl = skypeChatFactoryImpl;
 		this.skypeChatMessageDataFactory = skypeChatMessageData;
 		this.skypeChatDateFormat = skypeChatDateFormat;
 		this.skypeMessageDateFormat = skypeMessageDateFormat;
+		this.skypeUserFactory = skypeUserFactory;
 
 	}
 
@@ -48,20 +50,24 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 	@Override
 	public SkypeChat parse(String fileContents) {
 
-		String[] messageSections = fileContents.split(FileDumpContentBuilder.MESSAGE_TIME_FORMAT_FOR_PARSING, 2);
+		String[] messageSections = fileContents.split(
+				FileDumpContentBuilder.MESSAGE_TIME_FORMAT_FOR_PARSING, 2);
 
-		final String[] headersSections = messageSections[0].split("(?=Poster:.*)", 2);
+		final String[] headersSections = messageSections[0].split(
+				"(?=Poster:.*)", 2);
 		final String headerSection = headersSections[0];
 		final String posters = headersSections[1];
 		final String bodySection = messageSections[1];
 
 		final Map<String, String> parsedContents = extractHeaders(headerSection);
 		final UsersSortedByUserId userList = makeUserList(posters);
-		
-		final String [] messageSignatures = parsedContents.get("Messages signatures").
-			replaceAll("[\\[\\]]", "").split(",");
 
-		final TimeSortedMessages messageList = makeMessageList(bodySection, userList, messageSignatures);
+		final String[] messageSignatures = parsedContents
+				.get("Messages signatures").replaceAll("[\\[\\]]", "")
+				.split(",");
+
+		final TimeSortedMessages messageList = makeMessageList(bodySection,
+				userList, messageSignatures);
 
 		final Date chatTime = makeChatTime(parsedContents.get("Chat Time"));
 		final String chatId = parsedContents.get("Chat Id");
@@ -69,37 +75,41 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 		SkypeChat skypeChat = skypeChatFactoryImpl.produce(chatId, chatTime,
 				topic, userList, messageList);
 
-		final String parsedSignature = parsedContents.get("Chat Body Signature");
+		final String parsedSignature = parsedContents
+				.get("Chat Body Signature");
 		final String recalculatedSignature = skypeChat.getBodySignature();
 		if (!recalculatedSignature.equals(parsedSignature)) {
 			throw new SkypeMessageParsingException(
-						"Created chat does not match informed body signature (expected: %s, actual: %s)!",
-						parsedSignature, recalculatedSignature);
+					"Created chat does not match informed body signature (expected: %s, actual: %s)!",
+					parsedSignature, recalculatedSignature);
 		}
 
 		return skypeChat;
 	}
 
 	private TimeSortedMessages makeMessageList(final String bodySection,
-			UsersSortedByUserId userList, 
-			String[] messageSignatures) {
+			UsersSortedByUserId userList, String[] messageSignatures) {
 		TimeSortedMessages messageList = new TimeSortedMessages();
-		String[] lines = bodySection.split(FileDumpContentBuilder.MESSAGE_TIME_FORMAT_FOR_PARSING);
-		
+		String[] lines = bodySection
+				.split(FileDumpContentBuilder.MESSAGE_TIME_FORMAT_FOR_PARSING);
+
 		if (lines.length != messageSignatures.length) {
-			throw new SkypeMessageParsingException("Malformed message! Amount of messages doesn't match amount of signatures");
+			throw new SkypeMessageParsingException(
+					"Malformed message! Amount of messages doesn't match amount of signatures");
 		}
-		
+
 		String previousPosterDisplay = null;
 		int messagePosition = 0;
 		for (String messageLine : lines) {
-			final SkypeChatMessage skypeChatMessage = makeMessage(messageLine, userList, previousPosterDisplay);
+			final SkypeChatMessage skypeChatMessage = makeMessage(messageLine,
+					userList, previousPosterDisplay);
 			final String expectedSignature = messageSignatures[messagePosition];
 			messagePosition++;
 			if (!skypeChatMessage.getSignature().equals(expectedSignature)) {
 				throw new SkypeMessageParsingException(
 						"Message signature doesn't match original (expected: %s, actual: %s, message: %s)",
-						expectedSignature, skypeChatMessage.getSignature(), messageLine);
+						expectedSignature, skypeChatMessage.getSignature(),
+						messageLine);
 			}
 			previousPosterDisplay = skypeChatMessage.getSenderDisplayname();
 			messageList.add(skypeChatMessage);
@@ -113,8 +123,7 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 		String message;
 		if (lineParts.length < 2) {
 			message = "";
-		}
-		else {
+		} else {
 			message = FileDumpContentBuilder.unescape(lineParts[1]);
 		}
 
@@ -122,38 +131,31 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 		final String userDisplay;
 		if (timeAndUserInfo.length == 2) {
 			userDisplay = timeAndUserInfo[1];
-		}
-		else {
+		} else {
 			userDisplay = previousPosterDisplay;
 		}
 		final SkypeUser skypeUser = userList.findByDisplayName(userDisplay);
 		if (skypeUser == null) {
-			throw new SkypeMessageParsingException("User %s was found on chat, but was not among its posters!", userDisplay);
+			throw new SkypeMessageParsingException(
+					"User %s was found on chat, but was not among its posters!",
+					userDisplay);
 		}
-		
+
 		final String userId = skypeUser.getUserId();
 
 		Date time = makeTimeFrom(timeAndUserInfo[0]);
-		
+
 		final SkypeChatMessage skypeChatMessage = skypeChatMessageDataFactory
 				.produce(userId, userDisplay, message, time);
 		return skypeChatMessage;
 	}
 
 	private Date makeTimeFrom(String messageTimeText) {
-		try {
-			return skypeMessageDateFormat.parse(messageTimeText);
-		} catch (ParseException e) {
-			throw new RuntimeException(e);
-		}
+		return skypeMessageDateFormat.parse(messageTimeText);
 	}
 
 	private Date makeChatTime(String chatTime) {
-		try {
-			return skypeChatDateFormat.parse(chatTime);
-		} catch (ParseException e) {
-			throw new RuntimeException(e);
-		}
+		return skypeChatDateFormat.parse(chatTime);
 	}
 
 	private UsersSortedByUserId makeUserList(String userLines) {
@@ -168,8 +170,11 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 				throw new SkypeMessageParsingException(
 						"Invalid poster pattern found: %s", posterLine);
 			}
-			skypeUserList.add(new SkypeUserImpl(matcher.group(1), matcher
-					.group(2)));
+			skypeUserList.add(
+					skypeUserFactory.produce(
+							matcher.group(1), 
+							matcher.group(2))
+					);
 		}
 		return skypeUserList;
 	}

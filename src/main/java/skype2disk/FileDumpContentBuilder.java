@@ -3,19 +3,21 @@ package skype2disk;
 import java.util.Date;
 
 import skype.ChatContentBuilder;
+import skype.MessageBodyBuilder;
 import skype.SkypeChat;
 import skype.SkypeChatMessage;
+import skype.SkypeChatSetter;
 import skype.SkypeUser;
 import skype.TimeSortedMessages;
-import skype.UsersSortedByUserId;
 
-public class FileDumpContentBuilder implements ChatContentBuilder {
+public class FileDumpContentBuilder implements ChatContentBuilder, SkypeChatSetterVisitor {
 
-	private final SkypeChat chat;
-	private TimeSortedMessages chatMessages;
 	public static final String MESSAGE_TIME_FORMAT = "\\[\\d{4}/\\d{2}/\\d{2} \\d{2}:\\d{2}:\\d{2}]";
 	public static final String MESSAGE_TIME_FORMAT_FOR_PARSING = "\n(?="+MESSAGE_TIME_FORMAT+")";
-	
+	private final SkypeChat chat;
+	private TimeSortedMessages chatMessages;
+	private final StringBuilder messageText = new StringBuilder();
+	private MessageBodyBuilder messageBodyBuilder = new MessageBodyBuilder();
 
 	public static String escape(String messageLine) {
 		return messageLine.replaceAll("(?m)\n("+MESSAGE_TIME_FORMAT+"|\\\\)", "\n\\\\$1");
@@ -31,48 +33,6 @@ public class FileDumpContentBuilder implements ChatContentBuilder {
 
 		chatMessages = this.chat.getChatMessages();
 	}
-
-	@Override
-	public String getContent() {
-		final StringBuilder messageText = new StringBuilder();
-
-		appendChatIdAndDate(chat, messageText);
-		appendChatBodySignature(chat, messageText);
-		appendMessagesIds(messageText);
-		appendChatTopic(chat, messageText);
-		appendChatMembers(chat, messageText);
-
-
-		createMessageBody(messageText);
-
-		return messageText.toString().trim();
-	}
-
-	private void createMessageBody(final StringBuilder messageText) {
-		String previousSender = "";
-		for (SkypeChatMessage aChatMessage : chatMessages) {
-			boolean printSender = shouldPrintSender(previousSender,
-					aChatMessage);
-
-			previousSender = aChatMessage.getSenderId();
-			String messageLine = aChatMessage.messageText(printSender);
-			messageLine = FileDumpContentBuilder.escape(messageLine);
-			messageText.append(messageLine);
-		}
-	}
-
-	private void appendMessagesIds(final StringBuilder messageText) {
-		int messageCount = chatMessages.size();
-		messageText.append("Messages signatures: [");
-		for (SkypeChatMessage aChatMessage : chatMessages) {
-			messageText.append(aChatMessage.getSignature());
-			messageCount--;
-			if (messageCount > 0) {
-				messageText.append(",");
-			}
-		}
-		messageText.append("]\n");
-	}
 	
 
 	@Override
@@ -80,44 +40,67 @@ public class FileDumpContentBuilder implements ChatContentBuilder {
 		return chatMessages.last().getTime();
 	}
 
-	private void appendChatTopic(SkypeChat chat, StringBuilder messageText) {
-		messageText.append("Chat topic: " + chat.getTopic() + "\n");
+	@Override
+	public String getContent() {
+		
+		new SkypeChatSetter(chat).accept(this);
+		messageText.append(messageBodyBuilder.getMessageBody());
+
+		return messageText.toString().trim();
 	}
 
-	private void appendChatBodySignature(SkypeChat chat,
-			StringBuilder messageText) {
-		messageText.append("Chat Body Signature: " + chat.getBodySignature() + "\n");
+	// SkypeChatSetterVisitor implementation
+
+	@Override
+	public void visitChatAuthor(String chatAuthor) {
 	}
 	
-	private void appendChatIdAndDate(SkypeChat chat, StringBuilder messageText) {
-		String formattedTime = SkypeChatMessage.chatDateFormat.format(chat
-				.getTime());
-		messageText.append(String.format("Chat Id: %s\n", chat.getId()));
+	@Override
+	public void visitChatId(String id) {
+		messageText.append(String.format("Chat Id: %s\n", id));
+	}
+
+	@Override
+	public void visitDate(Date time) {
+		String formattedTime = SkypeChatMessage.chatDateFormat.format(time);
 		messageText.append(String.format("Chat Time: %s\n", formattedTime));
 	}
 
-	private void appendChatMembers(SkypeChat chat, StringBuilder messageText) {
-		UsersSortedByUserId memberIds = chat.getMembersIds();
-		
-		for (SkypeUser skypeUser : memberIds) {
-			messageText.append(
-					String.format(
-						"Poster: id=%s; display=%s\n", 
-						skypeUser.getUserId(),
-						skypeUser.getDisplayName()
-					)
-				);
-		}
+	@Override
+	public void visitBodySignature(String bodySignature) {
+		messageText.append("Chat Body Signature: " + bodySignature + "\n");
+	}
+	
+	@Override
+	public void visitMessagesSignatures(String signatures) {
+		messageText.append("Messages signatures: [");
+		messageText.append(signatures);
+		messageText.append("]\n");
+	}
+	
+	@Override
+	public void visitTopic(String topic) {
+		messageText.append("Chat topic: " + topic + "\n");
+	}
+	
+	@Override
+	public void visitPoster(SkypeUser skypeUser) {
+		messageText.append(
+				String.format(
+					"Poster: id=%s; display=%s\n", 
+					skypeUser.getUserId(),
+					skypeUser.getDisplayName()
+				)
+			);
+	}
+	 
+	@Override
+	public void visitMessage(SkypeChatMessage aChatMessage) {	
+		messageBodyBuilder.appendMessage(aChatMessage);
 	}
 
-	private boolean shouldPrintSender(String previousSender,
-			SkypeChatMessage aChatMessage) {
-		boolean printSender;
-		if (previousSender.equals(aChatMessage.getSenderId()))
-			printSender = false;
-		else
-			printSender = true;
-		return printSender;
+	@Override
+	public void visitLastModifiedDate(Date time) {
 	}
 
 }

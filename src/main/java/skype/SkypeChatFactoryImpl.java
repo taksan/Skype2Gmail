@@ -15,12 +15,17 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 	
 	private final DigestProvider digestProvider;
 	private final SkypeChatMessageDataFactory skypeChatMessageFactory;
+	private final SkypeUserFactory skypeUserFactory;
 
 	@Inject
-	public SkypeChatFactoryImpl(DigestProvider digestProvider, SkypeChatMessageDataFactory skypeChatMessageFactory)
+	public SkypeChatFactoryImpl(
+			DigestProvider digestProvider, 
+			SkypeChatMessageDataFactory skypeChatMessageFactory,
+			SkypeUserFactory skypeUserFactory)
 	{
 		this.digestProvider = digestProvider;
 		this.skypeChatMessageFactory = skypeChatMessageFactory;
+		this.skypeUserFactory = skypeUserFactory;
 	}
 
 	@Override
@@ -55,7 +60,7 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 		UsersSortedByUserId chatUsers = new UsersSortedByUserId();
 		Map<String, String> users = extractPostersFromMessages(chatMessages);
 		for (String userId : users.keySet()) {
-			SkypeUserImpl skypeUser = new SkypeUserImpl(userId, users.get(userId));
+			SkypeUserImpl skypeUser = (SkypeUserImpl) skypeUserFactory.produce(userId, users.get(userId));
 			chatUsers.add(skypeUser);
 		}
 		

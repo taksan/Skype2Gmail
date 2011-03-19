@@ -23,7 +23,7 @@ public class SkypeChatHelper {
 	public static UsersSortedByUserId makeUserList(String[] users) {
 		final UsersSortedByUserId userIds = new UsersSortedByUserId();
 		for(String user : users) {
-			userIds.add(new SkypeUserImpl(user, user.toUpperCase()));
+			userIds.add(new SkypeUserImpl(user, user.toUpperCase(), false));
 		}
 		return userIds;
 	}

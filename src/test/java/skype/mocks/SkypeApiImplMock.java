@@ -3,9 +3,12 @@ package skype.mocks;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import skype.SkypeApi;
 import skype.SkypeApiChatVisitor;
 import skype.SkypeChat;
+import skype.SkypeUser;
 
 public class SkypeApiImplMock implements SkypeApi {
 
@@ -26,13 +29,13 @@ public class SkypeApiImplMock implements SkypeApi {
 
 	@Override
 	public void accept(SkypeApiChatVisitor visitor) {
-//		final String[] users = new String[]{"joe", "moe"};
-//		visitor.visit(SkypeChatHelper.createSkypeImplForTest("$foo#42;", "foo", users));
-//		visitor.visit(SkypeChatHelper.createSkypeImplForTest("$foo#43;", "bazbar", users));
-		
 		for (SkypeChat skypeChat : chats) {
 			visitor.visit(skypeChat);
 		}
 	}
 
+	@Override
+	public SkypeUser getCurrentUser() {
+		throw new NotImplementedException();
+	}
 }

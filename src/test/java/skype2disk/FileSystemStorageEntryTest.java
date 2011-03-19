@@ -9,6 +9,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import skype.SkypeChat;
+import skype.SkypeChatSetter;
 import skype.mocks.SkypeApiMock;
 import testutils.DateHelper;
 import testutils.IOHelper;
@@ -22,7 +23,7 @@ public class FileSystemStorageEntryTest {
 		final File baseDir = IOHelper.createTempDirOrCry();
 		try {
 			final FileSystemStorageEntry fileSystemStorageEntry = new FileSystemStorageEntry(skypeChat,baseDir);
-			fileSystemStorageEntry.store(skypeChat);
+			fileSystemStorageEntry.store(new SkypeChatSetter(skypeChat));
 			
 			Date lastModTime = DateHelper.makeDate(2011, 1, 2, 3, 42, 43);
 			fileSystemStorageEntry.setLastModificationTime(lastModTime);

@@ -4,9 +4,12 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import skype.SkypeApi;
 import skype.SkypeApiChatVisitor;
 import skype.SkypeChat;
+import skype.SkypeUser;
 import testutils.DateHelper;
 
 public class SkypeApiMock implements SkypeApi {
@@ -47,6 +50,12 @@ public class SkypeApiMock implements SkypeApi {
 	private static SkypeChatMock createMockMessage(String memberId, SkypeChatMock chat,
 			String time, String message) {
 		return chat.addMockMessage(time, memberId, memberId.toUpperCase(), message);
+	}
+
+
+	@Override
+	public SkypeUser getCurrentUser() {
+		throw new NotImplementedException();
 	}
 
 }

@@ -2,38 +2,28 @@ package skype.mocks;
 
 import java.util.Date;
 
-import skype.ChatContentBuilder;
-import skype.ChatContentBuilderFactory;
 import skype.SkypeChat;
 import skype.SkypeChatMessage;
+import skype.SkypeChatSetter;
+import skype.SkypeUser;
 import skype.StorageEntry;
+import skype2disk.SkypeChatSetterVisitor;
 
-public class StorageEntryMock implements StorageEntry, Comparable<StorageEntryMock> {
+public class StorageEntryMock implements StorageEntry, Comparable<StorageEntryMock>, SkypeChatSetterVisitor {
 
 	private final StringBuilder stringBuilder;
 	private Date lastModificationTime;
-	private final ChatContentBuilderFactory chatContentBuilderFactory;
 	private final SkypeChat chat;
 
-	public StorageEntryMock(SkypeChat chat, ChatContentBuilderFactory chatContentBuilderFactory) {
+	public StorageEntryMock(SkypeChat chat) {
 		this.chat = chat;
-		this.chatContentBuilderFactory = chatContentBuilderFactory;
 		this.stringBuilder = new StringBuilder();
 		this.stringBuilder.append("@StorageEntryMock: ------\n");
-		this.stringBuilder.append("chatId:");
-		this.stringBuilder.append(chat.getId());
-		this.stringBuilder.append(", topic:");
-		this.stringBuilder.append(chat.getTopic());
-		this.stringBuilder.append(", date:");
-		this.stringBuilder.append(SkypeChatMessage.chatDateFormat.format(chat.getTime()));
-		this.stringBuilder.append("\n");
 	}
 
 	@Override
-	public void store(SkypeChat content) {
-		ChatContentBuilder produce = this.chatContentBuilderFactory.produce(content);
-		stringBuilder.append(produce.getContent());
-		stringBuilder.append("\n");
+	public void store(SkypeChatSetter content) {
+		content.accept(this);
 	}
 
 	@Override
@@ -60,5 +50,52 @@ public class StorageEntryMock implements StorageEntry, Comparable<StorageEntryMo
 
 	public SkypeChat getChat() {
 		return chat;
+	}
+
+	// SkypeChatSetterVisitor
+	
+	@Override
+	public void visitChatAuthor(String chatAuthor) {
+		stringBuilder.append("chatAuthor:"+chatAuthor+"\n");
+	}
+
+	@Override
+	public void visitChatId(String id) {
+		stringBuilder.append("chatId:"+id+"\n");
+	}
+
+	@Override
+	public void visitDate(Date time) {
+		String formattedTime = SkypeChatMessage.chatDateFormat.format(time);
+		stringBuilder.append("Time:"+formattedTime+"\n");
+	}
+
+	@Override
+	public void visitBodySignature(String bodySignature) {
+		stringBuilder.append("Body Signature:"+bodySignature+"\n");
+	}
+
+	@Override
+	public void visitMessagesSignatures(String signatures) {
+		stringBuilder.append("Messages Signatures:"+signatures+"\n");
+	}
+
+	@Override
+	public void visitTopic(String topic) {
+		stringBuilder.append("Topic:"+topic+"\n");
+	}
+
+	@Override
+	public void visitPoster(SkypeUser skypeUser) {
+		stringBuilder.append("Poster:"+skypeUser+"\n");
+	}
+
+	@Override
+	public void visitMessage(SkypeChatMessage skypeChatMessage) {
+		stringBuilder.append(skypeChatMessage);
+	}
+
+	@Override
+	public void visitLastModifiedDate(Date time) {
 	}
 }

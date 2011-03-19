@@ -1,19 +1,12 @@
 package skype2disk;
 
-import java.text.DateFormat;
-
-import skype.SkypeChatFactory;
-import skype.SkypeChatFactoryImpl;
-import skype.SkypeChatMessage;
-import skype.SkypeHistoryRecorder;
-import skype.SkypeRecorder;
+import skype.Skype2StorageModuleCommons;
 import skype.SkypeStorage;
 
-import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import com.google.inject.name.Names;
 
-public class Skype2DiskModuleCommons extends AbstractModule {
+public class Skype2DiskModuleCommons extends Skype2StorageModuleCommons {
 	
 	private String dumpTarget;
 
@@ -27,13 +20,10 @@ public class Skype2DiskModuleCommons extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(SkypeChatFactory.class).to(SkypeChatFactoryImpl.class);
-		bind(SkypeHistoryRecorder.class).to(SkypeRecorder.class);
+		super.configure();
 		bind(SkypeStorage.class).to(FileSystemStorage.class).in(Scopes.SINGLETON);
-		bind(FileDumpContentParser.class).to(FileDumpContentParserImpl.class);
 		bind(String.class).annotatedWith(Names.named("History Target")).toInstance(dumpTarget);
-		bind(DateFormat.class).annotatedWith(Names.named("Skype Chat Date Format")).toInstance(SkypeChatMessage.chatDateFormat);
-		bind(DateFormat.class).annotatedWith(Names.named("Skype Message Date Format")).toInstance(SkypeChatMessage.chatMessageDateFormat);
+		bind(FileDumpContentParser.class).to(FileDumpContentParserImpl.class);
 	}
 
 

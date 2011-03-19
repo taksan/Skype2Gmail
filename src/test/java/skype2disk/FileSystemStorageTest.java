@@ -8,6 +8,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import skype.SkypeChat;
+import skype.SkypeChatSetter;
 import skype.mocks.PreviousSkypeChatMock;
 import skype.mocks.SkypeApiMock;
 import testutils.IOHelper;
@@ -22,7 +23,7 @@ public class FileSystemStorageTest {
 			
 			FileSystemStorage fileSystemStorage = new FileSystemStorage(null, mockContentParser(), baseDir.toString());
 			FileSystemStorageEntry newEntry = fileSystemStorage.newEntry(chat);
-			newEntry.store(chat);
+			newEntry.store(new SkypeChatSetter(chat));
 			newEntry.save();
 			
 			FileSystemStorageEntry previousEntry = fileSystemStorage.retrievePreviousEntryFor(chat);

@@ -16,7 +16,7 @@ public class PreviousSkypeChatMock implements SkypeChat {
 	}
 
 	@Override
-	public UsersSortedByUserId getMembersIds() {
+	public UsersSortedByUserId getPosters() {
 		throw new NotImplementedException();
 	}
 
@@ -54,5 +54,10 @@ public class PreviousSkypeChatMock implements SkypeChat {
 	@Override
 	public String toString() {
 		return "<Previous Entry>";
+	}
+
+	@Override
+	public String getChatAuthor() {
+		throw new NotImplementedException();
 	}
 }

@@ -52,7 +52,7 @@ public class FileDumpBuilder {
 
 	private void appendChatMembers(SkypeChat chat, StringBuilder messageText) {
 		messageText.append("Chat members: [");
-		UsersSortedByUserId memberIds = chat.getMembersIds();
+		UsersSortedByUserId memberIds = chat.getPosters();
 		
 		messageText.append(StringUtils.join(memberIds, ","));
 		messageText.append("]\n");

@@ -8,6 +8,7 @@ import org.apache.commons.io.FileUtils;
 
 import skype.ChatContentBuilder;
 import skype.SkypeChat;
+import skype.SkypeChatSetter;
 import skype.StorageEntry;
 
 public class FileSystemStorageEntry implements StorageEntry {
@@ -22,7 +23,7 @@ public class FileSystemStorageEntry implements StorageEntry {
 	}
 
 	@Override
-	public void store(SkypeChat chat) {
+	public void store(SkypeChatSetter chat) {
 	}
 	
 	@Override

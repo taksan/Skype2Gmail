@@ -24,7 +24,7 @@ public class SkypeChatImplTest {
 				chat.getId(), 
 				chat.getTime(), 
 				chat.getTopic(), 
-				chat.getMembersIds(), 
+				chat.getPosters(), 
 				chat.getChatMessages());
 		
 		final String chatContentId = skypeChatImpl.getBodySignature();

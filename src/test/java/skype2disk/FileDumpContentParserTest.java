@@ -8,8 +8,10 @@ import org.junit.Test;
 import skype.SkypeChat;
 import skype.SkypeChatImpl;
 import skype.SkypeChatMessage;
+import skype.SkypeUserFactory;
 import skype.TimeSortedMessages;
 import skype.UsersSortedByUserId;
+import skype.mocks.SkypeUserFactoryMock;
 import testutils.SkypeChatBuilderHelper;
 
 public class FileDumpContentParserTest {
@@ -38,11 +40,13 @@ public class FileDumpContentParserTest {
 		final FileDumpContentBuilder fileDumpEntryBuilder = new FileDumpContentBuilder(chatImpl);
 		final String fileContents = fileDumpEntryBuilder.getContent();
 
+		SkypeUserFactory skypeUserFactory = new SkypeUserFactoryMock();
 		FileDumpContentParser fileDumpContentParser = new FileDumpContentParserImpl(
 				chatHelper.skypeChatFactoryImpl,
 				chatHelper.skypeChatMessageFactory,
 				SkypeChatMessage.chatDateFormat,
-				SkypeChatMessage.chatMessageDateFormat);
+				SkypeChatMessage.chatMessageDateFormat,
+				skypeUserFactory );
 
 		SkypeChat skypeChat = fileDumpContentParser.parse(fileContents);
 
@@ -86,11 +90,13 @@ public class FileDumpContentParserTest {
 		final FileDumpContentBuilder fileDumpEntryBuilder = new FileDumpContentBuilder(chatImpl);
 		final String fileContents = fileDumpEntryBuilder.getContent();
 
+		SkypeUserFactory skypeUserFactory = new SkypeUserFactoryMock();
 		FileDumpContentParser fileDumpContentParser = new FileDumpContentParserImpl(
 				chatHelper.skypeChatFactoryImpl,
 				chatHelper.skypeChatMessageFactory,
 				SkypeChatMessage.chatDateFormat,
-				SkypeChatMessage.chatMessageDateFormat);
+				SkypeChatMessage.chatMessageDateFormat,
+				skypeUserFactory );
 
 		SkypeChat parsedChat = fileDumpContentParser.parse(fileContents);
 
@@ -136,17 +142,19 @@ public class FileDumpContentParserTest {
 			}
 		};
 
+		SkypeUserFactory skypeUserFactory = new SkypeUserFactoryMock();
 		FileDumpContentParser fileDumpContentParser = new FileDumpContentParserImpl(
 				chatHelper.skypeChatFactoryImpl,
 				chatHelper.skypeChatMessageFactory,
 				SkypeChatMessage.chatDateFormat,
-				SkypeChatMessage.chatMessageDateFormat);
+				SkypeChatMessage.chatMessageDateFormat,
+				skypeUserFactory);
 
 		fileDumpContentParser.parse(chatSample);
 	}
 
 	private UsersSortedByUserId getSortedUsers(SkypeChat skypeChat) {
-		return skypeChat.getMembersIds();
+		return skypeChat.getPosters();
 	}
 
 }

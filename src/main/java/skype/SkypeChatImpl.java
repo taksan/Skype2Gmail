@@ -1,8 +1,6 @@
 package skype;
 
-import java.util.Comparator;
 import java.util.Date;
-import java.util.TreeSet;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.log4j.Logger;
@@ -21,7 +19,13 @@ public class SkypeChatImpl implements SkypeChat {
 	private final DigestProvider digestProvider;
 	private String bodySignature;
 
-	public SkypeChatImpl(DigestProvider digestProvider, String chatId, Date chatTime, String topic, UsersSortedByUserId userIds, TimeSortedMessages timeSortedMessages) {
+	public SkypeChatImpl(DigestProvider digestProvider, 
+			String chatId, 
+			Date chatTime, 
+			String topic, 
+			UsersSortedByUserId userIds, 
+			TimeSortedMessages timeSortedMessages) {
+		
 		this.digestProvider = digestProvider;
 		this.chatId = chatId;
 		this.chatTime = chatTime;
@@ -30,11 +34,9 @@ public class SkypeChatImpl implements SkypeChat {
 		memberIds = userIds;
 		chatMessageList = timeSortedMessages;
 	}
-	
-	
 
 	@Override
-	public UsersSortedByUserId getMembersIds() {
+	public UsersSortedByUserId getPosters() {
 		return memberIds;
 	}
 
@@ -119,34 +121,20 @@ public class SkypeChatImpl implements SkypeChat {
 		
 		return mergedChat;
 	}
-	
-	public SkypeChat merge2(SkypeChat skypeChat) {
-		TreeSet<SkypeChatMessage> mergeSet = new TreeSet<SkypeChatMessage>(new Comparator<SkypeChatMessage>() {
-
-			@Override
-			public int compare(SkypeChatMessage o1, SkypeChatMessage o2) {
-				return o1.getSignature().compareTo(o2.getSignature());
-			}
-		});
-		mergeSet.addAll(this.getChatMessages());
-		mergeSet.addAll(skypeChat.getChatMessages());
-		
-		final TimeSortedMessages mergedMessages = new TimeSortedMessages();
-		mergedMessages.addAll(mergeSet);
-		
-		final SkypeChatImpl mergedChat = new SkypeChatImpl(digestProvider, chatId, chatTime, topic, memberIds, mergedMessages);
-		
-		if (mergedChat.getBodySignature().equals(this.getBodySignature())) {
-			loggerInfo("New chat was actually contained on previous chat. Update skipped.");
-			return this;
-		}
-		
-		return mergedChat;
-	}
-
-
 
 	private void loggerInfo(String message) {
 		LOGGER.info(String.format("<%s> %s", this.getId(), message));
+	}
+
+	@Override
+	public String getChatAuthor() {
+		UsersSortedByUserId membersIds = this.getPosters();
+		for (SkypeUser skypeUser : membersIds) {
+			if (skypeUser.isCurrentUser()) {
+				continue;
+			}
+			return skypeUser.getUserId();
+		}
+		throw new IllegalStateException("A chat with a single poster? Impossible!");
 	}
 }

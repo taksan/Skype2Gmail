@@ -1,23 +1,21 @@
 package skype2gmail;
 
-import skype.ChatContentBuilderFactory;
+import com.google.inject.Scopes;
+
+import gmail.UserHomeConfigProvider;
 import skype.SkypeApi;
 import skype.SkypeApiImpl;
-import skype.SkypeHistoryRecorder;
-import skype.SkypeRecorder;
-import skype.SkypeStorage;
+import skype.SkypeUserFactory;
+import skype.SkypeUserFactoryImpl;
 
-import com.google.inject.AbstractModule;
-
-public class Skype2GmailModule extends AbstractModule {
-
+public class Skype2GmailModule extends Skype2GmailModuleCommons {
 	@Override
 	protected void configure() {
-		bind(SkypeApi.class).to(SkypeApiImpl.class);
-		bind(SkypeHistoryRecorder.class).to(SkypeRecorder.class);
-		bind(SkypeStorage.class).toInstance(new GmailStorage());
-		bind(ChatContentBuilderFactory.class).to(GmailContentBuilderFactory.class);
+		super.configure();
+		bind(SkypeApi.class).to(SkypeApiImpl.class).in(Scopes.SINGLETON);
+		bind(UserAuthProvider.class).to(UserHomeConfigProvider.class).in(Scopes.SINGLETON);
+		bind(SkypeUserFactory.class).to(SkypeUserFactoryImpl.class).in(Scopes.SINGLETON);
+		bind(RootFolderProvider.class).to(RootFolderProviderImpl.class).in(Scopes.SINGLETON);
+		bind(GmailMessageProvider.class).to(GmailMessageProviderImpl.class).in(Scopes.SINGLETON);
 	}
-
-
 }
