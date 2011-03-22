@@ -12,7 +12,6 @@ import skype.SkypeChatFactory;
 import skype.SkypeStorage;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public class FileSystemStorage implements SkypeStorage {
 
@@ -23,9 +22,9 @@ public class FileSystemStorage implements SkypeStorage {
 	@Inject
 	public FileSystemStorage(SkypeChatFactory skypeChatFactory, 
 			FileDumpContentParser fileDumpContentParser, 
-			@Named("History Target") String baseDir) {
+			CustomHistoryDir baseDir) {
 		this.fileDumpContentParser = fileDumpContentParser;
-		basedir = new File(baseDir);
+		basedir = baseDir.getHistoryDir();
 	}
 
 	@Override

@@ -20,7 +20,7 @@ public class Skype2DiskModuleTest extends AbstractRecordingTest {
 
 	@Test
 	public void testInjections() {
-			final Skype2DiskModule skype2DiskModule = new Skype2DiskModule("");
+			final Skype2DiskModule skype2DiskModule = new Skype2DiskModule(new String[]{""});
 			final Injector injector = Guice.createInjector(skype2DiskModule);
 	
 			injector.getInstance(SkypeHistoryRecorder.class);
@@ -31,7 +31,8 @@ public class Skype2DiskModuleTest extends AbstractRecordingTest {
 	{
 		File tempTarget = IOHelper.createTempDirOrCry();
 		try {
-			final Injector injector = Guice.createInjector(new Skype2DiskModuleMockingSkypeApi(tempTarget.getAbsolutePath()));
+			String [] args = new String[]{tempTarget.getAbsolutePath()};
+			final Injector injector = Guice.createInjector(new Skype2DiskModuleMockingSkypeApi(args));
 			testRecording(injector);
 			
 			final String fileList = IOHelper.getSortedFilesAsString(tempTarget);

@@ -7,9 +7,9 @@ import skype.SkypeUserFactoryImpl;
 
 public class Skype2DiskModule extends Skype2DiskModuleCommons {
 	
-	public Skype2DiskModule(String dumpTarget)
+	public Skype2DiskModule(String[] args)
 	{
-		super(dumpTarget);
+		super(args);
 	}
 
 	@Override
@@ -18,5 +18,4 @@ public class Skype2DiskModule extends Skype2DiskModuleCommons {
 		bind(SkypeApi.class).to(SkypeApiImpl.class);
 		bind(SkypeUserFactory.class).to(SkypeUserFactoryImpl.class);
 	}
-
 }

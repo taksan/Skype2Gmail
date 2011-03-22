@@ -7,8 +7,6 @@ import java.util.Date;
 
 import javax.mail.Session;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import skype.MessageBodyBuilder;
 import skype.SkypeChat;
 import skype.SkypeChatDateFormat;

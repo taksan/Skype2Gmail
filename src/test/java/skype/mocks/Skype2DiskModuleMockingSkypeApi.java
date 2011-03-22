@@ -8,8 +8,8 @@ import com.google.inject.Scopes;
 
 public class Skype2DiskModuleMockingSkypeApi extends Skype2DiskModuleCommons {
 
-	public Skype2DiskModuleMockingSkypeApi(String dumpTarget) {
-		super(dumpTarget);
+	public Skype2DiskModuleMockingSkypeApi(String [] args) {
+		super(args);
 	}
 	
 	@Override

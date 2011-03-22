@@ -17,11 +17,14 @@ public class FileSystemStorageTest {
 
 	@Test
 	public void creationAndRetrievalTest() throws IOException {
-		File baseDir = IOHelper.createTempDirOrCry();
+		File baseTmpDir = IOHelper.createTempDirOrCry();
+		
+		String[] args = new String[]{baseTmpDir.getCanonicalPath()};
+		CustomHistoryDir baseDir = new CustomHistoryDir(args, new Skype2GmailConfigDir());
 		try {
 			SkypeChat chat = SkypeApiMock.produceChatMock("#42;$foo","moe","joe");
 			
-			FileSystemStorage fileSystemStorage = new FileSystemStorage(null, mockContentParser(), baseDir.toString());
+			FileSystemStorage fileSystemStorage = new FileSystemStorage(null, mockContentParser(), baseDir);
 			FileSystemStorageEntry newEntry = fileSystemStorage.newEntry(chat);
 			newEntry.store(new SkypeChatSetter(chat));
 			newEntry.save();
@@ -31,7 +34,7 @@ public class FileSystemStorageTest {
 			
 			Assert.assertEquals( "<Previous Entry>", storedChat.toString() );
 		}finally {
-			baseDir.delete();
+			baseTmpDir.delete();
 		}
 	}
 

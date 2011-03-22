@@ -18,23 +18,10 @@ public class SkypeHistory {
 	 */
 	public static void main(String[] args) {
 		
-		final String dumpTarget = getDumpTarget(args);
-		Injector injector = Guice.createInjector(new Skype2DiskModule(dumpTarget));
+		Injector injector = Guice.createInjector(new Skype2DiskModule(args));
 		
 		SkypeHistoryRecorder recorder = injector.getInstance(SkypeHistoryRecorder.class);
 		
 		recorder.record();
 	}
-
-	private static String getDumpTarget(String[] args) {
-		final String dumpTarget;
-		if (args.length > 0) {
-			dumpTarget = args[0];
-		}
-		else {
-			dumpTarget = null;
-		}
-		return dumpTarget;
-	}
-
 }
