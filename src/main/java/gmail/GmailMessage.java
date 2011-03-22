@@ -1,7 +1,10 @@
 package gmail;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.mail.Flags;
 import javax.mail.MessagingException;
@@ -10,6 +13,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
+import javax.mail.internet.MimeUtility;
 
 import skype.SkypeUser;
 
@@ -40,14 +44,6 @@ public class GmailMessage {
 		}
 	}
 
-	public void setHeader(String headerField, String id) {
-		try {
-			mimeMessage.setHeader(headerField, id);
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 	public void setSubject(String topic) {
 		try {
 			mimeMessage.setSubject(topic);
@@ -68,15 +64,7 @@ public class GmailMessage {
 
 	public void setBody(String messageBody) {
 		try {
-			mimeMessage.setText(messageBody);
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public String[] getHeader(String headerName) {
-		try {
-			return this.mimeMessage.getHeader(headerName);
+			mimeMessage.setText(messageBody, "UTF-8");
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
@@ -179,6 +167,42 @@ public class GmailMessage {
 	public void delete() {
 		try {
 			mimeMessage.setFlag(Flags.Flag.DELETED, true);
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+
+	private void setHeader(String headerField, String value) {
+		try {
+			mimeMessage.setHeader(headerField, MimeUtility.encodeText(value));
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
+	private String[] getHeader(String headerName) {
+		try {
+			String[] headers = this.mimeMessage.getHeader(headerName);
+			List<String> decodedHeaders = new LinkedList<String>();
+			for (String aHeader : headers) {
+				decodedHeaders.add(MimeUtility.decodeText(aHeader));
+			}
+			
+			return decodedHeaders.toArray(new String[0]);
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void setSentDate(Date time) {
+		try {
+			mimeMessage.setSentDate(time);
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}

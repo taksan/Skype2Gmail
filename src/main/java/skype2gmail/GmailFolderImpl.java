@@ -9,7 +9,8 @@ import java.util.Map;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
+
+import com.sun.mail.imap.IMAPMessage;
 
 public class GmailFolderImpl implements GmailFolder {
 
@@ -38,7 +39,7 @@ public class GmailFolderImpl implements GmailFolder {
 				return retrievedMessages;
 			}
 			for (Message message : root.getMessages()) {
-				GmailMessage  gmailMessage = new GmailMessage((MimeMessage)message);
+				GmailMessage  gmailMessage = new GmailMessage((IMAPMessage)message);
 				gmailMessages.put(gmailMessage.getChatId(), gmailMessage);
 			}
 			retrievedMessages = gmailMessages.values().toArray(new GmailMessage[0]);

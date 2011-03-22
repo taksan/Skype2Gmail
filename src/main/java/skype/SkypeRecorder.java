@@ -38,8 +38,7 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 		boolean chatIsAlreadyRecorded = previousEntry.getChat()
 				.getBodySignature().equals(skypeChat.getBodySignature());
 		if (chatIsAlreadyRecorded) {
-			LOGGER.info("Entry " + skypeChat.getId()
-					+ " already up to date. Skipping.");
+			LOGGER.info("Entry " + skypeChat.getId() + " already up to date. Skipping.");
 			return;
 		}
 
@@ -48,8 +47,7 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 		final StorageEntry storageEntry = skypeStorage.newEntry(newChat);
 
 		storageEntry.store(new SkypeChatSetter(skypeChat));
-		storageEntry.setLastModificationTime(skypeChat
-				.getLastModificationTime());
+		storageEntry.setLastModificationTime(skypeChat.getLastModificationTime());
 		storageEntry.save();
 
 		LOGGER.info("Entry " + skypeChat.getId() + " written");

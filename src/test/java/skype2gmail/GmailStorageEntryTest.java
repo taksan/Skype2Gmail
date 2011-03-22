@@ -54,7 +54,7 @@ public class GmailStorageEntryTest {
 		final InternetAddress[] recipients = (InternetAddress[]) mimeMessage.getRecipients(RecipientType.TO);
 		Assert.assertEquals("moe", recipients[0].getAddress());
 		
-		String[] posters = mimeMessage.getHeader(GmailMessage.X_SKYPE_POSTERS);
+		String[] posters = mimeMessage.getUsers();
 		String posterText = StringUtils.join(posters,"\n");
 		
 		String expectedUsersInHeader = 

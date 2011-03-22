@@ -62,6 +62,7 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 			throw new IllegalStateException("You must store the message before invoking setLastModificationTime");
 		}
 		gmailMessage.setDate(skypeChatDateFormat.format(time));
+		gmailMessage.setSentDate(time);
 	}
 
 	@Override

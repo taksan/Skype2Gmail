@@ -10,6 +10,8 @@ import java.util.concurrent.TimeoutException;
 
 import org.apache.log4j.Logger;
 
+import utils.DaemonThreadFactory;
+
 import com.google.inject.Inject;
 import com.skype.Chat;
 import com.skype.Profile;
@@ -97,12 +99,13 @@ public class SkypeApiImpl implements SkypeApi {
 	private <T> T executeWithTimeout(Callable<T> aCallable) {
 
 		FutureTask<T> getChatsTask = new FutureTask<T>(aCallable);
-		ExecutorService executor = Executors.newSingleThreadExecutor();
+		ExecutorService executor = Executors.newSingleThreadExecutor(new DaemonThreadFactory());
 		executor.submit(getChatsTask);
 
 		T result;
 		try {
 			result = getChatsTask.get(1L, TimeUnit.MINUTES);
+			executor.shutdown();
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		} catch (ExecutionException e) {
