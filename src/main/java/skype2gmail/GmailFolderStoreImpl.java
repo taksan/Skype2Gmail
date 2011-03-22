@@ -64,12 +64,20 @@ public class GmailFolderStoreImpl implements GmailFolderStore {
 	@Override
 	public void close() {
 		if (store != null) {
-			getFolder().close();
 			try {
-				store.close();
-			} catch (MessagingException e) {
-				throw new RuntimeException(e);
+				getFolder().close();
 			}
+			finally {
+				closeStore();
+			}
+		}
+	}
+
+	private void closeStore() {
+		try {
+			store.close();
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
 		}
 	}
 }
