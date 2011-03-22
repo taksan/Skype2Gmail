@@ -6,4 +6,8 @@ public interface GmailFolder {
 
 	GmailMessage[] getMessages();
 
+	void deleteMessageBasedOnId(String chatId);
+
+	void close();
+
 }

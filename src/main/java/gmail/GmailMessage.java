@@ -3,6 +3,7 @@ package gmail;
 import java.io.IOException;
 import java.util.Date;
 
+import javax.mail.Flags;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.AddressException;
@@ -173,5 +174,13 @@ public class GmailMessage {
 		if(header == null)
 			return null;
 		return header[0];
+	}
+
+	public void delete() {
+		try {
+			mimeMessage.setFlag(Flags.Flag.DELETED, true);
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

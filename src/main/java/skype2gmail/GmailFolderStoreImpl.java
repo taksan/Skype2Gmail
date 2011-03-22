@@ -10,14 +10,16 @@ import javax.mail.Store;
 
 import com.google.inject.Inject;
 
-public class RootFolderProviderImpl implements RootFolderProvider {
+public class GmailFolderStoreImpl implements GmailFolderStore {
 
 	private final Session session;
 	private final SkypeChatFolderProvider chatFolderProvider;
 	private final UserAuthProvider userInfoProvider;
+	private GmailFolder gmailFolder;
+	private Store store;
 
 	@Inject
-	public RootFolderProviderImpl(
+	public GmailFolderStoreImpl(
 			SessionProvider sessionProvider, 
 			UserAuthProvider userInfoProvider, 
 			SkypeChatFolderProvider chatFolderProvider) 
@@ -25,12 +27,18 @@ public class RootFolderProviderImpl implements RootFolderProvider {
 		this.userInfoProvider = userInfoProvider;
 		this.chatFolderProvider = chatFolderProvider;
 		this.session = sessionProvider.getInstance();
-		
 	}
 
 	@Override
-	public GmailFolder getInstance() {
-		Store store;
+	public GmailFolder getFolder() {
+		if (gmailFolder != null)
+			return gmailFolder;
+		
+		gmailFolder = getGmailFolder();
+		return gmailFolder;
+	}
+
+	private GmailFolder getGmailFolder() {
 		String user = userInfoProvider.getUser();
 		String password = userInfoProvider.getPassword();
 		try {
@@ -50,6 +58,18 @@ public class RootFolderProviderImpl implements RootFolderProvider {
 			throw new RuntimeException(e);
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public void close() {
+		if (store != null) {
+			try {
+				store.close();
+			} catch (MessagingException e) {
+				throw new RuntimeException(e);
+			}
+			getFolder().close();
 		}
 	}
 }

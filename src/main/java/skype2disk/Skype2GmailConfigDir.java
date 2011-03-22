@@ -8,11 +8,15 @@ public class Skype2GmailConfigDir {
 
 	public Skype2GmailConfigDir()
 	{
-		configDir = new File(System.getProperty("user.home", ".skype2gmail"));
+		configDir = new File(System.getProperty("user.home"), ".skype2gmail");
 	}
 
 	public String getSubdirectory(String sub) {
 		return new File(configDir, sub).getAbsolutePath();
+	}
+	
+	public File getDirectory() {
+		return configDir;
 	}
 
 }

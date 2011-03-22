@@ -13,14 +13,14 @@ public class GmailStorage implements SkypeStorage {
 	private final GmailStorageEntryFactory entryFactory;
 	private final GmailMessageProvider gmailMessageProvider;
 	private final GmailMessageChatParser gmailMessageChatParser;
-	private final RootFolderProvider rootFolderProvider;
+	private final GmailFolderStore rootFolderProvider;
 
 	@Inject
 	public GmailStorage(
 			GmailStorageEntryFactory entryFactory,
 			GmailMessageProvider gmailMessageProvider,
 			GmailMessageChatParser gmailMessageChatParser, 
-			RootFolderProvider rootFolderProvider) {
+			GmailFolderStore rootFolderProvider) {
 		this.entryFactory = entryFactory;
 		this.gmailMessageProvider = gmailMessageProvider;
 		this.gmailMessageChatParser = gmailMessageChatParser;
@@ -55,7 +55,6 @@ public class GmailStorage implements SkypeStorage {
 
 	@Override
 	public void close() {
-		rootFolderProvider.getInstance().close();
+		rootFolderProvider.close();
 	}
-
 }

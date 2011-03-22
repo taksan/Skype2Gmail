@@ -31,8 +31,8 @@ public class Skype2GmailModuleTest extends AbstractRecordingTest {
 		final Injector injector = Guice.createInjector(new Skype2GmailModuleMockingSkypeApi());
 		
 		testRecording(injector);
-		RootFolderProviderMock folderProvider = (RootFolderProviderMock) injector.getInstance(RootFolderProvider.class);
-		GmailFolder gmailFolder = folderProvider.getInstance();
+		RootFolderProviderMock folderProvider = (RootFolderProviderMock) injector.getInstance(GmailFolderStore.class);
+		GmailFolder gmailFolder = folderProvider.getFolder();
 		
 		Assert.assertEquals(3, gmailFolder.getMessages().length);
 	}

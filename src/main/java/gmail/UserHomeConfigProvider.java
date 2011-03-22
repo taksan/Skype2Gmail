@@ -1,19 +1,26 @@
 package gmail;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import skype2gmail.UserAuthProvider;
 
+import com.google.inject.Inject;
+
 public class UserHomeConfigProvider implements UserAuthProvider {
+	
+	private Skype2GmailConfigContents skype2GmailConfigContents;
+
+	@Inject
+	public UserHomeConfigProvider(Skype2GmailConfigContents configContents){
+		skype2GmailConfigContents = configContents;
+	}
 
 	@Override
 	public String getUser() {
-		throw new NotImplementedException();
+		return skype2GmailConfigContents.getProperty("gmail.user");
 	}
 
 	@Override
 	public String getPassword() {
-		throw new NotImplementedException();
+		return skype2GmailConfigContents.getProperty("gmail.password");
 	}
 
 }

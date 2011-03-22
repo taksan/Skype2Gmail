@@ -21,29 +21,37 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 			LOGGER.error("Skype must be running to run Skype2Gmail!");
 			return;
 		}
-		
-		skypeApi.accept(this);
-		
+
+		try {
+			skypeApi.accept(this);
+		} finally {
+			skypeStorage.close();
+		}
+
 		LOGGER.info("Done.");
 	}
-	
+
 	@Override
 	public void visit(SkypeChat skypeChat) {
-		final StorageEntry previousEntry = skypeStorage.retrievePreviousEntryFor(skypeChat);
-		boolean chatIsAlreadyRecorded = previousEntry.getChat().getBodySignature().equals(skypeChat.getBodySignature());
+		final StorageEntry previousEntry = skypeStorage
+				.retrievePreviousEntryFor(skypeChat);
+		boolean chatIsAlreadyRecorded = previousEntry.getChat()
+				.getBodySignature().equals(skypeChat.getBodySignature());
 		if (chatIsAlreadyRecorded) {
-			LOGGER.info("Entry " + skypeChat.getId() + " already up to date. Skipping.");
+			LOGGER.info("Entry " + skypeChat.getId()
+					+ " already up to date. Skipping.");
 			return;
 		}
-		
+
 		final SkypeChat newChat = previousEntry.getChat().merge(skypeChat);
-		
+
 		final StorageEntry storageEntry = skypeStorage.newEntry(newChat);
 
 		storageEntry.store(new SkypeChatSetter(skypeChat));
-		storageEntry.setLastModificationTime(skypeChat.getLastModificationTime());
+		storageEntry.setLastModificationTime(skypeChat
+				.getLastModificationTime());
 		storageEntry.save();
-		
+
 		LOGGER.info("Entry " + skypeChat.getId() + " written");
 	}
 }

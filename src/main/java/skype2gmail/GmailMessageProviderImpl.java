@@ -7,17 +7,17 @@ import com.google.inject.Inject;
 
 public class GmailMessageProviderImpl implements GmailMessageProvider {
 
-	private RootFolderProvider rootFolderProvider;
+	private GmailFolderStore rootFolderProvider;
 	
 	@Inject
-	public GmailMessageProviderImpl(RootFolderProvider rootFolderProvider) {
+	public GmailMessageProviderImpl(GmailFolderStore rootFolderProvider) {
 		this.rootFolderProvider = rootFolderProvider;
 		
 	}
 
 	@Override
 	public GmailMessage[] getMessages() {
-		GmailFolder root = this.rootFolderProvider.getInstance();
+		GmailFolder root = this.rootFolderProvider.getFolder();
 		return root.getMessages();
 	}
 }

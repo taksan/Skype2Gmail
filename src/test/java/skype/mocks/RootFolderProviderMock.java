@@ -1,9 +1,9 @@
 package skype.mocks;
 
 import gmail.GmailFolder;
-import skype2gmail.RootFolderProvider;
+import skype2gmail.GmailFolderStore;
 
-public class RootFolderProviderMock implements RootFolderProvider {
+public class RootFolderProviderMock implements GmailFolderStore {
 
 	private GmailFolderMock gmailFolderMock;
 	
@@ -12,8 +12,12 @@ public class RootFolderProviderMock implements RootFolderProvider {
 	}
 
 	@Override
-	public GmailFolder getInstance() {
+	public GmailFolder getFolder() {
 		return this.gmailFolderMock;
 	}
 
+	@Override
+	public void close() {
+		// nothing to do here
+	}
 }

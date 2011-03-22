@@ -27,7 +27,7 @@ public class GmailStorageTest {
 		SkypeChatFolderProvider skypeChatFolderProvider = new DefaultSkypeChatFolderProvider();
 		SkypeChatDateFormat skypeChatFormat = new SkypeChatDateFormatImpl();
 		SessionProvider sessionProvider = new SessionProviderImpl();
-		RootFolderProvider rootFolderProvider = new RootFolderProviderImpl(sessionProvider, userInfoProvider, skypeChatFolderProvider);
+		GmailFolderStore rootFolderProvider = new GmailFolderStoreImpl(sessionProvider, userInfoProvider, skypeChatFolderProvider);
 		GmailStorageEntryFactory entryFactory = new GmailStorageEntryFactoryImpl(skypeChatFormat,sessionProvider,rootFolderProvider);
 		GmailMessageProvider messageProvider = new GmailMessageProviderMock(rootFolderProvider);
 		SkypeMessageDateFormat skypeMessageDateFormat = new SkypeMessageDateFormatImpl();
