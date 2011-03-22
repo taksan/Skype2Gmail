@@ -40,4 +40,9 @@ public class SkypeStorageMock implements SkypeStorage {
 		
 		return "@SkypeStorageMock:\n" + result.toString();
 	}
+
+	@Override
+	public void close() {
+		// nothing to do here
+	}
 }

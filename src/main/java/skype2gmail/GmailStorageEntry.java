@@ -52,6 +52,7 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 	@Override
 	public void save() {
 		GmailFolder root = rootFolderProvider.getInstance();
+		root.deleteMessageBasedOnId(gmailMessage.getChatId()); 
 		root.appendMessage(gmailMessage);
 	}
 

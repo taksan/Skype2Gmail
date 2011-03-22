@@ -49,7 +49,7 @@ public class GmailStorageTest {
 			(chatHelper.skypeChatFactoryImpl, messageBodyParserFactory, skypeUserFactory);
 		
 		GmailMessageChatParser gmailMessageChatParser = new GmailMessageChatParser(skypeChatWithBodyParserFactory);
-		GmailStorage gmailStorage = new GmailStorage(entryFactory, messageProvider, gmailMessageChatParser);
+		GmailStorage gmailStorage = new GmailStorage(entryFactory, messageProvider, gmailMessageChatParser, null);
 		SkypeChatImpl chat = chatHelper.getChat("$foo#too", "TOPIC_boo");
 		StorageEntry newEntry = gmailStorage.newEntry(chat);
 		newEntry.store(new SkypeChatSetter(chat));

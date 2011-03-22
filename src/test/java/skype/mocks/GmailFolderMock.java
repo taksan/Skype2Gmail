@@ -3,25 +3,35 @@ package skype.mocks;
 import gmail.GmailFolder;
 import gmail.GmailMessage;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GmailFolderMock implements GmailFolder {
 	
-	private final List<GmailMessage> messageList;
+	private final Map<String, GmailMessage> messageList;
 
 	public GmailFolderMock() {
-		messageList = new LinkedList<GmailMessage>();
+		messageList = new HashMap<String, GmailMessage>();
 	}
 
 	@Override
 	public void appendMessage(GmailMessage gmailMessage) {
-		messageList.add(gmailMessage);
+		messageList.put(gmailMessage.getChatId(), gmailMessage);
 	}
 
 	@Override
 	public GmailMessage[] getMessages() {
-		return messageList.toArray(new GmailMessage[0]);
+		return messageList.values().toArray(new GmailMessage[0]);
+	}
+
+	@Override
+	public void deleteMessageBasedOnId(String chatId) {
+		messageList.remove(chatId);
+	}
+
+	@Override
+	public void close() {
+		// nothing to do here
 	}
 
 }

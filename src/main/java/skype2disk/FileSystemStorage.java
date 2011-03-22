@@ -16,7 +16,7 @@ import com.google.inject.Inject;
 public class FileSystemStorage implements SkypeStorage {
 
 	private static final Logger LOGGER = Logger.getLogger(FileSystemStorage.class);
-	private final File basedir;
+	private final File historyDir;
 	private final FileDumpContentParser fileDumpContentParser;
 
 	@Inject
@@ -24,24 +24,30 @@ public class FileSystemStorage implements SkypeStorage {
 			FileDumpContentParser fileDumpContentParser, 
 			CustomHistoryDir baseDir) {
 		this.fileDumpContentParser = fileDumpContentParser;
-		basedir = baseDir.getHistoryDir();
+		historyDir = baseDir.getHistoryDir();
+		
+		try {
+			LOGGER.info("Will write messages to " + historyDir.getCanonicalPath());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
 	public FileSystemStorageEntry newEntry(SkypeChat chat) {
-		return new FileSystemStorageEntry(chat, basedir);
+		return new FileSystemStorageEntry(chat, historyDir);
 	}
 
 	@Override
 	public FileSystemStorageEntry retrievePreviousEntryFor(SkypeChat skypeChat) {
 		final String entryName = FileSystemStorageEntry.getFilenameFor(skypeChat.getId());
 		
-		File previousFile = new File(basedir, entryName);
+		File previousFile = new File(historyDir, entryName);
 		if (!previousFile.exists()) {
-			return new FileSystemStorageEntry(new EmptySkypeChat(), basedir);
+			return new FileSystemStorageEntry(new EmptySkypeChat(), historyDir);
 		}
 		LOGGER.info("Found previous chat file: " + entryName);
-		return new FileSystemStorageEntry(makeEntryFromFile(previousFile), basedir);
+		return new FileSystemStorageEntry(makeEntryFromFile(previousFile), historyDir);
 	}
 
 	private SkypeChat makeEntryFromFile(File previousFile) {
@@ -51,6 +57,11 @@ public class FileSystemStorage implements SkypeStorage {
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
+	}
+
+	@Override
+	public void close() {
+		// nothing to do here
 	}
 
 }
