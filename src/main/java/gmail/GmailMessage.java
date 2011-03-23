@@ -23,11 +23,11 @@ public class GmailMessage {
 	public static final String X_BODY_SIGNATURE = "X-SKYPE-BODY-SIGNATURE";
 	public static final String X_MESSAGE_ID = "X-SKYPE-MESSAGE-ID";
 	public static final String X_SKYPE_POSTERS = "X_SKYPE_POSTERS";
-	
+
 	public GmailMessage(Session session) {
 		this.mimeMessage = new MimeMessage(session);
 	}
-	
+
 	public GmailMessage(MimeMessage message) {
 		this.mimeMessage = message;
 	}
@@ -54,7 +54,8 @@ public class GmailMessage {
 
 	public void addRecipient(SkypeUser skypeUser) {
 		try {
-			mimeMessage.addRecipient(RecipientType.TO, new InternetAddress(skypeUser.getMailAddress()));
+			mimeMessage.addRecipient(RecipientType.TO, new InternetAddress(
+					skypeUser.getMailAddress()));
 		} catch (AddressException e) {
 			throw new RuntimeException(e);
 		} catch (MessagingException e) {
@@ -73,7 +74,7 @@ public class GmailMessage {
 	public String getChatId() {
 		return getFirstHeaderOrNull(GmailMessage.X_MESSAGE_ID);
 	}
-	
+
 	public String getBodySignature() {
 		return getFirstHeaderOrNull(GmailMessage.X_BODY_SIGNATURE);
 	}
@@ -116,21 +117,17 @@ public class GmailMessage {
 		}
 	}
 
-	public String [] getMessagesSignatures() {
+	public String[] getMessagesSignatures() {
 		String signatures = this.getFirstHeaderOrNull(X_MESSAGES_SIGNATURES);
 		return signatures.split(",");
 	}
 
-	public String [] getUsers() {
+	public String[] getPosters() {
 		return this.getHeader(X_SKYPE_POSTERS);
 	}
 
 	public void addPoster(SkypeUser skypeUser) {
-		try {
-			this.mimeMessage.addHeader(X_SKYPE_POSTERS, skypeUser.getPosterHeader());
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
-		}
+		this.addHeader(X_SKYPE_POSTERS, skypeUser.getPosterHeader());
 	}
 
 	public InternetAddress[] getFrom() {
@@ -159,7 +156,7 @@ public class GmailMessage {
 
 	private String getFirstHeaderOrNull(String headerName) {
 		String[] header = this.getHeader(headerName);
-		if(header == null)
+		if (header == null)
 			return null;
 		return header[0];
 	}
@@ -171,7 +168,6 @@ public class GmailMessage {
 			throw new RuntimeException(e);
 		}
 	}
-	
 
 	private void setHeader(String headerField, String value) {
 		try {
@@ -182,8 +178,17 @@ public class GmailMessage {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	
+
+	private void addHeader(String headerField, String value) {
+		try {
+			mimeMessage.addHeader(headerField, MimeUtility.encodeText(value));
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	private String[] getHeader(String headerName) {
 		try {
 			String[] headers = this.mimeMessage.getHeader(headerName);
@@ -191,7 +196,7 @@ public class GmailMessage {
 			for (String aHeader : headers) {
 				decodedHeaders.add(MimeUtility.decodeText(aHeader));
 			}
-			
+
 			return decodedHeaders.toArray(new String[0]);
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
