@@ -15,6 +15,9 @@ public class UsersSortedByUserId extends TreeSet<SkypeUser> {
 			if (chatUser.getDisplayName().equals(userDisplay)) {
 				return chatUser;
 			}
+			if (chatUser.getUserId().equals(userDisplay)) {
+				return chatUser;
+			}
 		}
 		return null;
 	}

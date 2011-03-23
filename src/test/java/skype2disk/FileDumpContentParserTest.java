@@ -113,7 +113,7 @@ public class FileDumpContentParserTest {
 				+ "Poster: id=jane.doe; display=Jane Doe\n"
 				+ "[2011/03/14 13:55:10] John Doe: oi Jane\r\n"
 				+ "[2011/03/14 14:14:31] Jane Doe: opa\r\n"
-				+ "[2011/03/14 19:33:44] John Doe: so\r\n"
+				+ "[2011/03/14 19:33:44] john.doe: so\r\n"
 				+ "fine";
 
 		testParserOnMessage(chatSample);
