@@ -78,7 +78,7 @@ public class FileDumpContentParserTest {
 		
 		String expected = "Chat Id: #42;$foo\n" + 
 				"Chat Time: 2011/04/21 15:00:00\n" + 
-				"Chat Body Signature: 20#76ec9465d068ca51035fa9e083851f3b107e1ee87dd98ea7c6a092ea5e5429b9\n" + 
+				"Chat Body Signature: 76ec9465d068ca51035fa9e083851f3b107e1ee87dd98ea7c6a092ea5e5429b9\n" + 
 				"Messages signatures: [e134071f020f5efaf163415317580194,055bb32f383cc8d37656f9223e704b95]\n" + 
 				"Chat topic: FOO\n" + 
 				"Poster: id=joe; display=JOE\n" + 
@@ -106,15 +106,15 @@ public class FileDumpContentParserTest {
 	public void testParsingOnActualText() {
 		String chatSample = "Chat Id: #johndoe/$janedoe;7e39ff52e4f97765\n"
 				+ "Chat Time: 2011/03/14 13:55:04\n"
-				+ "Chat Body Signature: 0#c47ccd1d42e3bc5e5b39168bfe9eb2a5f057aae4a3d2f4b9cdb3e702f58689cb\n"
-				+ "Messages signatures: [20c5b66ed09f7fd3ca1baa945c444be1,093b41d317455d08d55838071ff9f5c3,9d0232e74cfa414b3ec3e904f52295de,9d0232e74cfa414b3ec3e904f52295de]\n"
+				+ "Chat Body Signature: 859cffb72c25fa7a9c2bd3fdb7816a54bbcfb4f59406fb36bf80f89d7f32486e\n"
+				+ "Messages signatures: [20c5b66ed09f7fd3ca1baa945c444be1,093b41d317455d08d55838071ff9f5c3,2a4bc2c53cb2fe8cf01b545398140ae4]\n"
 				+ "Chat topic: Hello boy\n"
 				+ "Poster: id=john.doe; display=John Doe\n"
 				+ "Poster: id=jane.doe; display=Jane Doe\n"
 				+ "[2011/03/14 13:55:10] John Doe: oi Jane\r\n"
-				+ "[2011/03/14 14:14:31] Jane Doe: opa\n"
-				+ "[2011/03/14 19:33:44] John Doe:\n"
-				+ "[2011/03/14 19:33:44] ...";
+				+ "[2011/03/14 14:14:31] Jane Doe: opa\r\n"
+				+ "[2011/03/14 19:33:44] John Doe: so\r\n"
+				+ "fine";
 
 		testParserOnMessage(chatSample);
 	}

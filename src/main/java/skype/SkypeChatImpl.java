@@ -70,15 +70,12 @@ public class SkypeChatImpl implements SkypeChat {
 	}
 
 	private String calcBodySignature() {
-		String concatenatedMessagesSignatures = "";
-		int fullChatLen = 0;
+		StringBuffer sb = new StringBuffer();
 		for (SkypeChatMessage aMessage : this.chatMessageList) {
-			concatenatedMessagesSignatures += aMessage.getSignature();
-			fullChatLen = aMessage.getMessageBody().length();
+			sb.append(aMessage.getSignature());
 		}
-		final String data = this.chatId+concatenatedMessagesSignatures;
-		digestProvider.extendedEncode(data);
-		return fullChatLen + "#" + digestProvider.extendedEncode(data);
+		final String data = this.chatId+sb.toString();
+		return digestProvider.extendedEncode(data);
 	}
 
 	@Override

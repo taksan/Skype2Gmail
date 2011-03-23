@@ -42,7 +42,7 @@ public class SkypeChatImplTest {
 				chat.getChatMessages());
 		
 		final String chatContentId = skypeChatImpl.getBodySignature();
-		final String expected="16#15e36e4391c61703331c2136e5feda6a8ce794b0c67286eaea184cd2100f9a23";
+		final String expected="15e36e4391c61703331c2136e5feda6a8ce794b0c67286eaea184cd2100f9a23";
 		Assert.assertEquals(expected, chatContentId);
 		
 		final Date lastModificationTime = skypeChatImpl.getLastModificationTime();
@@ -90,7 +90,7 @@ public class SkypeChatImplTest {
 		String expected = 
 			"Chat Id: toUpdate\n" + 
 			"Chat Time: 2011/04/21 15:00:00\n" + 
-			"Chat Body Signature: 22#e87d53e14718f6ffdae477160b8aea197aefd203d727cdb9e3c54d42cf25ca36\n" + 
+			"Chat Body Signature: e87d53e14718f6ffdae477160b8aea197aefd203d727cdb9e3c54d42cf25ca36\n" + 
 			"Messages signatures: [765addc4c3fa9bf96af260131af55c3a,209cfb52f20f1310a2de704eb5ccc0ed,501fb6ccae7c8806d56daa1ee89ba949,765addc4c3fa9bf96af260131af55c3a,8917de92790e1dde41f70f5eb9ff96f9]\n" + 
 			"Chat topic: FOO\n" + 
 			"Poster: id=joe; display=JOE\n" + 

@@ -70,7 +70,7 @@ public class GmailStorageEntryTest {
 		
 		Assert.assertEquals("#joe$moe", mimeMessage.getChatId());
 		
-		Assert.assertEquals("16#ba424f9030bf99e6251494525982b82d9afb06081952197c256d9f9bac2dd0ef", 
+		Assert.assertEquals("ba424f9030bf99e6251494525982b82d9afb06081952197c256d9f9bac2dd0ef", 
 				mimeMessage.getBodySignature());
 		
 		String[] messagesSignaturesArray = mimeMessage.getMessagesSignatures();
