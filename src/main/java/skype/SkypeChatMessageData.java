@@ -30,7 +30,7 @@ public class SkypeChatMessageData implements SkypeChatMessage {
 		if(userId == null || userDisplay == null || message == null || time == null)
 			throw new IllegalArgumentException("None of the message arguments can be null");
 		
-		final String encodingData = userId+"/"+message;
+		final String encodingData = userId+"/"+message.replaceAll("\r", "");
 		this.msgId = digestProvider.encode(encodingData);
 		this.userDisplay = userDisplay;
 		this.message = message;

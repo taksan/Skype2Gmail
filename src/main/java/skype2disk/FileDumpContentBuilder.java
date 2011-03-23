@@ -13,7 +13,7 @@ import skype.TimeSortedMessages;
 public class FileDumpContentBuilder implements ChatContentBuilder, SkypeChatSetterVisitor {
 
 	public static final String MESSAGE_TIME_FORMAT = "\\[\\d{4}/\\d{2}/\\d{2} \\d{2}:\\d{2}:\\d{2}]";
-	public static final String MESSAGE_TIME_FORMAT_FOR_PARSING = "\n(?="+MESSAGE_TIME_FORMAT+")";
+	public static final String MESSAGE_TIME_FORMAT_FOR_PARSING = "\r?\n(?="+MESSAGE_TIME_FORMAT+")";
 	private final SkypeChat chat;
 	private TimeSortedMessages chatMessages;
 	private final StringBuilder messageText = new StringBuilder();

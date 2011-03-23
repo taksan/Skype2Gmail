@@ -32,4 +32,14 @@ public class SkypeChatMessageDataTest {
 		final String msgContentId = "6c87fe864a2b8251203e6edd8fa5f0cf";
 		Assert.assertEquals(msgContentId, messageId);
 	}
+	
+	@Test
+	public void testReturnCarriageDoesntChangeSignature()
+	{
+		final DigestProvider digestProvider = DigestProviderForTestFactory.getInstance();
+		Date messageTime = DateHelper.makeDate(2011, 01, 01, 03, 30, 00);
+		SkypeChatMessageData chat1 = new SkypeChatMessageData(digestProvider, "foosan", "Foo San", "dono\nfoo", messageTime);
+		SkypeChatMessageData chat2 = new SkypeChatMessageData(digestProvider, "foosan", "Foo San", "dono\r\nfoo", messageTime);
+		Assert.assertEquals(chat1.getSignature(),chat2.getSignature());
+	}
 }
