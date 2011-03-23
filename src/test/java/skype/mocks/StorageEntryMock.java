@@ -55,7 +55,7 @@ public class StorageEntryMock implements StorageEntry, Comparable<StorageEntryMo
 	// SkypeChatSetterVisitor
 	
 	@Override
-	public void visitChatAuthor(String chatAuthor) {
+	public void visitChatAuthor(SkypeUser chatAuthor) {
 		stringBuilder.append("chatAuthor:"+chatAuthor+"\n");
 	}
 

@@ -50,7 +50,7 @@ public class SkypeChatImplTest {
 		final String expectedTime = "2011/04/22 15:14:24";
 		Assert.assertEquals(expectedTime , actualTime);
 		
-		String chatAuthor = skypeChatImpl.getChatAuthor();
+		String chatAuthor = skypeChatImpl.getChatAuthor().getUserId();
 		Assert.assertEquals("camaron.goo", chatAuthor);
 	}
 		

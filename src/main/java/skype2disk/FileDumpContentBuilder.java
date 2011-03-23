@@ -52,7 +52,7 @@ public class FileDumpContentBuilder implements ChatContentBuilder, SkypeChatSett
 	// SkypeChatSetterVisitor implementation
 
 	@Override
-	public void visitChatAuthor(String chatAuthor) {
+	public void visitChatAuthor(SkypeUser chatAuthor) {
 	}
 	
 	@Override

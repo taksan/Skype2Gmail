@@ -51,7 +51,7 @@ public class EmptySkypeChat implements SkypeChat {
 	}
 
 	@Override
-	public String getChatAuthor() {
+	public SkypeUser getChatAuthor() {
 		throw new NotImplementedException();
 	}
 }

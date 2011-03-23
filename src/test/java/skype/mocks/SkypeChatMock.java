@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import skype.SkypeChat;
 import skype.SkypeChatMessage;
 import skype.SkypeChatMessageData;
+import skype.SkypeUser;
 import skype.TimeSortedMessages;
 import skype.UsersSortedByUserId;
 import testutils.DigestProviderForTestFactory;
@@ -95,7 +96,7 @@ public class SkypeChatMock implements SkypeChat {
 	}
 
 	@Override
-	public String getChatAuthor() {
-		return "";
+	public SkypeUser getChatAuthor() {
+		return new EmptySkypeUser();
 	}
 }

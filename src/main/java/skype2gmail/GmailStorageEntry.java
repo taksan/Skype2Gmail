@@ -71,8 +71,9 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 	}
 
 	@Override
-	public void visitChatAuthor(String chatAuthor) {
-		gmailMessage.setFrom(chatAuthor);
+	public void visitChatAuthor(SkypeUser chatAuthor) {
+		String fromUser = String.format("%s <%s>", chatAuthor.getDisplayName(), chatAuthor.getUserId());
+		gmailMessage.setFrom(fromUser);
 	}
 
 	@Override

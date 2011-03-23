@@ -7,7 +7,7 @@ import skype.SkypeUser;
 
 public interface SkypeChatSetterVisitor {
 
-	void visitChatAuthor(String chatAuthor);
+	void visitChatAuthor(SkypeUser skypeUser);
 	void visitChatId(String id);
 	void visitDate(Date time);
 	void visitBodySignature(String bodySignature);

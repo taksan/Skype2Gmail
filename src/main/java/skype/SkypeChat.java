@@ -20,5 +20,5 @@ public interface SkypeChat {
 
 	SkypeChat merge(SkypeChat skypeChat);
 
-	String getChatAuthor();
+	SkypeUser getChatAuthor();
 }

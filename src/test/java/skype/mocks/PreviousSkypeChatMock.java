@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.commons.lang.NotImplementedException;
 
 import skype.SkypeChat;
+import skype.SkypeUser;
 import skype.TimeSortedMessages;
 import skype.UsersSortedByUserId;
 
@@ -57,7 +58,7 @@ public class PreviousSkypeChatMock implements SkypeChat {
 	}
 
 	@Override
-	public String getChatAuthor() {
+	public SkypeUser getChatAuthor() {
 		throw new NotImplementedException();
 	}
 }
