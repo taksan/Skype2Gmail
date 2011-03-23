@@ -10,6 +10,7 @@ import com.google.inject.Inject;
 import com.skype.Chat;
 import com.skype.ChatMessage;
 import com.skype.SkypeException;
+import com.skype.User;
 
 public class SkypeChatFactoryImpl implements SkypeChatFactory {
 	
@@ -32,7 +33,7 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 	public SkypeChat produce(Chat chat) {
 		try {
 			TimeSortedMessages chatMessages = populateChatList(chat);
-			UsersSortedByUserId chatPosters = populateUserList(chatMessages);
+			UsersSortedByUserId chatPosters = populateUserList(chat, chatMessages);
 			
 			return new SkypeChatImpl(
 					this.digestProvider,
@@ -56,11 +57,21 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 				messageList);
 	}
 	
-	private UsersSortedByUserId populateUserList(TimeSortedMessages chatMessages) throws SkypeException {
+	private UsersSortedByUserId populateUserList(Chat chat, TimeSortedMessages chatMessages) throws SkypeException {
 		UsersSortedByUserId chatUsers = new UsersSortedByUserId();
 		Map<String, String> users = extractPostersFromMessages(chatMessages);
 		for (String userId : users.keySet()) {
 			SkypeUserImpl skypeUser = (SkypeUserImpl) skypeUserFactory.produce(userId, users.get(userId));
+			chatUsers.add(skypeUser);
+		}
+		User[] allMembers = chat.getAllMembers();
+		for (User user : allMembers) {
+			String userId = user.getId();
+			String fullName = user.getFullName();
+			if (fullName == null)
+				fullName = userId;
+			
+			SkypeUserImpl skypeUser = (SkypeUserImpl) skypeUserFactory.produce(userId, fullName);
 			chatUsers.add(skypeUser);
 		}
 		
