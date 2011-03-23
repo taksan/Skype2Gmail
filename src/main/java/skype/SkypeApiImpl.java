@@ -42,22 +42,19 @@ public class SkypeApiImpl implements SkypeApi {
 
 	@Override
 	public void accept(final SkypeApiChatVisitor visitor) {
-		Callable<Object> getAllChatsCallable = new Callable<Object>() {
+		Callable<Chat[]> getAllChatsCallable = new Callable<Chat[]>() {
 			@Override
-			public Object call() throws Exception {
-				Chat[] allChatsArray = getAllChats();
-
-				LOGGER.info(String.format("Found %d chats.",
-						allChatsArray.length));
-
-				for (Chat chat : allChatsArray) {
-					final SkypeChat skypeChat = chatFactory.produce(chat);
-					visitor.visit(skypeChat);
-				}
-				return null;
+			public Chat[] call() throws Exception {
+				return getAllChats();
 			}
 		};
-		executeWithTimeout(getAllChatsCallable);
+		Chat[] allChatsArray = executeWithTimeout(getAllChatsCallable);
+		LOGGER.info(String.format("Found %d chats.", allChatsArray.length));
+		
+		for (Chat chat : allChatsArray) {
+			final SkypeChat skypeChat = chatFactory.produce(chat);
+			visitor.visit(skypeChat);
+		}
 	}
 
 	@Override
