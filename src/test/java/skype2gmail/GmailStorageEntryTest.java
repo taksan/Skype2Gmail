@@ -35,9 +35,9 @@ public class GmailStorageEntryTest {
 
 			@Override
 			public void addChatMessages() {
-				addMessage("joe", "fellow", 21, 15, 15, 18);
-				addMessage("moe", "Howdy\n	I'm doing fine", 21, 15, 24, 18);
-				addMessage("joe", "A day has passed", 22, 15, 24, 18);
+				addMessage("joe", "fellow", 3, 21, 15, 15, 18);
+				addMessage("moe", "Howdy\n	I'm doing fine", 3, 21, 15, 24, 18);
+				addMessage("joe", "A day has passed", 3, 22, 15, 24, 18);
 			}
 		};
 		
@@ -54,7 +54,7 @@ public class GmailStorageEntryTest {
 		final InternetAddress[] recipients = (InternetAddress[]) mimeMessage.getRecipients(RecipientType.TO);
 		Assert.assertEquals("moe", recipients[0].getAddress());
 		
-		String[] posters = mimeMessage.getUsers();
+		String[] posters = mimeMessage.getPosters();
 		String posterText = StringUtils.join(posters,"\n");
 		
 		String expectedUsersInHeader = 

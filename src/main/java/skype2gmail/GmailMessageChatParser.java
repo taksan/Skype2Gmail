@@ -25,7 +25,7 @@ public class GmailMessageChatParser {
 		return skypeChatWithBodyParserFactory.produce(
 				message.getChatId(), 
 				message.getTopic(),
-				message.getUsers(), 
+				message.getPosters(), 
 				message.getBodySignature(), 
 				messageSignatures, 
 				chatTime, 

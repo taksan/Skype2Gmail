@@ -26,13 +26,13 @@ public class FileDumpContentParserTest {
 
 			@Override
 			public void addChatMessages() {
-				addMessage("moe", "", 21, 15, 14, 10);
-				addMessage("joe", "Hya : ) ...", 21, 15, 14, 18);
-				addMessage("joe", "fellow", 21, 15, 15, 18);
-				addMessage("joe", "", 21, 15, 15, 19);
-				addMessage("moe", "Howdy\n	I'm doing fine", 21, 15, 24, 18);
-				addMessage("moe", "\n[2011/03/16 11:49:10] bla said", 21, 15, 24, 19);
-				addMessage("joe", "A day has passed", 22, 15, 24, 20);
+				addMessage("moe", "", 3, 21, 15, 14, 10);
+				addMessage("joe", "Hya : ) ...", 3, 21, 15, 14, 18);
+				addMessage("joe", "fellow", 3, 21, 15, 15, 18);
+				addMessage("joe", "", 3, 21, 15, 15, 19);
+				addMessage("moe", "Howdy\n	I'm doing fine", 3, 21, 15, 24, 18);
+				addMessage("moe", "\n[2011/03/16 11:49:10] bla said", 3, 21, 15, 24, 19);
+				addMessage("joe", "A day has passed", 3, 22, 15, 24, 20);
 			}
 		};
 
@@ -67,8 +67,8 @@ public class FileDumpContentParserTest {
 
 			@Override
 			public void addChatMessages() {
-				addMessage("moe", "\n[2011/03/16 11:49:10] bla said", 21, 15, 24, 19);
-				addMessage("moe", "\n[11:49:10] bla said", 21, 15, 24, 20);
+				addMessage("moe", "\n[2011/03/16 11:49:10] bla said", 3, 21, 15, 24, 19);
+				addMessage("moe", "\n[11:49:10] bla said", 3, 21, 15, 24, 20);
 			}
 		};
 
@@ -111,7 +111,7 @@ public class FileDumpContentParserTest {
 				+ "Chat topic: Hello boy\n"
 				+ "Poster: id=john.doe; display=John Doe\n"
 				+ "Poster: id=jane.doe; display=Jane Doe\n"
-				+ "[2011/03/14 13:55:10] John Doe: oi Jane\n"
+				+ "[2011/03/14 13:55:10] John Doe: oi Jane\r\n"
 				+ "[2011/03/14 14:14:31] Jane Doe: opa\n"
 				+ "[2011/03/14 19:33:44] John Doe:\n"
 				+ "[2011/03/14 19:33:44] ...";

@@ -57,8 +57,7 @@ public class SkypeChatWithBodyParserFactory {
 		for (String posterLine : posters) {
 			Matcher matcher = pattern.matcher(posterLine);
 			if (!matcher.find()) {
-				throw new SkypeMessageParsingException(
-						"Invalid poster pattern found: %s", posterLine);
+				throw new SkypeMessageParsingException("Invalid poster pattern found: %s", posterLine);
 			}
 			skypeUserList.add(
 					skypeUserFactory.produce(

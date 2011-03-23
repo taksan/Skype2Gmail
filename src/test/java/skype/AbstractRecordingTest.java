@@ -14,8 +14,8 @@ public abstract class AbstractRecordingTest {
 		SkypeChatBuilderHelper chatHelper = new SkypeChatBuilderHelper() {
 			@Override
 			public void addChatMessages() {
-				addMessage("joe", "howdy", 21, 15, 01, 00);
-				addMessage("moe", "hiiya", 21, 15, 02, 00);
+				addMessage("joe", "howdy", 3, 21, 15, 01, 00);
+				addMessage("moe", "hiiya", 3, 21, 15, 02, 00);
 			}
 		};
 		
@@ -25,7 +25,7 @@ public abstract class AbstractRecordingTest {
 		
 		historyRecorder.record();
 		
-		chatHelper.addMessage("joe", "Here I am again", 23, 15, 20, 1);
+		chatHelper.addMessage("joe", "Here I am again", 3, 23, 15, 20, 1);
 		skypeApi.addChat(chatHelper.getChat("$foo#44", "TOPIC"));
 		
 		historyRecorder.record();

@@ -28,16 +28,20 @@ abstract public class SkypeChatBuilderHelper {
 	public abstract void addChatMessages();
 
 	public SkypeChatImpl getChat(String chatId, String topic) {
-		UsersSortedByUserId members = SkypeChatHelper.makeUserList(new String[] { "moe", "joe" });
+		UsersSortedByUserId members = setupPosters();
 		addChatMessages();
 
 		Date chatTime = DateHelper.makeDate(2011, 3, 21, 15, 0, 0);
 		return (SkypeChatImpl) skypeChatFactoryImpl.produce(chatId, chatTime, topic, members, messageList);
 	}
+	
+	protected UsersSortedByUserId setupPosters() {
+		return SkypeChatHelper.makeUserList(new String[] { "moe", "joe" });
+	}
 
 
-	public void addMessage(String userId, String message, int day,int hour, int minute, int second) {
-		Date firstMessageTime = DateHelper.makeDate(2011, 3, day, hour, minute, second);
+	public void addMessage(String userId, String message, int month,int day, int hour, int minute, int second) {
+		Date firstMessageTime = DateHelper.makeDate(2011, month, day, hour, minute, second);
 		SkypeChatMessage firstMessage = skypeChatMessageFactory.produce(userId,
 				userId.toUpperCase(), message, firstMessageTime);
 		messageList.add(firstMessage);

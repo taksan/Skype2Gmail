@@ -29,11 +29,7 @@ public class SkypeChatMock implements SkypeChat {
 		this.chatId = chatId;
 		this.chatDate = date;
 		this.topic = topic;
-		this.members = makeUserList(members);
-	}
-
-	private UsersSortedByUserId makeUserList(String[] members) {
-		return SkypeChatHelper.makeUserList(members);
+		this.members = SkypeChatHelper.makeUserList(members);
 	}
 
 	@Override

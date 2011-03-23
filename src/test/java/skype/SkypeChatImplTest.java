@@ -6,7 +6,6 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import skype.mocks.SkypeChatMock;
 import skype2disk.FileDumpContentBuilder;
 import testutils.DigestProviderForTestFactory;
 import testutils.SkypeChatBuilderHelper;
@@ -16,7 +15,22 @@ import utils.DigestProvider;
 public class SkypeChatImplTest {
 	@Test
 	public void testBodyContentSignature() {
-		final SkypeChatMock chat = SkypeChatHelper.createSkypeTestEnvironment();
+		SkypeChatBuilderHelper chatHelper = new SkypeChatBuilderHelper() {
+		
+			@Override
+			public void addChatMessages() {
+				addMessage("goofoo", "what's up", 3, 21, 15, 14, 18);
+				addMessage("camaron.goo", "Howdy\n	I'm doing fine", 3, 21, 15, 18, 16);
+				addMessage("goofoo", "A day has passed", 3, 22, 15, 14, 24);
+			}
+			
+			protected UsersSortedByUserId setupPosters() {
+				return SkypeChatHelper.makeUserList(new String[] { "goofoo", "camaron.goo" });
+			}
+		};
+		
+		final String chatId = "#camaron.goo/$goofoo;81ef2618fc9a6343";
+		final SkypeChat chat = chatHelper.getChat(chatId, "FOO");
 		
 		final DigestProvider digestProvider = DigestProviderForTestFactory.getInstance();
 		final SkypeChatImpl skypeChatImpl = new SkypeChatImpl(
@@ -28,45 +42,43 @@ public class SkypeChatImplTest {
 				chat.getChatMessages());
 		
 		final String chatContentId = skypeChatImpl.getBodySignature();
-		final String expected="14#35ff9458ed508c794ad0c309e12902f452cdc25cd5991bc2422cd51f7c4272fd";
+		final String expected="16#15e36e4391c61703331c2136e5feda6a8ce794b0c67286eaea184cd2100f9a23";
 		Assert.assertEquals(expected, chatContentId);
 		
 		final Date lastModificationTime = skypeChatImpl.getLastModificationTime();
 		final String actualTime = SkypeChatMessage.chatDateFormat.format(lastModificationTime);
-		final String expectedTime = "2011/03/21 15:18:16";
+		final String expectedTime = "2011/04/22 15:14:24";
 		Assert.assertEquals(expectedTime , actualTime);
+		
+		String chatAuthor = skypeChatImpl.getChatAuthor();
+		Assert.assertEquals("camaron.goo", chatAuthor);
 	}
-	
+		
 	@Test
 	public void testMerge() {
 		SkypeChatBuilderHelper chatHelper = new SkypeChatBuilderHelper() {
 
 			@Override
 			public void addChatMessages() {
-				addMessage("joe", "fellow", 21, 15, 15, 18);
-				addMessage("moe", "Howdy\n	I'm doing fine", 21, 15, 24, 18);
-				addMessage("joe", "A day has passed", 22, 15, 24, 18);
+				addMessage("joe", "fellow", 3, 21, 15, 15, 18);
+				addMessage("moe", "Howdy\n	I'm doing fine", 3, 21, 15, 24, 18);
+				addMessage("joe", "A day has passed", 3, 22, 15, 24, 18);
 			}
 		};
 		SkypeChatImpl chatA = chatHelper.getChat("toUpdate", "FOO");
 		SkypeChatImpl chatB = chatHelper.getChat("toUpdate", "FOO");
 		
-		FileDumpContentBuilder fileDumpContentBuilder1 = new FileDumpContentBuilder(chatA);
-		
-		System.out.println(fileDumpContentBuilder1.getContent());
-		
 		SkypeChat chatCshouldBeTheSameAsA = chatA.merge(chatB);
 		
 		Assert.assertEquals(chatA.getBodySignature(), chatCshouldBeTheSameAsA.getBodySignature());
-		
 		
 		SkypeChatBuilderHelper chatFromOtherSource = new SkypeChatBuilderHelper() {
 
 			@Override
 			public void addChatMessages() {
-				addMessage("joe", "A day has passed", 22, 15, 24, 18);
-				addMessage("moe", "Another day has passed", 23, 15, 24, 18);
-				addMessage("joe", "fellow", 22, 15, 24, 19);
+				addMessage("joe", "A day has passed", 3, 22, 15, 24, 18);
+				addMessage("moe", "Another day has passed", 3, 23, 15, 24, 18);
+				addMessage("joe", "fellow", 3, 22, 15, 24, 19);
 			}
 		};
 		

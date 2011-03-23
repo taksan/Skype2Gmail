@@ -53,8 +53,14 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 		final String topic = parsedContents.get("Chat topic");
 		final String parsedSignature = parsedContents.get("Chat Body Signature");
 		
-		return skypeChatWithBodyParserFactory.produce(chatId, topic,
-				posters, parsedSignature, messageSignatures, chatTime, bodySection);
+		return skypeChatWithBodyParserFactory.produce(
+				chatId, 
+				topic,
+				posters, 
+				parsedSignature, 
+				messageSignatures, 
+				chatTime, 
+				bodySection);
 	}
 
 	

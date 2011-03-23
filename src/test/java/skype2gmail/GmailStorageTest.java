@@ -37,8 +37,8 @@ public class GmailStorageTest {
 			
 			@Override
 			public void addChatMessages() {
-				addMessage("joe", "Hya : ) ...", 21, 15, 14, 18);
-				addMessage("moe", "fellow", 21, 15, 15, 18);
+				addMessage("joe", "Hya : ) ...", 3, 21, 15, 14, 18);
+				addMessage("moe", "fellow", 3, 21, 15, 15, 18);
 			}
 		};
 		SkypeUserFactory skypeUserFactory = new SkypeUserFactoryMock();
