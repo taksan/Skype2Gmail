@@ -33,23 +33,31 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 
 	@Override
 	public void visit(SkypeChat skypeChat) {
-		final StorageEntry previousEntry = skypeStorage
-				.retrievePreviousEntryFor(skypeChat);
-		boolean chatIsAlreadyRecorded = previousEntry.getChat()
-				.getBodySignature().equals(skypeChat.getBodySignature());
-		if (chatIsAlreadyRecorded) {
-			LOGGER.info("Entry " + skypeChat.getId() + " already up to date. Skipping.");
-			return;
+		try {
+			final StorageEntry previousEntry = skypeStorage
+					.retrievePreviousEntryFor(skypeChat);
+			boolean chatIsAlreadyRecorded = previousEntry.getChat()
+					.getBodySignature().equals(skypeChat.getBodySignature());
+			if (chatIsAlreadyRecorded) {
+				LOGGER.info("Entry " + skypeChat.getId() + " already up to date. Skipping.");
+				return;
+			}
+	
+			final SkypeChat newChat = previousEntry.getChat().merge(skypeChat);
+	
+			final StorageEntry storageEntry = skypeStorage.newEntry(newChat);
+	
+			storageEntry.store(new SkypeChatSetter(skypeChat));
+			storageEntry.setLastModificationTime(skypeChat.getLastModificationTime());
+			storageEntry.save();
+	
+			LOGGER.info("Entry " + skypeChat.getId() + " written");
+		} catch(RuntimeException e) {
+			String message = String.format("An error was found processing message with the following id: %s",
+					skypeChat.getId()
+					);
+			LOGGER.error(message, e);
+			LOGGER.info("Message processing skipped");
 		}
-
-		final SkypeChat newChat = previousEntry.getChat().merge(skypeChat);
-
-		final StorageEntry storageEntry = skypeStorage.newEntry(newChat);
-
-		storageEntry.store(new SkypeChatSetter(skypeChat));
-		storageEntry.setLastModificationTime(skypeChat.getLastModificationTime());
-		storageEntry.save();
-
-		LOGGER.info("Entry " + skypeChat.getId() + " written");
 	}
 }
