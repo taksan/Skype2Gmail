@@ -118,6 +118,11 @@ public class FileDumpContentParserTest {
 
 		testParserOnMessage(chatSample);
 	}
+	
+	@Test
+	public void testEmptyContents() {
+		testParserOnMessage("");
+	}
 
 	private void testParserOnMessage(String chatSample) {
 		SkypeChatBuilderHelper chatHelper = new SkypeChatBuilderHelper() {
@@ -146,7 +151,8 @@ public class FileDumpContentParserTest {
 		
 		FileDumpContentParser fileDumpContentParser = new FileDumpContentParserImpl(
 				SkypeChatMessage.chatDateFormat,
-				skypeChatWithBodyParserFactory);
+				skypeChatWithBodyParserFactory,
+				chatHelper.skypeChatFactoryImpl);
 		return fileDumpContentParser;
 	}
 }

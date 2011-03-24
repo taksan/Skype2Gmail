@@ -6,6 +6,7 @@ import java.util.Map;
 
 import skype.SkypeChat;
 import skype.SkypeChatDateFormat;
+import skype.SkypeChatFactory;
 import skype.SkypeChatWithBodyParserFactory;
 
 import com.google.inject.Inject;
@@ -15,14 +16,17 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 	
 	private final SkypeChatDateFormat skypeChatDateFormat;
 	private final SkypeChatWithBodyParserFactory skypeChatWithBodyParserFactory;
+	private final SkypeChatFactory skypeChatFactory;
 
 	@Inject
 	public FileDumpContentParserImpl(
 			SkypeChatDateFormat skypeChatDateFormat,
-			SkypeChatWithBodyParserFactory skypeChatWithBodyParserFactory) 
+			SkypeChatWithBodyParserFactory skypeChatWithBodyParserFactory,
+			SkypeChatFactory skypeChatFactory) 
 	{
 		this.skypeChatDateFormat = skypeChatDateFormat;
 		this.skypeChatWithBodyParserFactory = skypeChatWithBodyParserFactory;
+		this.skypeChatFactory = skypeChatFactory;
 	}
 
 	/*
@@ -32,9 +36,11 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 	 */
 	@Override
 	public SkypeChat parse(String fileContents) {
-
 		String[] messageSections = fileContents.split(
 				FileDumpContentBuilder.MESSAGE_TIME_FORMAT_FOR_PARSING, 2);
+		if (messageSections.length < 2) {
+			return skypeChatFactory.produceEmpty();
+		}
 
 		final String[] headersSections = messageSections[0].split("(?=Poster:.*)", 2);
 		final String headerSection = headersSections[0];
