@@ -1,7 +1,5 @@
 package skype;
 
-import gmail.Skype2GmailConfigContents;
-import gmail.Skype2GmailConfigContentsImpl;
 import skype2disk.MessageBodyParserFactory;
 import skype2disk.MessageBodyParserFactoryImpl;
 
@@ -16,6 +14,5 @@ public class Skype2StorageModuleCommons extends AbstractModule {
 		bind(SkypeChatDateFormat.class).to(SkypeChatDateFormatImpl.class).in(Scopes.SINGLETON);
 		bind(SkypeMessageDateFormat.class).to(SkypeMessageDateFormatImpl.class).in(Scopes.SINGLETON);
 		bind(MessageBodyParserFactory.class).to(MessageBodyParserFactoryImpl.class).in(Scopes.SINGLETON);
-		bind(Skype2GmailConfigContents.class).to(Skype2GmailConfigContentsImpl.class).in(Scopes.SINGLETON);
 	}
 }

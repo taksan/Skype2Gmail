@@ -2,23 +2,27 @@ package skype;
 
 import org.apache.log4j.Logger;
 
+import utils.LoggerProvider;
+
 import com.google.inject.Inject;
 
 public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor {
-	private static final Logger LOGGER = Logger.getLogger(SkypeRecorder.class);
 	private final SkypeStorage skypeStorage;
 	private final SkypeApi skypeApi;
+	private final LoggerProvider loggerProvider;
+	private Logger logger;
 
 	@Inject
-	public SkypeRecorder(SkypeApi skypeApi, SkypeStorage skypeStorage) {
+	public SkypeRecorder(SkypeApi skypeApi, SkypeStorage skypeStorage, LoggerProvider loggerProvider) {
 		this.skypeApi = skypeApi;
 		this.skypeStorage = skypeStorage;
+		this.loggerProvider = loggerProvider;
 	}
 
 	@Override
 	public void record() {
 		if (!skypeApi.isRunning()) {
-			LOGGER.error("Skype must be running to run Skype2Gmail!");
+			getLogger().error("Skype must be running to run Skype2Gmail!");
 			return;
 		}
 
@@ -28,7 +32,14 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 			skypeStorage.close();
 		}
 
-		LOGGER.info("Done.");
+		getLogger().info("Done.");
+	}
+
+	private Logger getLogger() {
+		if (logger == null) {
+			this.logger = loggerProvider.getLogger(getClass());
+		}
+		return logger;
 	}
 
 	@Override
@@ -39,7 +50,7 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 			boolean chatIsAlreadyRecorded = previousEntry.getChat()
 					.getBodySignature().equals(skypeChat.getBodySignature());
 			if (chatIsAlreadyRecorded) {
-				LOGGER.info("Entry " + skypeChat.getId() + " already up to date. Skipping.");
+				getLogger().info("Entry " + skypeChat.getId() + " already up to date. Skipping.");
 				return;
 			}
 	
@@ -51,13 +62,13 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 			storageEntry.setLastModificationTime(skypeChat.getLastModificationTime());
 			storageEntry.save();
 	
-			LOGGER.info("Entry " + skypeChat.getId() + " written");
+			getLogger().info("Entry " + skypeChat.getId() + " written");
 		} catch(RuntimeException e) {
 			String message = String.format("An error was found processing message with the following id: %s",
 					skypeChat.getId()
 					);
-			LOGGER.error(message, e);
-			LOGGER.info("Message processing skipped");
+			getLogger().error(message, e);
+			getLogger().info("Message processing skipped");
 		}
 	}
 }

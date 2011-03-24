@@ -1,5 +1,6 @@
 package skype;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -80,6 +81,9 @@ public class SkypeChatImpl implements SkypeChat {
 
 	@Override
 	public Date getLastModificationTime() {
+		if (this.chatMessageList.size() == 0) {
+			return Calendar.getInstance().getTime();
+		}
 		return this.chatMessageList.last().getTime();
 	}
 

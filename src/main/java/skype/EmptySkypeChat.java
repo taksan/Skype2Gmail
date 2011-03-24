@@ -4,9 +4,16 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.apache.log4j.Logger;
+
+import utils.LoggerProvider;
 
 public class EmptySkypeChat implements SkypeChat {
+
+	private final LoggerProvider loggerProvider;
+	
+	public EmptySkypeChat(LoggerProvider loggerProvider) {
+		this.loggerProvider = loggerProvider;
+	}
 
 	@Override
 	public String getBodySignature() {
@@ -46,7 +53,7 @@ public class EmptySkypeChat implements SkypeChat {
 
 	@Override
 	public SkypeChat merge(SkypeChat skypeChat) {
-		Logger.getLogger(SkypeChat.class).info("New chat created");
+		loggerProvider.getLogger(SkypeChat.class).info("New chat created");
 		return skypeChat;
 	}
 

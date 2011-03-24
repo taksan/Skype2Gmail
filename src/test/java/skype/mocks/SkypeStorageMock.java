@@ -8,6 +8,7 @@ import skype.EmptySkypeChat;
 import skype.SkypeChat;
 import skype.SkypeStorage;
 import skype.StorageEntry;
+import utils.SimpleLoggerProvider;
 
 public class SkypeStorageMock implements SkypeStorage {
 	final List<StorageEntryMock> recordedChats = new LinkedList<StorageEntryMock>();
@@ -26,7 +27,7 @@ public class SkypeStorageMock implements SkypeStorage {
 				return storageEntry;
 			}
 		}
-		return new StorageEntryMock(new EmptySkypeChat());
+		return new StorageEntryMock(new EmptySkypeChat(new SimpleLoggerProvider()));
 	}
 	
 	@Override

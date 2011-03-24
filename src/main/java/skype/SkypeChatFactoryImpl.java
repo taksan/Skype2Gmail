@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import utils.DigestProvider;
+import utils.LoggerProvider;
 
 import com.google.inject.Inject;
 import com.skype.Chat;
@@ -17,16 +18,19 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 	private final DigestProvider digestProvider;
 	private final SkypeChatMessageDataFactory skypeChatMessageFactory;
 	private final SkypeUserFactory skypeUserFactory;
+	private final LoggerProvider loggerProvider;
 
 	@Inject
 	public SkypeChatFactoryImpl(
 			DigestProvider digestProvider, 
 			SkypeChatMessageDataFactory skypeChatMessageFactory,
-			SkypeUserFactory skypeUserFactory)
+			SkypeUserFactory skypeUserFactory,
+			LoggerProvider loggerProvider)
 	{
 		this.digestProvider = digestProvider;
 		this.skypeChatMessageFactory = skypeChatMessageFactory;
 		this.skypeUserFactory = skypeUserFactory;
+		this.loggerProvider = loggerProvider;
 	}
 
 	@Override
@@ -102,6 +106,11 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 			throw new IllegalStateException(e);
 		}
 		return chatMessageList;
+	}
+
+	@Override
+	public SkypeChat produceEmpty() {
+		return new EmptySkypeChat(loggerProvider);
 	}
 
 }

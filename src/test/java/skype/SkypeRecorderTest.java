@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import skype.mocks.SkypeApiMock;
 import skype.mocks.SkypeStorageMock;
+import utils.SimpleLoggerProvider;
 
 public class SkypeRecorderTest {
 	
@@ -18,7 +19,7 @@ public class SkypeRecorderTest {
 		
 		SkypeStorage skypeStorage = new SkypeStorageMock();
 		
-		SkypeRecorder skypeRecorder_SUBJECT = new SkypeRecorder(skypeApi, skypeStorage);
+		SkypeRecorder skypeRecorder_SUBJECT = new SkypeRecorder(skypeApi, skypeStorage, new SimpleLoggerProvider());
 		skypeRecorder_SUBJECT.record();
 		
 		final String actualForFirstRecord = skypeStorage.toString().trim();

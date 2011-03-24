@@ -29,6 +29,6 @@ public class CustomHistoryDir implements HistoryDir {
 	}
 	
 	private String getDefaultDumpDirectory() {
-		return this.skype2GmailConfigDir.getSubdirectory("history");
+		return this.skype2GmailConfigDir.getFileNameUnder("history");
 	}
 }

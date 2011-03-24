@@ -23,7 +23,6 @@ public class FileSystemStorageTest {
 		CustomHistoryDir baseDir = new CustomHistoryDir(args, new Skype2GmailConfigDir());
 		try {
 			SkypeChat chat = SkypeApiMock.produceChatMock("#42;$foo","moe","joe");
-			
 			FileSystemStorage fileSystemStorage = new FileSystemStorage(null, mockContentParser(), baseDir);
 			FileSystemStorageEntry newEntry = fileSystemStorage.newEntry(chat);
 			newEntry.store(new SkypeChatSetter(chat));

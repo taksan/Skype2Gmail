@@ -1,8 +1,8 @@
 package skype2gmail;
 
 import gmail.GmailMessage;
-import skype.EmptySkypeChat;
 import skype.SkypeChat;
+import skype.SkypeChatFactory;
 import skype.SkypeStorage;
 import skype.StorageEntry;
 
@@ -14,17 +14,20 @@ public class GmailStorage implements SkypeStorage {
 	private final GmailMessageProvider gmailMessageProvider;
 	private final GmailMessageChatParser gmailMessageChatParser;
 	private final GmailFolderStore rootFolderProvider;
+	private final SkypeChatFactory skypeChatFactory;
 
 	@Inject
 	public GmailStorage(
 			GmailStorageEntryFactory entryFactory,
 			GmailMessageProvider gmailMessageProvider,
 			GmailMessageChatParser gmailMessageChatParser, 
-			GmailFolderStore rootFolderProvider) {
+			GmailFolderStore rootFolderProvider,
+			SkypeChatFactory skypeChatFactory) {
 		this.entryFactory = entryFactory;
 		this.gmailMessageProvider = gmailMessageProvider;
 		this.gmailMessageChatParser = gmailMessageChatParser;
 		this.rootFolderProvider = rootFolderProvider;
+		this.skypeChatFactory = skypeChatFactory;
 	}
 
 	@Override
@@ -42,7 +45,7 @@ public class GmailStorage implements SkypeStorage {
 				return entryFactory.produce(previousChat);
 			}
 		}
-		return entryFactory.produce(new EmptySkypeChat());
+		return entryFactory.produce(this.skypeChatFactory.produceEmpty());
 	}
 
 	private SkypeChat makeSkypeChat(GmailMessage message) {

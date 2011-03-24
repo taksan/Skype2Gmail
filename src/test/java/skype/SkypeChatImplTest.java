@@ -104,4 +104,16 @@ public class SkypeChatImplTest {
 		
 		Assert.assertEquals(expected, fileDumpContentBuilder.getContent());
 	}
+	
+	@Test
+	public void testEmptyChatList() {
+		SkypeChatBuilderHelper chatHelper = new SkypeChatBuilderHelper() {
+
+			@Override
+			public void addChatMessages() {
+			}
+		};
+		SkypeChatImpl emptyChat = chatHelper.getChat("empty", "FOO");
+		emptyChat.getLastModificationTime();
+	}
 }
