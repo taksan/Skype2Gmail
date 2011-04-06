@@ -38,14 +38,13 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 	public SkypeChat parse(String fileContents) {
 		String[] messageSections = fileContents.split(
 				FileDumpContentBuilder.MESSAGE_TIME_FORMAT_FOR_PARSING, 2);
-		if (messageSections.length < 2) {
+		if (fileContents.trim().length() == 0) {
 			return skypeChatFactory.produceEmpty();
 		}
 
 		final String[] headersSections = messageSections[0].split("(?=Poster:.*)", 2);
 		final String headerSection = headersSections[0];
 		final String postersConcatenated = headersSections[1];
-		final String bodySection = messageSections[1];
 
 		final Map<String, String> parsedContents = extractHeaders(headerSection);
 		final String[] posters = postersConcatenated.split("\n");
@@ -59,6 +58,13 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 		final String topic = parsedContents.get("Chat topic");
 		final String parsedSignature = parsedContents.get("Chat Body Signature");
 		
+		final String bodySection;
+		if (messageSections.length < 2) {
+			bodySection = "";
+		}
+		else {
+			bodySection = messageSections[1];
+		}
 		return skypeChatWithBodyParserFactory.produce(
 				chatId, 
 				topic,

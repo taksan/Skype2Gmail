@@ -17,4 +17,6 @@ public interface SkypeChatMessage {
 	Date getTime();
 
 	String messageText(boolean printUser);
+	
+	boolean isMatchingSignature(String signature);
 }

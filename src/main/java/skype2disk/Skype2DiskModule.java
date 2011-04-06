@@ -1,5 +1,7 @@
 package skype2disk;
 
+import com.google.inject.Scopes;
+
 import skype.SkypeApi;
 import skype.SkypeApiImpl;
 import skype.SkypeUserFactory;
@@ -19,6 +21,6 @@ public class Skype2DiskModule extends Skype2DiskModuleCommons {
 		super.configure();
 		bind(SkypeApi.class).to(SkypeApiImpl.class);
 		bind(SkypeUserFactory.class).to(SkypeUserFactoryImpl.class);
-		bind(LoggerProvider.class).to(LoggerProviderImpl.class);
+		bind(LoggerProvider.class).to(LoggerProviderImpl.class).in(Scopes.SINGLETON);
 	}
 }

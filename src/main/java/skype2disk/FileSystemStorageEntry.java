@@ -35,7 +35,7 @@ public class FileSystemStorageEntry implements StorageEntry {
 	public void save() {
 		try {
 			ChatContentBuilder contentBuilder = new FileDumpContentBuilder(chat);
-			FileUtils.writeStringToFile(entryFile, contentBuilder.getContent());
+			FileUtils.writeStringToFile(entryFile, contentBuilder.getContent(),"UTF-8");
 			setLastModificationTimeIfNeeded();
 		} catch (IOException e) {
 			throw new RuntimeException(e);

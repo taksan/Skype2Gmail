@@ -2,6 +2,7 @@ package skype2disk;
 
 import java.util.Date;
 
+import skype.EmptySkypeMessage;
 import skype.SkypeChatMessage;
 import skype.SkypeChatMessageDataFactory;
 import skype.SkypeMessageDateFormat;
@@ -29,6 +30,9 @@ public class MessageBodyParser {
 
 	public TimeSortedMessages parse(String bodySection) {
 		TimeSortedMessages messageList = new TimeSortedMessages();
+		if (bodySection.trim().length() == 0)
+			return messageList;
+		
 		String[] lines = bodySection
 				.split(FileDumpContentBuilder.MESSAGE_TIME_FORMAT_FOR_PARSING);
 
@@ -44,7 +48,7 @@ public class MessageBodyParser {
 					userList, previousPosterDisplay);
 			final String expectedSignature = messageSignatures[messagePosition];
 			messagePosition++;
-			if (!skypeChatMessage.getSignature().equals(expectedSignature)) {
+			if (!skypeChatMessage.isMatchingSignature(expectedSignature)) {
 				throw new SkypeMessageParsingException(
 						"Message signature doesn't match original (expected: %s, actual: %s, message: %s)",
 						expectedSignature, skypeChatMessage.getSignature(),
@@ -58,6 +62,10 @@ public class MessageBodyParser {
 
 	private SkypeChatMessage makeMessage(String line,
 			UsersSortedByUserId userList, String previousPosterDisplay) {
+		if (line.trim().length() == 0) {
+			return EmptySkypeMessage.produce();
+		}
+		
 		String[] lineParts = line.split("(: |\\.{3}( |$)|:$)", 2);
 		String message;
 		if (lineParts.length < 2) {
@@ -68,22 +76,16 @@ public class MessageBodyParser {
 
 		final String[] timeAndUserInfo = lineParts[0].split(" (?=[^0-9])", 2);
 		final String userDisplay;
+		
 		if (timeAndUserInfo.length == 2) {
 			userDisplay = timeAndUserInfo[1];
 		} else {
 			userDisplay = previousPosterDisplay;
 		}
+		
 		final SkypeUser skypeUser = userList.findByDisplayName(userDisplay);
-		if (skypeUser == null) {
-			throw new SkypeMessageParsingException(
-					"User %s was found on chat, but was not among its posters!",
-					userDisplay);
-		}
-
 		final String userId = skypeUser.getUserId();
-
 		Date time = makeTimeFrom(timeAndUserInfo[0]);
-
 		final SkypeChatMessage skypeChatMessage = skypeChatMessageDataFactory
 				.produce(userId, userDisplay, message, time);
 		return skypeChatMessage;

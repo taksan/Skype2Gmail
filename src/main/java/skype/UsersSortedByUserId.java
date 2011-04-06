@@ -19,7 +19,7 @@ public class UsersSortedByUserId extends TreeSet<SkypeUser> {
 				return chatUser;
 			}
 		}
-		return null;
+		return SkypeUserNotFound.produce(userDisplay);
 	}
 
 	private static Comparator<SkypeUser> getUserIdComparator() {
