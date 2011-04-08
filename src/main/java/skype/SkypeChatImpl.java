@@ -130,12 +130,17 @@ public class SkypeChatImpl implements SkypeChat {
 	@Override
 	public SkypeUser getChatAuthor() {
 		UsersSortedByUserId membersIds = this.getPosters();
+		SkypeUser currentUser = null;
 		for (SkypeUser skypeUser : membersIds) {
 			if (skypeUser.isCurrentUser()) {
+				currentUser = skypeUser;
 				continue;
 			}
 			return skypeUser;
 		}
-		throw new IllegalStateException("A chat with a single poster? Impossible!");
+		if (currentUser == null) {
+			throw new IllegalStateException("A chat without users? Impossible!");
+		}
+		return currentUser;
 	}
 }

@@ -27,7 +27,9 @@ public class UsersSortedByUserId extends TreeSet<SkypeUser> {
 
 			@Override
 			public int compare(SkypeUser o1, SkypeUser o2) {
-				return o1.getUserId().compareTo(o2.getUserId());
+				String o1Key = o1.getUserId()+o1.getUserId();
+				String o2Key = o2.getUserId()+o2.getDisplayName();
+				return o1Key.compareTo(o2Key);
 			}
 		};
 	}

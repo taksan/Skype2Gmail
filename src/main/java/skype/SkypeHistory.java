@@ -20,11 +20,17 @@ public class SkypeHistory {
 	 */
 	public static void main(String[] args) {
 
-		if (args.length > 0 && args[0].equals("disk")) {
-			String [] argsForDisk = Arrays.copyOfRange(args, 1, args.length);
-			skype2disk(argsForDisk);
-		} else {
+		if (args.length > 0 && args[0].equals("mail")) {
 			skype2gmail();
+		} else {
+			final String [] argsForDisk;
+			if (args.length == 0) {
+				argsForDisk = new String[0];
+			}
+			else {
+				argsForDisk = Arrays.copyOfRange(args, 1, args.length);
+			}
+			skype2disk(argsForDisk);
 		}
 	}
 

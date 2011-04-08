@@ -11,6 +11,7 @@ import skype2disk.MessageBodyParserFactory;
 import skype2disk.SkypeMessageParsingException;
 
 public class SkypeChatWithBodyParserFactory {
+	private static final String VALID_POSTER_PATTERN = "Poster: id=([a-z0-9._-]*); display=(.*)";
 	private final SkypeChatFactoryImpl skypeChatFactoryImpl;
 	private final MessageBodyParserFactory messageBodyParserFactory;
 	private final SkypeUserFactory skypeUserFactory;
@@ -50,8 +51,7 @@ public class SkypeChatWithBodyParserFactory {
 	}
 	
 	private UsersSortedByUserId makeUserList(final String[] posters) {
-		final Pattern pattern = Pattern
-				.compile("Poster: id=([a-z0-9._]*); display=(.*)");
+		final Pattern pattern = Pattern.compile(VALID_POSTER_PATTERN);
 
 		UsersSortedByUserId skypeUserList = new UsersSortedByUserId();
 		for (String posterLine : posters) {

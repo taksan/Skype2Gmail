@@ -32,7 +32,7 @@ public class FileDumpContentParserTest {
 				addMessage("joe", "", 3, 21, 15, 15, 19);
 				addMessage("moe", "Howdy\n	I'm doing fine", 3, 21, 15, 24, 18);
 				addMessage("moe", "\n[2011/03/16 11:49:10] bla said", 3, 21, 15, 24, 19);
-				addMessage("joe", "A day has passed", 3, 22, 15, 24, 20);
+				addMessage("joe", "A day has passed\n", 3, 22, 15, 24, 20);
 			}
 		};
 
@@ -51,10 +51,10 @@ public class FileDumpContentParserTest {
 		Assert.assertEquals(7, chatMessages.size());
 		SkypeChatMessage lastMessage = chatMessages.last();
 
-		Assert.assertEquals("501fb6ccae7c8806d56daa1ee89ba949", lastMessage.getSignature());
+		Assert.assertEquals("129ba312ad50d89e06e5b6c71dbf024a", lastMessage.getSignature());
 		Assert.assertEquals("joe", lastMessage.getSenderId());
 		Assert.assertEquals("JOE", lastMessage.getSenderDisplayname());
-		Assert.assertEquals("A day has passed", lastMessage.getMessageBody());
+		Assert.assertEquals("A day has passed\n", lastMessage.getMessageBody());
 	}
 	
 	@Test

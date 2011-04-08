@@ -73,7 +73,7 @@ public class FileSystemStorage implements SkypeStorage {
 
 	private SkypeChat makeEntryFromFile(File previousFile) {
 		try {
-			final String fileContents = FileUtils.readFileToString(previousFile);
+			final String fileContents = FileUtils.readFileToString(previousFile,"UTF-8");
 			return fileDumpContentParser.parse(fileContents);
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
