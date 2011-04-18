@@ -9,6 +9,7 @@ import skype2gmail.Skype2GmailModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.skype.SkypeException;
+import com.skype.connector.UnsupportedArchitectureException;
 
 public class SkypeHistory {
 
@@ -19,19 +20,37 @@ public class SkypeHistory {
 	 * @throws InterruptedException
 	 */
 	public static void main(String[] args) {
-
-		if (args.length > 0 && args[0].equals("mail")) {
-			skype2gmail();
-		} else {
-			final String [] argsForDisk;
-			if (args.length == 0) {
-				argsForDisk = new String[0];
+		try {
+			if (args.length > 0 && args[0].equals("mail")) {
+				skype2gmail();
+			} else {
+				final String [] argsForDisk;
+				if (args.length == 0) {
+					argsForDisk = new String[0];
+				}
+				else {
+					argsForDisk = Arrays.copyOfRange(args, 1, args.length);
+				}
+				skype2disk(argsForDisk);
+			}
+		}
+		catch(IllegalStateException ex) {
+			Throwable cause = getRootCause(ex);
+			if (cause != null && cause instanceof UnsupportedArchitectureException) {
+				System.out.println(cause.getMessage());
 			}
 			else {
-				argsForDisk = Arrays.copyOfRange(args, 1, args.length);
+				System.out.println(cause.getClass().getName());
+				ex.printStackTrace();
 			}
-			skype2disk(argsForDisk);
 		}
+	}
+
+	private static Throwable getRootCause(Throwable ex) {
+		while  (ex.getCause() != null) {
+			ex = ex.getCause();
+		}
+		return ex;
 	}
 
 	private static void skype2gmail() {
