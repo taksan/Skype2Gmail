@@ -17,6 +17,7 @@ import com.skype.Chat;
 import com.skype.Profile;
 import com.skype.Skype;
 import com.skype.SkypeException;
+import com.skype.connector.Connector;
 
 public class SkypeApiImpl implements SkypeApi {
 
@@ -29,6 +30,7 @@ public class SkypeApiImpl implements SkypeApi {
 	@Inject
 	public SkypeApiImpl(SkypeChatFactory chatFactory) {
 		this.chatFactory = chatFactory;
+		Connector.getInstance().setApplicationName("Skype2Gmail");
 	}
 
 	@Override
