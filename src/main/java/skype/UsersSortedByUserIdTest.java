@@ -18,5 +18,15 @@ public class UsersSortedByUserIdTest {
 		members.add(skypeUser3);		
 		
 		Assert.assertEquals(2, members.size());
+		
+		UsersSortedByUserId members2 = new UsersSortedByUserId();
+		SkypeUserImpl skypeUser4 = new SkypeUserImpl("joe", "JOE", false);
+		members2.add(skypeUser4);		
+		SkypeUserImpl skypeUser5 = new SkypeUserImpl("boe", "BOE", false);
+		members2.add(skypeUser5);
+		
+		members.addAll(members2);
+		
+		Assert.assertEquals(3, members.size());
 	}
 }

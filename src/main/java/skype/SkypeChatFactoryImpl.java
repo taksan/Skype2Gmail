@@ -1,8 +1,6 @@
 package skype;
 
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import utils.DigestProvider;
 import utils.LoggerProvider;
@@ -51,15 +49,17 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 				userList, messageList);
 	}
 
-	private UsersSortedByUserId populateUserList(Chat chat,
+	UsersSortedByUserId populateUserList(Chat chat,
 			TimeSortedMessages chatMessages) throws SkypeException {
 		UsersSortedByUserId chatUsers = new UsersSortedByUserId();
-		Map<String, String> users = extractPostersFromMessages(chatMessages);
-		for (String userId : users.keySet()) {
-			SkypeUserImpl skypeUser = (SkypeUserImpl) skypeUserFactory.produce(
-					userId, users.get(userId));
-			chatUsers.add(skypeUser);
-		}
+		addUsersFromMessages(chatMessages, chatUsers);
+		addUsersFromChatPosters(chat, chatUsers);
+
+		return chatUsers;
+	}
+
+	private void addUsersFromChatPosters(Chat chat,
+			UsersSortedByUserId chatUsers) throws SkypeException {
 		User[] allMembers = chat.getAllMembers();
 		for (User user : allMembers) {
 			String userId = user.getId();
@@ -69,18 +69,14 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 					userId, fullName);
 			chatUsers.add(skypeUser);
 		}
-
-		return chatUsers;
 	}
 
-	private Map<String, String> extractPostersFromMessages(
-			TimeSortedMessages chatMessages) {
-		Map<String, String> users = new LinkedHashMap<String, String>();
+	private void addUsersFromMessages(TimeSortedMessages chatMessages, UsersSortedByUserId chatUsers) {
 		for (SkypeChatMessage skypeChatMessage : chatMessages) {
-			users.put(skypeChatMessage.getSenderId(),
-					skypeChatMessage.getSenderDisplayname());
+			SkypeUserImpl skypeUser = (SkypeUserImpl) skypeUserFactory.produce(
+					skypeChatMessage.getSenderId(), skypeChatMessage.getSenderDisplayname());
+			chatUsers.add(skypeUser);
 		}
-		return users;
 	}
 
 	private TimeSortedMessages populateChatList(Chat chat)

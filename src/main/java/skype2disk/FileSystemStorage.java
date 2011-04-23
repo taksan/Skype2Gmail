@@ -18,11 +18,11 @@ import com.google.inject.Inject;
 
 public class FileSystemStorage implements SkypeStorage {
 
-	private Logger LOGGER;
 	private final File historyDir;
 	private final FileDumpContentParser fileDumpContentParser;
 	private final SkypeChatFactory skypeChatFactory;
 	private final LoggerProvider loggerProvider;
+	private Logger LOGGER;
 
 	@Inject
 	public FileSystemStorage(SkypeChatFactory skypeChatFactory, 
@@ -35,17 +35,12 @@ public class FileSystemStorage implements SkypeStorage {
 		historyDir = baseDir.getHistoryDir();
 	}
 	
-	public void configureLogger() {
-		if (LOGGER != null) {
-			return;
-		}
+	public Logger getLogger() {
+		if (LOGGER != null)
+			return LOGGER;
 		LOGGER = loggerProvider.getLogger(FileSystemStorage.class);
-		
-		try {
-			LOGGER.info("Will write messages to " + historyDir.getCanonicalPath());
-		} catch (IOException e) {
-			throw new ApplicationException(e);
-		}
+		return LOGGER;
+
 	}
 	
 	public FileSystemStorage(SkypeChatFactory skypeChatFactory, 
@@ -56,22 +51,18 @@ public class FileSystemStorage implements SkypeStorage {
 
 	@Override
 	public FileSystemStorageEntry newEntry(SkypeChat chat) {
-		configureLogger();
-		
 		return new FileSystemStorageEntry(chat, historyDir);
 	}
 
 	@Override
 	public FileSystemStorageEntry retrievePreviousEntryFor(SkypeChat skypeChat) {
-		configureLogger();
-		
 		final String entryName = FileSystemStorageEntry.getFilenameFor(skypeChat.getId());
 		
 		File previousFile = new File(historyDir, entryName);
 		if (!previousFile.exists()) {
 			return new FileSystemStorageEntry(skypeChatFactory.produceEmpty(), historyDir);
 		}
-		LOGGER.info("Found previous chat file: " + entryName);
+		getLogger().info("Found previous chat file: " + entryName);
 		return new FileSystemStorageEntry(makeEntryFromFile(previousFile), historyDir);
 	}
 
@@ -86,7 +77,11 @@ public class FileSystemStorage implements SkypeStorage {
 
 	@Override
 	public void close() {
-		// nothing to do here
+		try {
+			getLogger().info("Messages written to " + historyDir.getCanonicalPath());
+		} catch (IOException e) {
+			throw new ApplicationException(e);
+		}
 	}
 
 }

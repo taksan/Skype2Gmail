@@ -11,6 +11,7 @@ import java.util.concurrent.TimeoutException;
 import org.apache.log4j.Logger;
 
 import utils.DaemonThreadFactory;
+import utils.LoggerProvider;
 
 import com.google.inject.Inject;
 import com.skype.Chat;
@@ -21,15 +22,16 @@ import com.skype.connector.Connector;
 
 public class SkypeApiImpl implements SkypeApi {
 
-	private static final Logger LOGGER = Logger.getLogger(SkypeApiImpl.class);
 	private final SkypeChatFactory chatFactory;
 	private Chat[] allChats;
 	private Profile profile;
 	private SkypeUser currentUser;
+	private final LoggerProvider loggerProvider;
 
 	@Inject
-	public SkypeApiImpl(SkypeChatFactory chatFactory) {
+	public SkypeApiImpl(SkypeChatFactory chatFactory, LoggerProvider loggerProvider) {
 		this.chatFactory = chatFactory;
+		this.loggerProvider = loggerProvider;
 		Connector.getInstance().setApplicationName("Skype2Gmail");
 	}
 
@@ -51,7 +53,8 @@ public class SkypeApiImpl implements SkypeApi {
 			}
 		};
 		Chat[] allChatsArray = executeWithTimeout(getAllChatsCallable);
-		LOGGER.info(String.format("Found %d chats.", allChatsArray.length));
+		Logger logger = loggerProvider.getLogger(getClass());
+		logger.info((String.format("Found %d chats.", allChatsArray.length)));
 		
 		for (Chat chat : allChatsArray) {
 			final SkypeChat skypeChat = chatFactory.produce(chat);

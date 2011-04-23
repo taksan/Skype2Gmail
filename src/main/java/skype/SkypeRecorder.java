@@ -33,7 +33,6 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 				skypeApi.accept(this);
 			}
 			catch(ApplicationException e) {
-				System.out.println(e.getMessage());
 				getLogger().error(e);
 			}
 		} finally {
@@ -55,8 +54,11 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 	@Override
 	public void visit(SkypeChat skypeChat) {
 		try {
-			final StorageEntry previousEntry = skypeStorage
-					.retrievePreviousEntryFor(skypeChat);
+			if (skypeChat.getChatMessages().size() == 0) {
+				getLogger().info("Entry " + skypeChat.getId() + " skipped because it has no messages.");
+				return;
+			}
+			final StorageEntry previousEntry = skypeStorage.retrievePreviousEntryFor(skypeChat);
 			boolean chatIsAlreadyRecorded = previousEntry.getChat()
 					.getBodySignature().equals(skypeChat.getBodySignature());
 			if (chatIsAlreadyRecorded) {
