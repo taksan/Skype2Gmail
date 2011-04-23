@@ -21,7 +21,7 @@ public class SkypeMessageDateFormatImpl implements SkypeMessageDateFormat {
 		try {
 			return simpleDateFormat.parse(messageTimeText);
 		} catch (ParseException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		}
 	}
 }

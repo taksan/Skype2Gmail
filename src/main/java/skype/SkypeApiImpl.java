@@ -38,7 +38,7 @@ public class SkypeApiImpl implements SkypeApi {
 		try {
 			return Skype.isRunning();
 		} catch (SkypeException e) {
-			throw new IllegalStateException(e);
+			throw new ApplicationException(e);
 		}
 	}
 
@@ -106,11 +106,11 @@ public class SkypeApiImpl implements SkypeApi {
 			result = getChatsTask.get(1L, TimeUnit.MINUTES);
 			executor.shutdown();
 		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
+			throw new ApplicationException(e);
 		} catch (ExecutionException e) {
-			throw new RuntimeException(e.getCause());
+			throw new ApplicationException(e);
 		} catch (TimeoutException e) {
-			throw new RuntimeException(e);
+			throw new ApplicationException(e);
 		}
 		return result;
 	}

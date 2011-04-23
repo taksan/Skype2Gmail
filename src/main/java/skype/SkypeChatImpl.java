@@ -149,7 +149,7 @@ public class SkypeChatImpl implements SkypeChat {
 			return skypeUser;
 		}
 		if (currentUser == null) {
-			throw new IllegalStateException("A chat without users? Impossible!");
+			throw new MessageProcessingException("A chat without users? Impossible!");
 		}
 		return currentUser;
 	}

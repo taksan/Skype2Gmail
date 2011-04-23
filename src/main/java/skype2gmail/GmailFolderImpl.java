@@ -10,6 +10,8 @@ import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 
+import skype.ApplicationException;
+
 import com.sun.mail.imap.IMAPMessage;
 
 public class GmailFolderImpl implements GmailFolder {
@@ -29,7 +31,7 @@ public class GmailFolderImpl implements GmailFolder {
 			root.appendMessages(msgs);
 			replaceOldMessage(gmailMessage);
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new ApplicationException(e);
 		}
 	}
 	@Override
@@ -45,7 +47,7 @@ public class GmailFolderImpl implements GmailFolder {
 			retrievedMessages = gmailMessages.values().toArray(new GmailMessage[0]);
 			return retrievedMessages;
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new ApplicationException(e);
 		}
 	}
 
@@ -70,7 +72,7 @@ public class GmailFolderImpl implements GmailFolder {
 			boolean deleteFlaggedMessages = true;
 			root.close(deleteFlaggedMessages);
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new ApplicationException(e);
 		}
 	}
 }

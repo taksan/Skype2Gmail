@@ -8,6 +8,8 @@ import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Store;
 
+import skype.ApplicationException;
+
 import com.google.inject.Inject;
 
 public class GmailFolderStoreImpl implements GmailFolderStore {
@@ -55,9 +57,9 @@ public class GmailFolderStoreImpl implements GmailFolderStore {
 			
 			return new GmailFolderImpl(root);
 		} catch (NoSuchProviderException e) {
-			throw new RuntimeException(e);
+			throw new ApplicationException(e);
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new ApplicationException(e);
 		}
 	}
 
@@ -77,7 +79,7 @@ public class GmailFolderStoreImpl implements GmailFolderStore {
 		try {
 			store.close();
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new ApplicationException(e);
 		}
 	}
 }

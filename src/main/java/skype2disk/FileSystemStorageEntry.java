@@ -8,6 +8,7 @@ import org.apache.commons.io.FileUtils;
 
 import skype.ChatContentBuilder;
 import skype.SkypeChat;
+import skype.MessageProcessingException;
 import skype.SkypeChatSetter;
 import skype.StorageEntry;
 
@@ -38,7 +39,7 @@ public class FileSystemStorageEntry implements StorageEntry {
 			FileUtils.writeStringToFile(entryFile, contentBuilder.getContent(),"UTF-8");
 			setLastModificationTimeIfNeeded();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		}
 	}
 

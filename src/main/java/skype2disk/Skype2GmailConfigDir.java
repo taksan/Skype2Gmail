@@ -3,6 +3,8 @@ package skype2disk;
 import java.io.File;
 import java.io.IOException;
 
+import skype.ApplicationException;
+
 public class Skype2GmailConfigDir {
 	
 	private final File configDir;
@@ -16,7 +18,7 @@ public class Skype2GmailConfigDir {
 		try {
 			return getFileUnder(sub).getCanonicalPath();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new ApplicationException(e);
 		}
 	}
 

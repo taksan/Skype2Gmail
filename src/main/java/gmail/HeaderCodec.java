@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 
 import javax.mail.internet.MimeUtility;
 
+import skype.MessageProcessingException;
+
 public class HeaderCodec {
 
 	public String decodeText(String aHeader) {
@@ -12,7 +14,7 @@ public class HeaderCodec {
 			String decodedWithoutMailLineBreaks = decodedText.replaceAll("(?<!\\\\)[\r\n]", "");
 			return unescape(decodedWithoutMailLineBreaks);
 		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		}
 	}
 	
@@ -20,7 +22,7 @@ public class HeaderCodec {
 		try {
 			return escape(MimeUtility.encodeText(value));
 		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		}
 	}
 

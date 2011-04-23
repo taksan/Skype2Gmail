@@ -4,11 +4,10 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.inject.Inject;
-
 import skype2disk.MessageBodyParser;
 import skype2disk.MessageBodyParserFactory;
-import skype2disk.SkypeMessageParsingException;
+
+import com.google.inject.Inject;
 
 public class SkypeChatWithBodyParserFactory {
 	private static final String VALID_POSTER_PATTERN = "Poster: id=([a-z0-9._-]*); display=(.*)";

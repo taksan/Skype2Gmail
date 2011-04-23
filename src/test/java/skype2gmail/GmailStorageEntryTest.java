@@ -3,13 +3,11 @@ package skype2gmail;
 import gmail.GmailMessage;
 
 import java.io.IOException;
-import java.util.Collections;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage.RecipientType;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;

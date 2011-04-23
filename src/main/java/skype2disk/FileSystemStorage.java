@@ -6,8 +6,10 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
+import skype.ApplicationException;
 import skype.SkypeChat;
 import skype.SkypeChatFactory;
+import skype.MessageProcessingException;
 import skype.SkypeStorage;
 import utils.LoggerProvider;
 import utils.SimpleLoggerProvider;
@@ -42,7 +44,7 @@ public class FileSystemStorage implements SkypeStorage {
 		try {
 			LOGGER.info("Will write messages to " + historyDir.getCanonicalPath());
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new ApplicationException(e);
 		}
 	}
 	
@@ -78,7 +80,7 @@ public class FileSystemStorage implements SkypeStorage {
 			final String fileContents = FileUtils.readFileToString(previousFile,"UTF-8");
 			return fileDumpContentParser.parse(fileContents);
 		} catch (IOException e) {
-			throw new IllegalStateException(e);
+			throw new MessageProcessingException(e);
 		}
 	}
 

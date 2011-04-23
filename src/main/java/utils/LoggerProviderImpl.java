@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.RollingFileAppender;
 import org.apache.log4j.SimpleLayout;
 
+import skype.ApplicationException;
 import skype2disk.Skype2GmailConfigDir;
 
 import com.google.inject.Inject;
@@ -45,7 +46,7 @@ public class LoggerProviderImpl implements LoggerProvider {
 			File logFile = new File(logDirectory, "sync.log");
 			return logFile.getCanonicalPath();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new ApplicationException(e);
 		}
 	}
 

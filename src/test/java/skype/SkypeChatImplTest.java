@@ -9,7 +9,6 @@ import org.junit.Test;
 import skype2disk.FileDumpContentBuilder;
 import testutils.DigestProviderForTestFactory;
 import testutils.SkypeChatBuilderHelper;
-import testutils.SkypeChatHelper;
 import utils.DigestProvider;
 
 public class SkypeChatImplTest {
@@ -22,10 +21,6 @@ public class SkypeChatImplTest {
 				addMessage("goofoo", "what's up", 3, 21, 15, 14, 18);
 				addMessage("camaron.goo", "Howdy\n	I'm doing fine", 3, 21, 15, 18, 16);
 				addMessage("goofoo", "A day has passed", 3, 22, 15, 14, 24);
-			}
-			
-			protected UsersSortedByUserId setupPosters() {
-				return SkypeChatHelper.makeUserList(new String[] { "goofoo", "camaron.goo" });
 			}
 		};
 		

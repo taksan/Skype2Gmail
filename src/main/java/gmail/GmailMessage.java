@@ -13,6 +13,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
 
+import skype.MessageProcessingException;
 import skype.SkypeUser;
 
 public class GmailMessage {
@@ -40,7 +41,7 @@ public class GmailMessage {
 		try {
 			mimeMessage.setFrom(new InternetAddress(chatAuthor));
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		}
 	}
 
@@ -48,7 +49,7 @@ public class GmailMessage {
 		try {
 			mimeMessage.setSubject(topic);
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		}
 	}
 
@@ -57,9 +58,9 @@ public class GmailMessage {
 			mimeMessage.addRecipient(RecipientType.TO, 
 					new InternetAddress(skypeUser.getMailAddress()));
 		} catch (AddressException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		}
 	}
 
@@ -67,7 +68,7 @@ public class GmailMessage {
 		try {
 			mimeMessage.setText(messageBody, "UTF-8");
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		}
 	}
 
@@ -83,7 +84,7 @@ public class GmailMessage {
 		try {
 			return this.mimeMessage.getSubject();
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		}
 	}
 
@@ -91,9 +92,9 @@ public class GmailMessage {
 		try {
 			return (String) mimeMessage.getContent();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		}
 	}
 
@@ -113,7 +114,7 @@ public class GmailMessage {
 		try {
 			return mimeMessage.getSentDate();
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		}
 	}
 
@@ -134,7 +135,7 @@ public class GmailMessage {
 		try {
 			return (InternetAddress[]) mimeMessage.getFrom();
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		}
 	}
 
@@ -142,7 +143,7 @@ public class GmailMessage {
 		try {
 			return (InternetAddress[]) mimeMessage.getRecipients(to);
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		}
 	}
 
@@ -150,7 +151,7 @@ public class GmailMessage {
 		try {
 			mimeMessage.setHeader("Date", timeAsString);
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		}
 	}
 
@@ -165,7 +166,7 @@ public class GmailMessage {
 		try {
 			mimeMessage.setFlag(Flags.Flag.DELETED, true);
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		}
 	}
 
@@ -173,7 +174,7 @@ public class GmailMessage {
 		try {
 			mimeMessage.setHeader(headerField, headerCodec.encodeText(value));
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		} 
 	}
 
@@ -181,7 +182,7 @@ public class GmailMessage {
 		try {
 			mimeMessage.addHeader(headerField, headerCodec.encodeText(value));
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		} 
 	}
 
@@ -195,7 +196,7 @@ public class GmailMessage {
 
 			return decodedHeaders.toArray(new String[0]);
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		} 
 	}
 
@@ -203,7 +204,7 @@ public class GmailMessage {
 		try {
 			mimeMessage.setSentDate(time);
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		}
 	}
 }

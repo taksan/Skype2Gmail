@@ -6,6 +6,7 @@ import skype.EmptySkypeMessage;
 import skype.SkypeChatMessage;
 import skype.SkypeChatMessageDataFactory;
 import skype.SkypeMessageDateFormat;
+import skype.SkypeMessageParsingException;
 import skype.SkypeUser;
 import skype.TimeSortedMessages;
 import skype.UsersSortedByUserId;

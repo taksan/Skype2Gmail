@@ -23,7 +23,7 @@ public class SkypeChatMessageDataFactory implements SkypeChatMessageFactory {
 		try {
 			return new SkypeChatMessageData(digestProvider, chatMessage);
 		} catch (SkypeException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		}
 	}
 

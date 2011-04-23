@@ -67,8 +67,9 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 			storageEntry.save();
 	
 			getLogger().info("Entry " + skypeChat.getId() + " written");
-		} catch(RuntimeException e) {
-			String message = String.format("An error was found processing message with the following id: %s",
+		} catch(MessageProcessingException e) {
+			String message = String.format(
+					"An error was found processing message with the following id: %s",
 					skypeChat.getId()
 					);
 			getLogger().error(message, e);

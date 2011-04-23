@@ -15,12 +15,12 @@ public class UserHomeConfigProvider implements UserAuthProvider {
 
 	@Override
 	public String getUser() {
-		return skype2GmailConfigContents.getProperty("gmail.user");
+		return skype2GmailConfigContents.getProperty("gmail.user", true);
 	}
 
 	@Override
 	public String getPassword() {
-		return skype2GmailConfigContents.getProperty("gmail.password");
+		return skype2GmailConfigContents.getProperty("gmail.password", true);
 	}
 
 }

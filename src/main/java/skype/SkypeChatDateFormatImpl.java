@@ -21,7 +21,7 @@ public class SkypeChatDateFormatImpl implements SkypeChatDateFormat {
 		try {
 			return dateFormat.parse(time);
 		} catch (ParseException e) {
-			throw new RuntimeException(e);
+			throw new MessageProcessingException(e);
 		}
 	}
 }
