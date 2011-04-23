@@ -29,7 +29,13 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 
 		long startTime = System.currentTimeMillis();
 		try {
-			skypeApi.accept(this);
+			try {
+				skypeApi.accept(this);
+			}
+			catch(ApplicationException e) {
+				System.out.println(e.getMessage());
+				getLogger().error(e);
+			}
 		} finally {
 			skypeStorage.close();
 		}
