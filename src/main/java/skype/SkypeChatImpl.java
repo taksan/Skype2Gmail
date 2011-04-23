@@ -129,9 +129,19 @@ public class SkypeChatImpl implements SkypeChat {
 
 	@Override
 	public SkypeUser getChatAuthor() {
-		UsersSortedByUserId membersIds = this.getPosters();
+		UsersSortedByUserId members = this.getPosters();
+		SkypeUser aUser = null;
+		for(SkypeChatMessage aMessage: this.getChatMessages()) {
+			aUser = members.findByDisplayName(aMessage.getSenderDisplayname());
+			if (!aUser.isCurrentUser()) {
+				return aUser;
+			}
+		}
+		if (aUser != null)
+			return aUser;
+		
 		SkypeUser currentUser = null;
-		for (SkypeUser skypeUser : membersIds) {
+		for (SkypeUser skypeUser : members) {
 			if (skypeUser.isCurrentUser()) {
 				currentUser = skypeUser;
 				continue;

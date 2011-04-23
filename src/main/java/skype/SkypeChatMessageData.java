@@ -32,6 +32,9 @@ public class SkypeChatMessageData implements SkypeChatMessage {
 		
 		final String encodingData = userId+"/"+message.replaceAll("[\r]", "");
 		this.msgId = digestProvider.encode(encodingData);
+		if (userDisplay.equals("")) {
+			System.out.println("Empty name?");
+		}
 		this.userDisplay = userDisplay;
 		this.message = message;
 		this.date = time;

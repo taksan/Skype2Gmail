@@ -10,9 +10,11 @@ public class SkypeUserImpl implements SkypeUser {
 
 	public SkypeUserImpl(String id, String displayName, boolean isCurrentUser) {
 		this.userId = id;
-		this.displayName = displayName;
 		this.isCurrentUser = isCurrentUser;
-		
+		if (displayName == null || displayName.trim().equals(""))
+			this.displayName = id;
+		else
+			this.displayName = displayName;
 	}
 
 	@Override

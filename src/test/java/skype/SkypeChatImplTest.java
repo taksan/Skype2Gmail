@@ -116,4 +116,88 @@ public class SkypeChatImplTest {
 		SkypeChatImpl emptyChat = chatHelper.getChat("empty", "FOO");
 		emptyChat.getLastModificationTime();
 	}
+	
+	@Test
+	public void testGetAuthor() {
+		SkypeChatBuilderHelper chatHelper = new SkypeChatBuilderHelper() {
+			
+			@Override
+			public void addChatMessages() {
+				addMessage("me", "myself", "what's up", 3, 21, 15, 14, 18);
+				addMessage("him", "himself", "Howdy\n	I'm doing fine", 3, 21, 15, 18, 16);
+			}
+			
+			protected UsersSortedByUserId addPosters() {
+				final UsersSortedByUserId userIds = new UsersSortedByUserId();
+				userIds.add(new SkypeUserImpl("me", "myself", true));
+				userIds.add(new SkypeUserImpl("him", "himself", false));
+				
+				return userIds;
+			}
+		};
+		
+		final SkypeChatImpl skypeChatImpl = makeSubject(chatHelper);
+		Assert.assertEquals("him", skypeChatImpl.getChatAuthor().getUserId());
+	}
+	
+	@Test
+	public void testGetAuthorWithSingle() {
+		SkypeChatBuilderHelper chatHelper = new SkypeChatBuilderHelper() {
+			
+			@Override
+			public void addChatMessages() {
+				addMessage("me", "myself", "what's up", 3, 21, 15, 14, 18);
+			}
+			
+			protected UsersSortedByUserId addPosters() {
+				final UsersSortedByUserId userIds = new UsersSortedByUserId();
+				userIds.add(new SkypeUserImpl("me", "myself", true));
+				
+				return userIds;
+			}
+		};
+		
+		final SkypeChatImpl skypeChatImpl = makeSubject(chatHelper);
+		Assert.assertEquals("me", skypeChatImpl.getChatAuthor().getUserId());
+	}
+	
+	@Test
+	public void testGetAuthorWithThree() {
+		SkypeChatBuilderHelper chatHelper = new SkypeChatBuilderHelper() {
+			
+			@Override
+			public void addChatMessages() {
+				addMessage("him", "himself", "Howdy\n	I'm doing fine", 3, 21, 15, 18, 16);
+				addMessage("her", "herself", "Howdy\n	I'm doing fine", 3, 21, 15, 18, 16);
+				addMessage("me", "myself", "what's up", 3, 21, 15, 14, 18);
+			}
+			
+			protected UsersSortedByUserId addPosters() {
+				final UsersSortedByUserId userIds = new UsersSortedByUserId();
+				userIds.add(new SkypeUserImpl("her", "herself", false));
+				userIds.add(new SkypeUserImpl("me", "myself", true));
+				userIds.add(new SkypeUserImpl("him", "himself", false));
+				
+				return userIds;
+			}
+		};
+		
+		final SkypeChatImpl skypeChatImpl = makeSubject(chatHelper);
+		Assert.assertEquals("him", skypeChatImpl.getChatAuthor().getUserId());
+	}
+
+	private SkypeChatImpl makeSubject(SkypeChatBuilderHelper chatHelper) {
+		final String chatId = "#me/him";
+		final SkypeChat chat = chatHelper.getChat(chatId, "FOO");
+		
+		final DigestProvider digestProvider = DigestProviderForTestFactory.getInstance();
+		final SkypeChatImpl skypeChatImpl = new SkypeChatImpl(
+				digestProvider, 
+				chat.getId(), 
+				chat.getTime(), 
+				chat.getTopic(), 
+				chat.getPosters(), 
+				chat.getChatMessages());
+		return skypeChatImpl;
+	}
 }

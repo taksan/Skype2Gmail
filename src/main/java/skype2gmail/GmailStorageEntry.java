@@ -4,6 +4,8 @@ import gmail.GmailFolder;
 import gmail.GmailMessage;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.mail.Session;
 
@@ -20,10 +22,11 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 
 	private final SkypeChat chat;
 	private final Session session;
-	private GmailMessage gmailMessage;
 	private final SkypeChatDateFormat skypeChatDateFormat;
 	private final GmailFolderStore rootFolderProvider;
 	private final MessageBodyBuilder messageBodyBuilder = new MessageBodyBuilder();
+	private GmailMessage gmailMessage;
+	private SkypeUser chatAuthor;
 
 	public GmailStorageEntry(
 			SessionProvider sessionProvider,
@@ -72,6 +75,7 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 
 	@Override
 	public void visitChatAuthor(SkypeUser chatAuthor) {
+		this.chatAuthor = chatAuthor;
 		String fromUser = String.format("%s <%s>", chatAuthor.getDisplayName(), chatAuthor.getUserId());
 		gmailMessage.setFrom(fromUser);
 	}
@@ -101,16 +105,18 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 		gmailMessage.setSubject(topic);
 	}
 
-	private boolean wasSenderVisited = false;
+	private Set<String> visitedPosters = new HashSet<String>();
 	@Override
 	public void visitPoster(SkypeUser skypeUser) {
 		gmailMessage.addPoster(skypeUser);
-		if (!wasSenderVisited && !skypeUser.isCurrentUser()) {
-			wasSenderVisited = true;
+		if (visitedPosters.contains(skypeUser.getUserId())) {
+			return;
 		}
-		else {
-			gmailMessage.addRecipient(skypeUser);
+		visitedPosters.add(skypeUser.getUserId());
+		if (this.chatAuthor.getUserId().equals(skypeUser.getUserId())) {
+			return;
 		}
+		gmailMessage.addRecipient(skypeUser);
 	}
 
 	@Override

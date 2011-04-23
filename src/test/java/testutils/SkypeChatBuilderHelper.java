@@ -7,6 +7,7 @@ import skype.SkypeChatImpl;
 import skype.SkypeChatMessage;
 import skype.SkypeChatMessageDataFactory;
 import skype.SkypeUserFactory;
+import skype.SkypeUserImpl;
 import skype.TimeSortedMessages;
 import skype.UsersSortedByUserId;
 import skype.mocks.SkypeUserFactoryMock;
@@ -29,22 +30,33 @@ abstract public class SkypeChatBuilderHelper {
 	public abstract void addChatMessages();
 
 	public SkypeChatImpl getChat(String chatId, String topic) {
-		UsersSortedByUserId members = setupPosters();
 		addChatMessages();
+		UsersSortedByUserId members = addPosters();
 
 		Date chatTime = DateHelper.makeDate(2011, 3, 21, 15, 0, 0);
 		return (SkypeChatImpl) skypeChatFactoryImpl.produce(chatId, chatTime, topic, members, messageList);
 	}
-	
-	protected UsersSortedByUserId setupPosters() {
-		return SkypeChatHelper.makeUserList(new String[] { "moe", "joe" });
+	protected UsersSortedByUserId addPosters() {
+		final UsersSortedByUserId userIds = new UsersSortedByUserId();
+		boolean isCurrentUser = true;
+		for (SkypeChatMessage msg : messageList) {
+			userIds.add(new SkypeUserImpl(msg.getSenderId(), msg.getSenderDisplayname(), isCurrentUser));
+			isCurrentUser = false;
+		}
+		return userIds;
 	}
-
-
+	
 	public void addMessage(String userId, String message, int month,int day, int hour, int minute, int second) {
 		Date firstMessageTime = DateHelper.makeDate(2011, month, day, hour, minute, second);
 		SkypeChatMessage firstMessage = skypeChatMessageFactory.produce(userId,
 				userId.toUpperCase(), message, firstMessageTime);
+		messageList.add(firstMessage);
+	}
+	
+	public void addMessage(String userId, String displayName, String message, int month,int day, int hour, int minute, int second) {
+		Date firstMessageTime = DateHelper.makeDate(2011, month, day, hour, minute, second);
+		SkypeChatMessage firstMessage = skypeChatMessageFactory.produce(userId,
+				displayName, message, firstMessageTime);
 		messageList.add(firstMessage);
 	}
 }

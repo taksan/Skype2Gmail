@@ -19,7 +19,6 @@ public class GmailStorageEntryFactoryImpl implements GmailStorageEntryFactory {
 		this.chatDateFormat = chatDateFormat;
 		this.sessionProvider = sessionProvider;
 		this.rootFolderProvider = rootFolderProvider;
-		
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package skype;
 
+import org.apache.commons.lang.time.DurationFormatUtils;
 import org.apache.log4j.Logger;
 
 import utils.LoggerProvider;
@@ -26,12 +27,15 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 			return;
 		}
 
+		long startTime = System.currentTimeMillis();
 		try {
 			skypeApi.accept(this);
 		} finally {
 			skypeStorage.close();
 		}
-
+		long endTime = System.currentTimeMillis();
+		long elapsedMills = endTime - startTime;
+		getLogger().info("Took " + DurationFormatUtils.formatDuration(elapsedMills, "H:m:s"));
 		getLogger().info("Done.");
 	}
 

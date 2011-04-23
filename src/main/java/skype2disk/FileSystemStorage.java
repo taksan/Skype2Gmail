@@ -34,8 +34,10 @@ public class FileSystemStorage implements SkypeStorage {
 	}
 	
 	public void configureLogger() {
-		if (LOGGER == null)
-			LOGGER = loggerProvider.getLogger(FileSystemStorage.class);
+		if (LOGGER != null) {
+			return;
+		}
+		LOGGER = loggerProvider.getLogger(FileSystemStorage.class);
 		
 		try {
 			LOGGER.info("Will write messages to " + historyDir.getCanonicalPath());

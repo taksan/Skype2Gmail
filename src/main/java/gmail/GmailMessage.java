@@ -1,7 +1,6 @@
 package gmail;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,12 +12,13 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
-import javax.mail.internet.MimeUtility;
 
 import skype.SkypeUser;
 
 public class GmailMessage {
 	private MimeMessage mimeMessage;
+	private HeaderCodec headerCodec = new HeaderCodec();
+	
 	public static final String X_MESSAGES_SIGNATURES = "X-SKYPE-MESSAGES-SIGNATURES";
 	public static final String X_BODY_SIGNATURE = "X-SKYPE-BODY-SIGNATURE";
 	public static final String X_MESSAGE_ID = "X-SKYPE-MESSAGE-ID";
@@ -54,8 +54,8 @@ public class GmailMessage {
 
 	public void addRecipient(SkypeUser skypeUser) {
 		try {
-			mimeMessage.addRecipient(RecipientType.TO, new InternetAddress(
-					skypeUser.getMailAddress()));
+			mimeMessage.addRecipient(RecipientType.TO, 
+					new InternetAddress(skypeUser.getMailAddress()));
 		} catch (AddressException e) {
 			throw new RuntimeException(e);
 		} catch (MessagingException e) {
@@ -171,22 +171,18 @@ public class GmailMessage {
 
 	private void setHeader(String headerField, String value) {
 		try {
-			mimeMessage.setHeader(headerField, MimeUtility.encodeText(value));
+			mimeMessage.setHeader(headerField, headerCodec.encodeText(value));
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
-		}
+		} 
 	}
 
 	private void addHeader(String headerField, String value) {
 		try {
-			mimeMessage.addHeader(headerField, MimeUtility.encodeText(value));
+			mimeMessage.addHeader(headerField, headerCodec.encodeText(value));
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
-		}
+		} 
 	}
 
 	private String[] getHeader(String headerName) {
@@ -194,15 +190,13 @@ public class GmailMessage {
 			String[] headers = this.mimeMessage.getHeader(headerName);
 			List<String> decodedHeaders = new LinkedList<String>();
 			for (String aHeader : headers) {
-				decodedHeaders.add(MimeUtility.decodeText(aHeader));
+				decodedHeaders.add(headerCodec.decodeText(aHeader));
 			}
 
 			return decodedHeaders.toArray(new String[0]);
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
-		}
+		} 
 	}
 
 	public void setSentDate(Date time) {

@@ -72,8 +72,6 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 		for (User user : allMembers) {
 			String userId = user.getId();
 			String fullName = user.getFullName();
-			if (fullName == null)
-				fullName = userId;
 			
 			SkypeUserImpl skypeUser = (SkypeUserImpl) skypeUserFactory.produce(userId, fullName);
 			chatUsers.add(skypeUser);
