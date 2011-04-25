@@ -35,15 +35,7 @@ public class FileSystemStorage implements SkypeStorage {
 		historyDir = baseDir.getHistoryDir();
 	}
 	
-	public Logger getLogger() {
-		if (LOGGER != null)
-			return LOGGER;
-		LOGGER = loggerProvider.getLogger(FileSystemStorage.class);
-		return LOGGER;
-
-	}
-	
-	public FileSystemStorage(SkypeChatFactory skypeChatFactory, 
+		public FileSystemStorage(SkypeChatFactory skypeChatFactory, 
 			FileDumpContentParser fileDumpContentParser, 
 			CustomHistoryDir baseDir) {
 		this(skypeChatFactory,fileDumpContentParser,baseDir, new SimpleLoggerProvider());
@@ -74,6 +66,15 @@ public class FileSystemStorage implements SkypeStorage {
 			throw new MessageProcessingException(e);
 		}
 	}
+	
+	@Override
+	public void open() {
+		try {
+			getLogger().info("Will write messages to " + historyDir.getCanonicalPath());
+		} catch (IOException e) {
+			throw new ApplicationException(e);
+		}
+	}
 
 	@Override
 	public void close() {
@@ -84,4 +85,10 @@ public class FileSystemStorage implements SkypeStorage {
 		}
 	}
 
+	public Logger getLogger() {
+		if (LOGGER != null)
+			return LOGGER;
+		LOGGER = loggerProvider.getLogger(FileSystemStorage.class);
+		return LOGGER;
+	}
 }

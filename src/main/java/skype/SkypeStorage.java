@@ -8,4 +8,6 @@ public interface SkypeStorage {
 	StorageEntry retrievePreviousEntryFor(SkypeChat skypeChat);
 
 	void close();
+
+	void open();
 }

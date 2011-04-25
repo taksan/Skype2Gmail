@@ -1,10 +1,14 @@
 package skype2gmail;
 
 import gmail.GmailMessage;
+
+import org.apache.log4j.Logger;
+
 import skype.SkypeChat;
 import skype.SkypeChatFactory;
 import skype.SkypeStorage;
 import skype.StorageEntry;
+import utils.LoggerProvider;
 
 import com.google.inject.Inject;
 
@@ -15,6 +19,9 @@ public class GmailStorage implements SkypeStorage {
 	private final GmailMessageChatParser gmailMessageChatParser;
 	private final GmailFolderStore rootFolderProvider;
 	private final SkypeChatFactory skypeChatFactory;
+	private final LoggerProvider loggerProvider;
+	private final UserAuthProvider userAuthProvider;
+	private Logger LOGGER;
 
 	@Inject
 	public GmailStorage(
@@ -22,12 +29,16 @@ public class GmailStorage implements SkypeStorage {
 			GmailMessageProvider gmailMessageProvider,
 			GmailMessageChatParser gmailMessageChatParser, 
 			GmailFolderStore rootFolderProvider,
-			SkypeChatFactory skypeChatFactory) {
+			SkypeChatFactory skypeChatFactory,
+			LoggerProvider loggerProvider,
+			UserAuthProvider userAuthProvider) {
 		this.entryFactory = entryFactory;
 		this.gmailMessageProvider = gmailMessageProvider;
 		this.gmailMessageChatParser = gmailMessageChatParser;
 		this.rootFolderProvider = rootFolderProvider;
 		this.skypeChatFactory = skypeChatFactory;
+		this.loggerProvider = loggerProvider;
+		this.userAuthProvider = userAuthProvider;
 	}
 
 	@Override
@@ -57,7 +68,22 @@ public class GmailStorage implements SkypeStorage {
 	}
 
 	@Override
+	public void open() {
+		getLogger().info("Will send messages to " + userAuthProvider.getUser());
+	}
+	
+	@Override
 	public void close() {
 		rootFolderProvider.close();
+		getLogger().info("Messages sent to account " + userAuthProvider.getUser());
+	}
+
+	
+	private Logger getLogger() {
+		if (LOGGER != null)
+			return LOGGER;
+		LOGGER = loggerProvider.getLogger(getClass());
+		return LOGGER;
+		
 	}
 }

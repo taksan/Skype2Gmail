@@ -43,7 +43,13 @@ public class SkypeStorageMock implements SkypeStorage {
 	}
 
 	@Override
+	public void open() {
+		// nothing to do here
+	}
+	
+	@Override
 	public void close() {
 		// nothing to do here
 	}
+
 }
