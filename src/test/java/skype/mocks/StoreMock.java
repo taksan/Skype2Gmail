@@ -12,14 +12,14 @@ import skype2gmail.GmailFolder;
 public class StoreMock implements GmailFolder {
 
 	
-	private final Map<String, GmailMessage> messageList;
+	private final Map<String, GmailMessageInterface> messageList;
 
 	public StoreMock() {
-		messageList = new HashMap<String, GmailMessage>();
+		messageList = new HashMap<String, GmailMessageInterface>();
 	}
 
 	@Override
-	public void appendMessage(GmailMessage gmailMessage) {
+	public void appendMessage(GmailMessageInterface gmailMessage) {
 		messageList.put(gmailMessage.getChatId(), gmailMessage);
 	}
 
