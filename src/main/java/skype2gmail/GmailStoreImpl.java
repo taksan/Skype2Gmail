@@ -1,6 +1,5 @@
 package skype2gmail;
 
-import gmail.GmailFolder;
 import gmail.GmailMessage;
 
 import java.util.LinkedHashMap;
@@ -22,13 +21,13 @@ import utils.SimpleLoggerProvider;
 import com.google.inject.Inject;
 import com.sun.mail.imap.IMAPMessage;
 
-public class GmailStoreImpl implements GmailStore, GmailFolder {
+public class GmailStoreImpl implements GmailFolder {
 
 	private final Session session;
 	private final SkypeChatFolderProvider chatFolderProvider;
 	private final UserAuthProvider userInfoProvider;
 	private Store store;
-	private Folder root;
+	private Folder skypeChatFolder;
 	private Logger logger;
 	private GmailMessage[] retrievedMessages;
 	private final Map<String, GmailMessage> gmailMessages = new LinkedHashMap<String, GmailMessage>();
@@ -54,11 +53,11 @@ public class GmailStoreImpl implements GmailStore, GmailFolder {
 			if (retrievedMessages != null) {
 				return retrievedMessages;
 			}
-			Folder rootFolder = getRootFolder();
+			Folder folder = getSkypeChatFolder();
 			
 			logger.info("Retrieving mail chat messages to merge with new messages");			
-			logger.info("Messages to retrieve: " + rootFolder.getMessageCount());
-			for (Message message : rootFolder.getMessages()) {
+			logger.info("Messages to retrieve: " + folder.getMessageCount());
+			for (Message message : folder.getMessages()) {
 				GmailMessage  gmailMessage = new GmailMessage((IMAPMessage)message);
 				gmailMessages.put(gmailMessage.getChatId(), gmailMessage);
 			}
@@ -81,7 +80,7 @@ public class GmailStoreImpl implements GmailStore, GmailFolder {
 
 	@Override
 	public void appendMessage(GmailMessage gmailMessage) {
-		Folder rootFolder = getRootFolder();
+		Folder rootFolder = getSkypeChatFolder();
 		Message[] msgs = new javax.mail.Message[] { gmailMessage.getMimeMessage() };
 		try {
 			rootFolder.appendMessages(msgs);
@@ -96,9 +95,9 @@ public class GmailStoreImpl implements GmailStore, GmailFolder {
 		if (store != null) {
 			try {
 				try {
-					if (root != null) {
+					if (skypeChatFolder != null) {
 						boolean deleteFlaggedMessages = true;
-						root.close(deleteFlaggedMessages);
+						skypeChatFolder.close(deleteFlaggedMessages);
 					}
 				} catch (MessagingException e) {
 					throw new ApplicationException(e);
@@ -118,9 +117,9 @@ public class GmailStoreImpl implements GmailStore, GmailFolder {
 		}
 	}
 
-	private Folder getRootFolder() {
-		if (root != null)
-			return root;
+	private Folder getSkypeChatFolder() {
+		if (skypeChatFolder != null)
+			return skypeChatFolder;
 		
 		String user = userInfoProvider.getUser();
 		String password = userInfoProvider.getPassword();
@@ -128,14 +127,14 @@ public class GmailStoreImpl implements GmailStore, GmailFolder {
 			store = session.getStore("imaps");
 			store.connect("imap.gmail.com", user, password);
 			
-			root = store.getFolder(chatFolderProvider.getFolder());
-			if (!root.exists()) {
-				root.create(Folder.HOLDS_MESSAGES);
+			skypeChatFolder = store.getFolder(chatFolderProvider.getFolder());
+			if (!skypeChatFolder.exists()) {
+				skypeChatFolder.create(Folder.HOLDS_MESSAGES);
 			}
 			else {
-				root.open(Folder.READ_WRITE);
+				skypeChatFolder.open(Folder.READ_WRITE);
 			}
-			return root;
+			return skypeChatFolder;
 		} catch (NoSuchProviderException e) {
 			throw new ApplicationException(e);
 		} catch (MessagingException e) {

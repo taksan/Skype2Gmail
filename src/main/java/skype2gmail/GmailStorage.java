@@ -16,7 +16,7 @@ public class GmailStorage implements SkypeStorage {
 
 	private final GmailStorageEntryFactory entryFactory;
 	private final GmailMessageChatParser gmailMessageChatParser;
-	private final GmailStore store;
+	private final GmailFolder skypeFolder;
 	private final SkypeChatFactory skypeChatFactory;
 	private final LoggerProvider loggerProvider;
 	private final UserAuthProvider userAuthProvider;
@@ -26,13 +26,13 @@ public class GmailStorage implements SkypeStorage {
 	public GmailStorage(
 			GmailStorageEntryFactory entryFactory,
 			GmailMessageChatParser gmailMessageChatParser, 
-			GmailStore store,
+			GmailFolder skypeFolder,
 			SkypeChatFactory skypeChatFactory,
 			LoggerProvider loggerProvider,
 			UserAuthProvider userAuthProvider) {
 		this.entryFactory = entryFactory;
 		this.gmailMessageChatParser = gmailMessageChatParser;
-		this.store = store;
+		this.skypeFolder = skypeFolder;
 		this.skypeChatFactory = skypeChatFactory;
 		this.loggerProvider = loggerProvider;
 		this.userAuthProvider = userAuthProvider;
@@ -45,7 +45,7 @@ public class GmailStorage implements SkypeStorage {
 
 	@Override
 	public StorageEntry retrievePreviousEntryFor(SkypeChat skypeChat) {
-		GmailMessage[] storedMessages = store.getMessages();
+		GmailMessage[] storedMessages = skypeFolder.getMessages();
 		for (GmailMessage message : storedMessages) {
 			String chatId = message.getChatId();
 			if (skypeChat.getId().equals(chatId)) {
@@ -67,7 +67,7 @@ public class GmailStorage implements SkypeStorage {
 	
 	@Override
 	public void close() {
-		store.close();
+		skypeFolder.close();
 		getLogger().info("Messages sent to account " + userAuthProvider.getUser());
 	}
 

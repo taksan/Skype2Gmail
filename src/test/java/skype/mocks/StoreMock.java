@@ -5,9 +5,9 @@ import gmail.GmailMessage;
 import java.util.HashMap;
 import java.util.Map;
 
-import skype2gmail.GmailStore;
+import skype2gmail.GmailFolder;
 
-public class StoreMock implements GmailStore {
+public class StoreMock implements GmailFolder {
 
 	
 	private final Map<String, GmailMessage> messageList;

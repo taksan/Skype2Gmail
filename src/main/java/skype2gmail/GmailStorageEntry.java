@@ -22,14 +22,14 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 	private final SkypeChat chat;
 	private final Session session;
 	private final SkypeChatDateFormat skypeChatDateFormat;
-	private final GmailStore storeFolder;
+	private final GmailFolder storeFolder;
 	private final MessageBodyBuilder messageBodyBuilder = new MessageBodyBuilder();
 	private GmailMessage gmailMessage;
 	private SkypeUser chatAuthor;
 
 	public GmailStorageEntry(
 			SessionProvider sessionProvider,
-			GmailStore storeFolder, 
+			GmailFolder storeFolder, 
 			SkypeChat chat,
 			SkypeChatDateFormat skypeChatDateFormat) 
 	{
