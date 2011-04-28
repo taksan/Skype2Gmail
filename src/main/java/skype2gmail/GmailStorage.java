@@ -5,7 +5,6 @@ import gmail.GmailMessage;
 import org.apache.log4j.Logger;
 
 import skype.SkypeChat;
-import skype.SkypeChatFactory;
 import skype.SkypeStorage;
 import skype.StorageEntry;
 import utils.LoggerProvider;
@@ -15,25 +14,20 @@ import com.google.inject.Inject;
 public class GmailStorage implements SkypeStorage {
 
 	private final GmailStorageEntryFactory entryFactory;
-	private final GmailMessageChatParser gmailMessageChatParser;
+	
 	private final GmailFolder skypeFolder;
-	private final SkypeChatFactory skypeChatFactory;
 	private final LoggerProvider loggerProvider;
 	private final UserAuthProvider userAuthProvider;
 	private Logger LOGGER;
 
 	@Inject
 	public GmailStorage(
-			GmailStorageEntryFactory entryFactory,
-			GmailMessageChatParser gmailMessageChatParser, 
+			GmailStorageEntryFactory entryFactory, 
 			GmailFolder skypeFolder,
-			SkypeChatFactory skypeChatFactory,
 			LoggerProvider loggerProvider,
 			UserAuthProvider userAuthProvider) {
 		this.entryFactory = entryFactory;
-		this.gmailMessageChatParser = gmailMessageChatParser;
 		this.skypeFolder = skypeFolder;
-		this.skypeChatFactory = skypeChatFactory;
 		this.loggerProvider = loggerProvider;
 		this.userAuthProvider = userAuthProvider;
 	}
@@ -45,19 +39,8 @@ public class GmailStorage implements SkypeStorage {
 
 	@Override
 	public StorageEntry retrievePreviousEntryFor(SkypeChat skypeChat) {
-		GmailMessage[] storedMessages = skypeFolder.getMessages();
-		for (GmailMessage message : storedMessages) {
-			String chatId = message.getChatId();
-			if (skypeChat.getId().equals(chatId)) {
-				SkypeChat previousChat = makeSkypeChat(message);
-				return entryFactory.produce(previousChat);
-			}
-		}
-		return entryFactory.produce(this.skypeChatFactory.produceEmpty());
-	}
-
-	private SkypeChat makeSkypeChat(GmailMessage message) {
-		return gmailMessageChatParser.parse(message);
+		GmailMessage entryMessage = skypeFolder.retrieveMessageEntryFor(skypeChat);
+		return entryFactory.produce(skypeChat, entryMessage);
 	}
 
 	@Override

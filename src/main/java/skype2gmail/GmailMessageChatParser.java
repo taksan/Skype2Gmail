@@ -12,7 +12,6 @@ import skype.SkypeChatWithBodyParserFactory;
 public class GmailMessageChatParser {
 	
 	private final SkypeChatWithBodyParserFactory skypeChatWithBodyParserFactory;
-	private String[] messageSignatures;
 
 	@Inject
 	public GmailMessageChatParser(SkypeChatWithBodyParserFactory skypeChatWithBodyParserFactory) {
@@ -20,14 +19,13 @@ public class GmailMessageChatParser {
 	}
 	
 	public SkypeChat parse(GmailMessage message) {
-		messageSignatures = message.getMessagesSignatures();
 		Date chatTime = message.getDate();
 		return skypeChatWithBodyParserFactory.produce(
 				message.getChatId(), 
 				message.getTopic(),
 				message.getPosters(), 
 				message.getBodySignature(), 
-				messageSignatures, 
+				message.getMessagesSignatures(), 
 				chatTime, 
 				message.getBody());
 	}
