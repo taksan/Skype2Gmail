@@ -38,20 +38,6 @@ public class GmailFolderImpl implements GmailFolder {
 		this.logger = loggerProvider.getLogger(getClass());
 	}
 
-	public GmailMessage[] searchByChatId() throws MessagingException {
-		SearchTerm st = new HeaderTerm("X-SKYPE-MESSAGE-ID",
-				"#gab@rielsan/$aroliveira86;c15828e1bcea9030");
-		Folder folder = getSkypeChatFolder();
-		Message[] search = folder.search(st);
-		for (Message message : search) {
-			GmailMessage gmailMessage = new GmailMessage((IMAPMessage) message);
-			gmailMessages.put(gmailMessage.getChatId(), gmailMessage);
-		}
-		logger.info("Messages retrieved");
-		retrievedMessages = gmailMessages.values().toArray(new GmailMessage[0]);
-		return retrievedMessages;
-	}
-
 	@Override
 	public void deleteMessageBasedOnId(String chatId) {
 		GmailMessage gmailMessage = gmailMessages.get(chatId);
