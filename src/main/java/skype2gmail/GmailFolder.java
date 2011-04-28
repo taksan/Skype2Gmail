@@ -1,12 +1,12 @@
 package skype2gmail;
 
-import gmail.GmailMessage;
+import gmail.GmailMessageInterface;
 import skype.SkypeChat;
 
 public interface GmailFolder {
 
 	void deleteMessageBasedOnId(String chatId);
-	void appendMessage(GmailMessage gmailMessage);
+	void appendMessage(GmailMessageInterface gmailMessage);
 	void close();
-	GmailMessage retrieveMessageEntryFor(SkypeChat skypeChat);
+	GmailMessageInterface retrieveMessageEntryFor(SkypeChat skypeChat);
 }

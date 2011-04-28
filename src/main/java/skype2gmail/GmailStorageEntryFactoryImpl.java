@@ -1,6 +1,6 @@
 package skype2gmail;
 
-import gmail.GmailMessage;
+import gmail.GmailMessageInterface;
 
 import com.google.inject.Inject;
 
@@ -36,7 +36,7 @@ public class GmailStorageEntryFactoryImpl implements GmailStorageEntryFactory {
 	}
 	
 	@Override
-	public StorageEntry produce(SkypeChat newChat, GmailMessage previousChatMessage) {
+	public StorageEntry produce(SkypeChat newChat, GmailMessageInterface previousChatMessage) {
 		if (previousChatMessage == null)
 			return this.produce(this.skypeChatFactory.produceEmpty());
 		

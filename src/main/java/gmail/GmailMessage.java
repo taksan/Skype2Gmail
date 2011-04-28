@@ -16,15 +16,10 @@ import javax.mail.internet.MimeMessage.RecipientType;
 import skype.MessageProcessingException;
 import skype.SkypeUser;
 
-public class GmailMessage {
+public class GmailMessage implements GmailMessageInterface {
 	private MimeMessage mimeMessage;
 	private HeaderCodec headerCodec = new HeaderCodec();
 	
-	public static final String X_MESSAGES_SIGNATURES = "X-SKYPE-MESSAGES-SIGNATURES";
-	public static final String X_BODY_SIGNATURE = "X-SKYPE-BODY-SIGNATURE";
-	public static final String X_MESSAGE_ID = "X-SKYPE-MESSAGE-ID";
-	public static final String X_SKYPE_POSTERS = "X_SKYPE_POSTERS";
-
 	public GmailMessage(Session session) {
 		this.mimeMessage = new MimeMessage(session);
 	}
@@ -33,10 +28,18 @@ public class GmailMessage {
 		this.mimeMessage = message;
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#getMimeMessage()
+	 */
+	@Override
 	public MimeMessage getMimeMessage() {
 		return mimeMessage;
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#setFrom(java.lang.String)
+	 */
+	@Override
 	public void setFrom(String chatAuthor) {
 		try {
 			mimeMessage.setFrom(new InternetAddress(chatAuthor));
@@ -45,6 +48,10 @@ public class GmailMessage {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#setSubject(java.lang.String)
+	 */
+	@Override
 	public void setSubject(String topic) {
 		try {
 			mimeMessage.setSubject(topic);
@@ -53,6 +60,10 @@ public class GmailMessage {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#addRecipient(skype.SkypeUser)
+	 */
+	@Override
 	public void addRecipient(SkypeUser skypeUser) {
 		try {
 			mimeMessage.addRecipient(RecipientType.TO, 
@@ -64,6 +75,10 @@ public class GmailMessage {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#setBody(java.lang.String)
+	 */
+	@Override
 	public void setBody(String messageBody) {
 		try {
 			mimeMessage.setText(messageBody, "UTF-8");
@@ -72,14 +87,26 @@ public class GmailMessage {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#getChatId()
+	 */
+	@Override
 	public String getChatId() {
-		return getFirstHeaderOrNull(GmailMessage.X_MESSAGE_ID);
+		return getFirstHeaderOrNull(GmailMessageInterface.X_MESSAGE_ID);
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#getBodySignature()
+	 */
+	@Override
 	public String getBodySignature() {
-		return getFirstHeaderOrNull(GmailMessage.X_BODY_SIGNATURE);
+		return getFirstHeaderOrNull(GmailMessageInterface.X_BODY_SIGNATURE);
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#getTopic()
+	 */
+	@Override
 	public String getTopic() {
 		try {
 			return this.mimeMessage.getSubject();
@@ -88,6 +115,10 @@ public class GmailMessage {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#getBody()
+	 */
+	@Override
 	public String getBody() {
 		try {
 			return (String) mimeMessage.getContent();
@@ -98,18 +129,34 @@ public class GmailMessage {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#setChatId(java.lang.String)
+	 */
+	@Override
 	public void setChatId(String id) {
-		this.setHeader(GmailMessage.X_MESSAGE_ID, id);
+		this.setHeader(GmailMessageInterface.X_MESSAGE_ID, id);
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#setBodySignature(java.lang.String)
+	 */
+	@Override
 	public void setBodySignature(String bodySignature) {
-		this.setHeader(GmailMessage.X_BODY_SIGNATURE, bodySignature);
+		this.setHeader(GmailMessageInterface.X_BODY_SIGNATURE, bodySignature);
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#setMessagesSignatures(java.lang.String)
+	 */
+	@Override
 	public void setMessagesSignatures(String signatures) {
-		this.setHeader(GmailMessage.X_MESSAGES_SIGNATURES, signatures);
+		this.setHeader(GmailMessageInterface.X_MESSAGES_SIGNATURES, signatures);
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#getDate()
+	 */
+	@Override
 	public Date getDate() {
 		try {
 			return mimeMessage.getSentDate();
@@ -118,19 +165,35 @@ public class GmailMessage {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#getMessagesSignatures()
+	 */
+	@Override
 	public String[] getMessagesSignatures() {
 		String signatures = this.getFirstHeaderOrNull(X_MESSAGES_SIGNATURES);
 		return signatures.split(",");
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#getPosters()
+	 */
+	@Override
 	public String[] getPosters() {
 		return this.getHeader(X_SKYPE_POSTERS);
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#addPoster(skype.SkypeUser)
+	 */
+	@Override
 	public void addPoster(SkypeUser skypeUser) {
 		this.addHeader(X_SKYPE_POSTERS, skypeUser.getPosterHeader());
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#getFrom()
+	 */
+	@Override
 	public InternetAddress[] getFrom() {
 		try {
 			return (InternetAddress[]) mimeMessage.getFrom();
@@ -139,6 +202,10 @@ public class GmailMessage {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#getRecipients(javax.mail.Message.RecipientType)
+	 */
+	@Override
 	public InternetAddress[] getRecipients(javax.mail.Message.RecipientType to) {
 		try {
 			return (InternetAddress[]) mimeMessage.getRecipients(to);
@@ -147,6 +214,10 @@ public class GmailMessage {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#setDate(java.lang.String)
+	 */
+	@Override
 	public void setDate(String timeAsString) {
 		try {
 			mimeMessage.setHeader("Date", timeAsString);
@@ -162,6 +233,10 @@ public class GmailMessage {
 		return header[0];
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#delete()
+	 */
+	@Override
 	public void delete() {
 		try {
 			mimeMessage.setFlag(Flags.Flag.DELETED, true);
@@ -200,6 +275,10 @@ public class GmailMessage {
 		} 
 	}
 
+	/* (non-Javadoc)
+	 * @see gmail.GmailMessageInterface#setSentDate(java.util.Date)
+	 */
+	@Override
 	public void setSentDate(Date time) {
 		try {
 			mimeMessage.setSentDate(time);

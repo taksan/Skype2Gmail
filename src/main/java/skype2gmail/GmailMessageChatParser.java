@@ -1,6 +1,6 @@
 package skype2gmail;
 
-import gmail.GmailMessage;
+import gmail.GmailMessageInterface;
 
 import java.util.Date;
 
@@ -18,7 +18,7 @@ public class GmailMessageChatParser {
 		this.skypeChatWithBodyParserFactory = skypeChatWithBodyParserFactory;		
 	}
 	
-	public SkypeChat parse(GmailMessage message) {
+	public SkypeChat parse(GmailMessageInterface message) {
 		Date chatTime = message.getDate();
 		return skypeChatWithBodyParserFactory.produce(
 				message.getChatId(), 

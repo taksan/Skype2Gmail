@@ -1,6 +1,7 @@
 package skype.mocks;
 
 import gmail.GmailMessage;
+import gmail.GmailMessageInterface;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,9 +33,9 @@ public class StoreMock implements GmailFolder {
 	}
 
 	@Override
-	public GmailMessage retrieveMessageEntryFor(SkypeChat skypeChat) {
-		GmailMessage[] storedMessages = this.getMessages();
-		for (GmailMessage message : storedMessages) {
+	public GmailMessageInterface retrieveMessageEntryFor(SkypeChat skypeChat) {
+		GmailMessageInterface[] storedMessages = this.getMessages();
+		for (GmailMessageInterface message : storedMessages) {
 			String chatId = message.getChatId();
 			if (skypeChat.getId().equals(chatId)) {
 				return message;
@@ -43,7 +44,7 @@ public class StoreMock implements GmailFolder {
 		return null;
 	}
 	
-	public GmailMessage[] getMessages() {
+	public GmailMessageInterface[] getMessages() {
 		return messageList.values().toArray(new GmailMessage[0]);
 	}
 }

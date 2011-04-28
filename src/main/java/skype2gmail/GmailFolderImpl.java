@@ -1,6 +1,7 @@
 package skype2gmail;
 
 import gmail.GmailMessage;
+import gmail.GmailMessageInterface;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class GmailFolderImpl implements GmailFolder {
 
 	private final SkypeChatFolderProvider chatFolderProvider;
 	private Folder skypeChatFolder;
-	private final Map<String, GmailMessage> gmailMessages = new LinkedHashMap<String, GmailMessage>();
+	private final Map<String, GmailMessageInterface> gmailMessages = new LinkedHashMap<String, GmailMessageInterface>();
 	private final GmailStore gmailStore;
 
 	@Inject
@@ -34,7 +35,7 @@ public class GmailFolderImpl implements GmailFolder {
 
 	@Override
 	public void deleteMessageBasedOnId(String chatId) {
-		GmailMessage gmailMessage = gmailMessages.get(chatId);
+		GmailMessageInterface gmailMessage = gmailMessages.get(chatId);
 		if (gmailMessage == null)
 			return;
 
@@ -42,7 +43,7 @@ public class GmailFolderImpl implements GmailFolder {
 	}
 
 	@Override
-	public void appendMessage(GmailMessage gmailMessage) {
+	public void appendMessage(GmailMessageInterface gmailMessage) {
 		Folder rootFolder = getSkypeChatFolder();
 		Message[] msgs = new javax.mail.Message[] { gmailMessage
 				.getMimeMessage() };
@@ -77,8 +78,8 @@ public class GmailFolderImpl implements GmailFolder {
 	}
 
 	@Override
-	public GmailMessage retrieveMessageEntryFor(SkypeChat skypeChat) {
-		SearchTerm st = new HeaderTerm(GmailMessage.X_MESSAGE_ID,
+	public GmailMessageInterface retrieveMessageEntryFor(SkypeChat skypeChat) {
+		SearchTerm st = new HeaderTerm(GmailMessageInterface.X_MESSAGE_ID,
 				skypeChat.getId());
 		Folder folder = getSkypeChatFolder();
 		Message[] foundMessages;
