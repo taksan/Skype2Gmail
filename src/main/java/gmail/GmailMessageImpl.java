@@ -16,7 +16,7 @@ import javax.mail.internet.MimeMessage.RecipientType;
 import skype.MessageProcessingException;
 import skype.SkypeUser;
 
-public class GmailMessageImpl implements GmailMessageInterface {
+public class GmailMessageImpl implements GmailMessage {
 	private MimeMessage mimeMessage;
 	private HeaderCodec headerCodec = new HeaderCodec();
 	
@@ -92,7 +92,7 @@ public class GmailMessageImpl implements GmailMessageInterface {
 	 */
 	@Override
 	public String getChatId() {
-		return getFirstHeaderOrNull(GmailMessageInterface.X_MESSAGE_ID);
+		return getFirstHeaderOrNull(GmailMessage.X_MESSAGE_ID);
 	}
 
 	/* (non-Javadoc)
@@ -100,7 +100,7 @@ public class GmailMessageImpl implements GmailMessageInterface {
 	 */
 	@Override
 	public String getBodySignature() {
-		return getFirstHeaderOrNull(GmailMessageInterface.X_BODY_SIGNATURE);
+		return getFirstHeaderOrNull(GmailMessage.X_BODY_SIGNATURE);
 	}
 
 	/* (non-Javadoc)
@@ -134,7 +134,7 @@ public class GmailMessageImpl implements GmailMessageInterface {
 	 */
 	@Override
 	public void setChatId(String id) {
-		this.setHeader(GmailMessageInterface.X_MESSAGE_ID, id);
+		this.setHeader(GmailMessage.X_MESSAGE_ID, id);
 	}
 
 	/* (non-Javadoc)
@@ -142,7 +142,7 @@ public class GmailMessageImpl implements GmailMessageInterface {
 	 */
 	@Override
 	public void setBodySignature(String bodySignature) {
-		this.setHeader(GmailMessageInterface.X_BODY_SIGNATURE, bodySignature);
+		this.setHeader(GmailMessage.X_BODY_SIGNATURE, bodySignature);
 	}
 
 	/* (non-Javadoc)
@@ -150,7 +150,7 @@ public class GmailMessageImpl implements GmailMessageInterface {
 	 */
 	@Override
 	public void setMessagesSignatures(String signatures) {
-		this.setHeader(GmailMessageInterface.X_MESSAGES_SIGNATURES, signatures);
+		this.setHeader(GmailMessage.X_MESSAGES_SIGNATURES, signatures);
 	}
 
 	/* (non-Javadoc)

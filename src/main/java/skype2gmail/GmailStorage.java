@@ -1,6 +1,6 @@
 package skype2gmail;
 
-import gmail.GmailMessageInterface;
+import gmail.GmailMessage;
 
 import org.apache.log4j.Logger;
 
@@ -39,7 +39,7 @@ public class GmailStorage implements SkypeStorage {
 
 	@Override
 	public StorageEntry retrievePreviousEntryFor(SkypeChat skypeChat) {
-		GmailMessageInterface entryMessage = skypeFolder.retrieveMessageEntryFor(skypeChat);
+		GmailMessage entryMessage = skypeFolder.retrieveMessageEntryFor(skypeChat);
 		return entryFactory.produce(skypeChat, entryMessage);
 	}
 

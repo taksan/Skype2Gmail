@@ -1,7 +1,7 @@
 package skype2gmail;
 
 import gmail.GmailMessageImpl;
-import gmail.GmailMessageInterface;
+import gmail.GmailMessage;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -25,7 +25,7 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 	private final SkypeChatDateFormat skypeChatDateFormat;
 	private final GmailFolder storeFolder;
 	private final MessageBodyBuilder messageBodyBuilder = new MessageBodyBuilder();
-	private GmailMessageInterface gmailMessage;
+	private GmailMessage gmailMessage;
 	private SkypeUser chatAuthor;
 
 	public GmailStorageEntry(
@@ -40,7 +40,7 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 		this.skypeChatDateFormat = skypeChatDateFormat;
 	}
 	
-	GmailMessageInterface getMessage() {
+	GmailMessage getMessage() {
 		return this.gmailMessage;
 	}
 

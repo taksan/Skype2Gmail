@@ -7,7 +7,7 @@ import javax.mail.internet.MimeMessage;
 
 import skype.SkypeUser;
 
-public interface GmailMessageInterface {
+public interface GmailMessage {
 
 	public static final String X_MESSAGES_SIGNATURES = "X-SKYPE-MESSAGES-SIGNATURES";
 	public static final String X_BODY_SIGNATURE = "X-SKYPE-BODY-SIGNATURE";

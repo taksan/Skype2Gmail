@@ -1,6 +1,6 @@
 package skype2gmail;
 
-import gmail.GmailMessageInterface;
+import gmail.GmailMessage;
 
 import java.io.IOException;
 
@@ -50,7 +50,7 @@ public class GmailStorageEntryTest {
 		
 		gmailStorageEntry.store(new SkypeChatSetter(chat));
 		
-		GmailMessageInterface mimeMessage = gmailStorageEntry.getMessage();
+		GmailMessage mimeMessage = gmailStorageEntry.getMessage();
 		final InternetAddress[] from = (InternetAddress[]) mimeMessage.getFrom();
 		Assert.assertEquals("moe", from[0].getAddress());
 		
