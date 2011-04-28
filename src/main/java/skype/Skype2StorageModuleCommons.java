@@ -14,5 +14,6 @@ public class Skype2StorageModuleCommons extends AbstractModule {
 		bind(SkypeChatDateFormat.class).to(SkypeChatDateFormatImpl.class).in(Scopes.SINGLETON);
 		bind(SkypeMessageDateFormat.class).to(SkypeMessageDateFormatImpl.class).in(Scopes.SINGLETON);
 		bind(MessageBodyParserFactory.class).to(MessageBodyParserFactoryImpl.class).in(Scopes.SINGLETON);
+		bind(ChatFetchStrategy.class).to(ChatFetchStrategyImpl.class).in(Scopes.SINGLETON);
 	}
 }

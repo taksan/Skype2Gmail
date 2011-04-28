@@ -23,15 +23,17 @@ import com.skype.connector.Connector;
 public class SkypeApiImpl implements SkypeApi {
 
 	private final SkypeChatFactory chatFactory;
-	private Chat[] allChats;
+	private Chat[] recentChats;
 	private Profile profile;
 	private SkypeUser currentUser;
 	private final LoggerProvider loggerProvider;
+	private final ChatFetchStrategy chatFetchStrategy;
 
 	@Inject
-	public SkypeApiImpl(SkypeChatFactory chatFactory, LoggerProvider loggerProvider) {
+	public SkypeApiImpl(SkypeChatFactory chatFactory, LoggerProvider loggerProvider, ChatFetchStrategy chatFetchStrategy) {
 		this.chatFactory = chatFactory;
 		this.loggerProvider = loggerProvider;
+		this.chatFetchStrategy = chatFetchStrategy;
 		Connector.getInstance().setApplicationName("Skype2Gmail");
 	}
 
@@ -46,20 +48,38 @@ public class SkypeApiImpl implements SkypeApi {
 
 	@Override
 	public void accept(final SkypeApiChatVisitor visitor) {
-		Callable<Chat[]> getAllChatsCallable = new Callable<Chat[]>() {
+		Chat[] chatsArray = getChatHistory();
+		
+		Logger logger = loggerProvider.getLogger(getClass());
+		logger.info((String.format("Found %d chats.", chatsArray.length)));
+		
+		for (Chat chat : chatsArray) {
+			final SkypeChat skypeChat = chatFactory.produce(chat);
+			visitor.visit(skypeChat);
+		}
+	}
+
+	private Chat[] getChatHistory() {
+		final Callable<Chat[]> getAllChats = new Callable<Chat[]>() {
 			@Override
 			public Chat[] call() throws Exception {
 				return getAllChats();
 			}
 		};
-		Chat[] allChatsArray = executeWithTimeout(getAllChatsCallable);
-		Logger logger = loggerProvider.getLogger(getClass());
-		logger.info((String.format("Found %d chats.", allChatsArray.length)));
-		
-		for (Chat chat : allChatsArray) {
-			final SkypeChat skypeChat = chatFactory.produce(chat);
-			visitor.visit(skypeChat);
+		final Callable<Chat[]> getRecentChats = new Callable<Chat[]>() {
+			@Override
+			public Chat[] call() throws Exception {
+				return getRecentChats();
+			}
+		};
+		Callable<Chat[]> getChatsCallable = getAllChats;
+		if (chatFetchStrategy.fetchOnlyRecent()) {
+			getChatsCallable = getRecentChats;
 		}
+		
+		Chat[] allChatsArray = executeWithTimeout(getChatsCallable);
+		
+		return allChatsArray;
 	}
 
 	@Override
@@ -84,11 +104,19 @@ public class SkypeApiImpl implements SkypeApi {
 	}
 
 	private Chat[] getAllChats() throws SkypeException {
-		if (allChats != null)
-			return allChats;
+		if (recentChats != null)
+			return recentChats;
 
-		allChats = Skype.getAllChats();
-		return allChats;
+		recentChats = Skype.getAllChats();
+		return recentChats;
+	}
+	
+	private Chat[] getRecentChats() throws SkypeException {
+		if (recentChats != null)
+			return recentChats;
+
+		recentChats = Skype.getAllRecentChats();
+		return recentChats;
 	}
 
 	private Profile getProfile() {

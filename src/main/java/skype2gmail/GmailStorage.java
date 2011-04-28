@@ -15,9 +15,8 @@ import com.google.inject.Inject;
 public class GmailStorage implements SkypeStorage {
 
 	private final GmailStorageEntryFactory entryFactory;
-	private final GmailMessageProvider gmailMessageProvider;
 	private final GmailMessageChatParser gmailMessageChatParser;
-	private final GmailFolderStore rootFolderProvider;
+	private final GmailStoreFolder rootFolderProvider;
 	private final SkypeChatFactory skypeChatFactory;
 	private final LoggerProvider loggerProvider;
 	private final UserAuthProvider userAuthProvider;
@@ -26,14 +25,12 @@ public class GmailStorage implements SkypeStorage {
 	@Inject
 	public GmailStorage(
 			GmailStorageEntryFactory entryFactory,
-			GmailMessageProvider gmailMessageProvider,
 			GmailMessageChatParser gmailMessageChatParser, 
-			GmailFolderStore rootFolderProvider,
+			GmailStoreFolder rootFolderProvider,
 			SkypeChatFactory skypeChatFactory,
 			LoggerProvider loggerProvider,
 			UserAuthProvider userAuthProvider) {
 		this.entryFactory = entryFactory;
-		this.gmailMessageProvider = gmailMessageProvider;
 		this.gmailMessageChatParser = gmailMessageChatParser;
 		this.rootFolderProvider = rootFolderProvider;
 		this.skypeChatFactory = skypeChatFactory;
@@ -64,7 +61,7 @@ public class GmailStorage implements SkypeStorage {
 	}
 
 	private GmailMessage[] getStoreMessages() {
-		return gmailMessageProvider.getMessages();
+		return rootFolderProvider.getFolder().getMessages();
 	}
 
 	@Override

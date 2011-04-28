@@ -1,13 +1,13 @@
 package skype.mocks;
 
 import gmail.GmailFolder;
-import skype2gmail.GmailFolderStore;
+import skype2gmail.GmailStoreFolder;
 
-public class RootFolderProviderMock implements GmailFolderStore {
+public class StoreFolderMock implements GmailStoreFolder {
 
 	private GmailFolderMock gmailFolderMock;
 	
-	public RootFolderProviderMock() {
+	public StoreFolderMock() {
 		gmailFolderMock = new GmailFolderMock();
 	}
 

@@ -12,22 +12,25 @@ import skype.ApplicationException;
 
 import com.google.inject.Inject;
 
-public class GmailFolderStoreImpl implements GmailFolderStore {
+public class GmailStoreFolderImpl implements GmailStoreFolder {
 
 	private final Session session;
 	private final SkypeChatFolderProvider chatFolderProvider;
 	private final UserAuthProvider userInfoProvider;
 	private GmailFolder gmailFolder;
 	private Store store;
+	private final GmailFolderFactory gmailFolderFactory;
 
 	@Inject
-	public GmailFolderStoreImpl(
+	public GmailStoreFolderImpl(
 			SessionProvider sessionProvider, 
 			UserAuthProvider userInfoProvider, 
-			SkypeChatFolderProvider chatFolderProvider) 
+			SkypeChatFolderProvider chatFolderProvider,
+			GmailFolderFactory gmailFolderFactory) 
 	{
 		this.userInfoProvider = userInfoProvider;
 		this.chatFolderProvider = chatFolderProvider;
+		this.gmailFolderFactory = gmailFolderFactory;
 		this.session = sessionProvider.getInstance();
 	}
 
@@ -55,7 +58,7 @@ public class GmailFolderStoreImpl implements GmailFolderStore {
 				root.open(Folder.READ_WRITE);
 			}
 			
-			return new GmailFolderImpl(root);
+			return this.gmailFolderFactory.produce(root);
 		} catch (NoSuchProviderException e) {
 			throw new ApplicationException(e);
 		} catch (MessagingException e) {

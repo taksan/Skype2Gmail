@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import skype.AbstractRecordingTest;
 import skype.SkypeHistoryRecorder;
-import skype.mocks.RootFolderProviderMock;
+import skype.mocks.StoreFolderMock;
 import skype.mocks.Skype2GmailModuleMockingSkypeApi;
 
 import com.google.inject.Guice;
@@ -31,7 +31,7 @@ public class Skype2GmailModuleTest extends AbstractRecordingTest {
 		final Injector injector = Guice.createInjector(new Skype2GmailModuleMockingSkypeApi());
 		
 		testRecording(injector);
-		RootFolderProviderMock folderProvider = (RootFolderProviderMock) injector.getInstance(GmailFolderStore.class);
+		StoreFolderMock folderProvider = (StoreFolderMock) injector.getInstance(GmailStoreFolder.class);
 		GmailFolder gmailFolder = folderProvider.getFolder();
 		
 		Assert.assertEquals(3, gmailFolder.getMessages().length);

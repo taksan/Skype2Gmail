@@ -4,12 +4,12 @@ import skype2gmail.UserAuthProvider;
 
 import com.google.inject.Inject;
 
-public class UserHomeConfigProvider implements UserAuthProvider {
+public class UserConfigBasedProvider implements UserAuthProvider {
 	
 	private Skype2GmailConfigContents skype2GmailConfigContents;
 
 	@Inject
-	public UserHomeConfigProvider(Skype2GmailConfigContents configContents){
+	public UserConfigBasedProvider(Skype2GmailConfigContents configContents){
 		skype2GmailConfigContents = configContents;
 	}
 

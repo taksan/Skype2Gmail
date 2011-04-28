@@ -28,7 +28,7 @@ public class GmailStorageEntryTest {
 		final Injector injector = Guice.createInjector(new Skype2GmailModuleMockingSkypeApi());
 		
 		SessionProvider sessionProvider = injector.getInstance(SessionProvider.class);
-		GmailFolderStore rootFolderProvider  = injector.getInstance(GmailFolderStore.class);
+		GmailStoreFolder rootFolderProvider  = injector.getInstance(GmailStoreFolder.class);
 		SkypeChatDateFormat skypeChatDateFormat = injector.getInstance(SkypeChatDateFormat.class);
 		
 		SkypeChatBuilderHelper chatHelper = new SkypeChatBuilderHelper() {

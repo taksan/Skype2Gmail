@@ -10,12 +10,12 @@ public class GmailStorageEntryFactoryImpl implements GmailStorageEntryFactory {
 
 	private final SkypeChatDateFormat chatDateFormat;
 	private final SessionProvider sessionProvider;
-	private final GmailFolderStore rootFolderProvider;
+	private final GmailStoreFolder rootFolderProvider;
 	
 	@Inject
 	public GmailStorageEntryFactoryImpl(SkypeChatDateFormat chatDateFormat,
 			SessionProvider sessionProvider,
-			GmailFolderStore rootFolderProvider) {
+			GmailStoreFolder rootFolderProvider) {
 		this.chatDateFormat = chatDateFormat;
 		this.sessionProvider = sessionProvider;
 		this.rootFolderProvider = rootFolderProvider;

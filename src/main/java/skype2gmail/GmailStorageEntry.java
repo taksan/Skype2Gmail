@@ -23,18 +23,18 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 	private final SkypeChat chat;
 	private final Session session;
 	private final SkypeChatDateFormat skypeChatDateFormat;
-	private final GmailFolderStore rootFolderProvider;
+	private final GmailStoreFolder storeFolder;
 	private final MessageBodyBuilder messageBodyBuilder = new MessageBodyBuilder();
 	private GmailMessage gmailMessage;
 	private SkypeUser chatAuthor;
 
 	public GmailStorageEntry(
 			SessionProvider sessionProvider,
-			GmailFolderStore rootFolderProvider, 
+			GmailStoreFolder storeFolder, 
 			SkypeChat chat,
 			SkypeChatDateFormat skypeChatDateFormat) 
 	{
-		this.rootFolderProvider = rootFolderProvider;
+		this.storeFolder = storeFolder;
 		this.session = sessionProvider.getInstance();
 		this.chat = chat;
 		this.skypeChatDateFormat = skypeChatDateFormat;
@@ -54,7 +54,7 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 
 	@Override
 	public void save() {
-		GmailFolder root = rootFolderProvider.getFolder();
+		GmailFolder root = storeFolder.getFolder();
 		root.deleteMessageBasedOnId(gmailMessage.getChatId()); 
 		root.appendMessage(gmailMessage);
 	}
