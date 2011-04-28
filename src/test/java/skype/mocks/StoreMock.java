@@ -1,6 +1,6 @@
 package skype.mocks;
 
-import gmail.GmailMessage;
+import gmail.GmailMessageImpl;
 import gmail.GmailMessageInterface;
 
 import java.util.HashMap;
@@ -45,6 +45,6 @@ public class StoreMock implements GmailFolder {
 	}
 	
 	public GmailMessageInterface[] getMessages() {
-		return messageList.values().toArray(new GmailMessage[0]);
+		return messageList.values().toArray(new GmailMessageImpl[0]);
 	}
 }

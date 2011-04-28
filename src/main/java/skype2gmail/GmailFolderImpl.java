@@ -1,6 +1,6 @@
 package skype2gmail;
 
-import gmail.GmailMessage;
+import gmail.GmailMessageImpl;
 import gmail.GmailMessageInterface;
 
 import java.util.LinkedHashMap;
@@ -91,7 +91,7 @@ public class GmailFolderImpl implements GmailFolder {
 		if (foundMessages.length == 0)
 			return null;
 
-		GmailMessage gmailMessage = new GmailMessage((IMAPMessage) foundMessages[0]);
+		GmailMessageImpl gmailMessage = new GmailMessageImpl((IMAPMessage) foundMessages[0]);
 		gmailMessages.put(skypeChat.getId(), gmailMessage);
 		return gmailMessage;
 	}

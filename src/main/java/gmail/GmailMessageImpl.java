@@ -16,15 +16,15 @@ import javax.mail.internet.MimeMessage.RecipientType;
 import skype.MessageProcessingException;
 import skype.SkypeUser;
 
-public class GmailMessage implements GmailMessageInterface {
+public class GmailMessageImpl implements GmailMessageInterface {
 	private MimeMessage mimeMessage;
 	private HeaderCodec headerCodec = new HeaderCodec();
 	
-	public GmailMessage(Session session) {
+	public GmailMessageImpl(Session session) {
 		this.mimeMessage = new MimeMessage(session);
 	}
 
-	public GmailMessage(MimeMessage message) {
+	public GmailMessageImpl(MimeMessage message) {
 		this.mimeMessage = message;
 	}
 
