@@ -21,19 +21,20 @@ import utils.SimpleLoggerProvider;
 import com.google.inject.Inject;
 import com.sun.mail.imap.IMAPMessage;
 
-public class GmailStoreImpl implements GmailFolder {
+public class GmailFolderImpl implements GmailFolder {
 
 	private final Session session;
-	private final SkypeChatFolderProvider chatFolderProvider;
 	private final UserAuthProvider userInfoProvider;
 	private Store store;
+	
+	private final SkypeChatFolderProvider chatFolderProvider;
 	private Folder skypeChatFolder;
 	private Logger logger;
 	private GmailMessage[] retrievedMessages;
 	private final Map<String, GmailMessage> gmailMessages = new LinkedHashMap<String, GmailMessage>();
 	
 	@Inject
-	public GmailStoreImpl(
+	public GmailFolderImpl(
 			SessionProvider sessionProvider, 
 			UserAuthProvider userInfoProvider, 
 			SkypeChatFolderProvider chatFolderProvider,
@@ -164,7 +165,7 @@ public class GmailStoreImpl implements GmailFolder {
 		};
 		SkypeChatFolderProvider achatFolderProvider = new DefaultSkypeChatFolderProvider();
 		
-		GmailStoreImpl gmailStoreImpl = new GmailStoreImpl(sessionProvider, userInfoProvider, achatFolderProvider, new SimpleLoggerProvider());
+		GmailFolderImpl gmailStoreImpl = new GmailFolderImpl(sessionProvider, userInfoProvider, achatFolderProvider, new SimpleLoggerProvider());
 		gmailStoreImpl.getMessages();
 	}
 
