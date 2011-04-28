@@ -13,7 +13,7 @@ import skype.ApplicationException;
 
 import com.google.inject.Inject;
 
-public class GmailStoreFolderImpl implements GmailStoreFolder, GmailFolder {
+public class GmailStoreImpl implements GmailStore, GmailFolder {
 
 	private final Session session;
 	private final SkypeChatFolderProvider chatFolderProvider;
@@ -23,7 +23,7 @@ public class GmailStoreFolderImpl implements GmailStoreFolder, GmailFolder {
 	private final GmailFolderFactory gmailFolderFactory;
 
 	@Inject
-	public GmailStoreFolderImpl(
+	public GmailStoreImpl(
 			SessionProvider sessionProvider, 
 			UserAuthProvider userInfoProvider, 
 			SkypeChatFolderProvider chatFolderProvider,
@@ -33,6 +33,42 @@ public class GmailStoreFolderImpl implements GmailStoreFolder, GmailFolder {
 		this.chatFolderProvider = chatFolderProvider;
 		this.gmailFolderFactory = gmailFolderFactory;
 		this.session = sessionProvider.getInstance();
+	}
+	
+
+	@Override
+	public GmailMessage[] getMessages() {
+		return getGmailFolder().getMessages();
+	}
+
+	@Override
+	public void deleteMessageBasedOnId(String chatId) {
+		getGmailFolder().deleteMessageBasedOnId(chatId);
+	}
+
+	@Override
+	public void appendMessage(GmailMessage gmailMessage) {
+		getGmailFolder().appendMessage(gmailMessage);
+	}
+
+	@Override
+	public void close() {
+		if (store != null) {
+			try {
+				getGmailFolder().close();
+			}
+			finally {
+				closeStore();
+			}
+		}
+	}
+
+	private void closeStore() {
+		try {
+			store.close();
+		} catch (MessagingException e) {
+			throw new ApplicationException(e);
+		}
 	}
 
 	private GmailFolder getGmailFolder() {
@@ -60,40 +96,5 @@ public class GmailStoreFolderImpl implements GmailStoreFolder, GmailFolder {
 		} catch (MessagingException e) {
 			throw new ApplicationException(e);
 		}
-	}
-
-	@Override
-	public void close() {
-		if (store != null) {
-			try {
-				getGmailFolder().close();
-			}
-			finally {
-				closeStore();
-			}
-		}
-	}
-
-	private void closeStore() {
-		try {
-			store.close();
-		} catch (MessagingException e) {
-			throw new ApplicationException(e);
-		}
-	}
-
-	@Override
-	public GmailMessage[] getMessages() {
-		return getGmailFolder().getMessages();
-	}
-
-	@Override
-	public void deleteMessageBasedOnId(String chatId) {
-		getGmailFolder().deleteMessageBasedOnId(chatId);
-	}
-
-	@Override
-	public void appendMessage(GmailMessage gmailMessage) {
-		getGmailFolder().appendMessage(gmailMessage);
 	}
 }

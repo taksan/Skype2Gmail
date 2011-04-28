@@ -1,18 +1,18 @@
 package skype.mocks;
 
+import gmail.GmailMessage;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import gmail.GmailFolder;
-import gmail.GmailMessage;
-import skype2gmail.GmailStoreFolder;
+import skype2gmail.GmailStore;
 
-public class StoreFolderMock implements GmailStoreFolder, GmailFolder {
+public class StoreMock implements GmailStore {
 
 	
 	private final Map<String, GmailMessage> messageList;
 
-	public StoreFolderMock() {
+	public StoreMock() {
 		messageList = new HashMap<String, GmailMessage>();
 	}
 

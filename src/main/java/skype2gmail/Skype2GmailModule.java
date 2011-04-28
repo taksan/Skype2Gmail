@@ -17,7 +17,7 @@ public class Skype2GmailModule extends Skype2GmailModuleCommons {
 		bind(SkypeApi.class).to(SkypeApiImpl.class).in(Scopes.SINGLETON);
 		bind(UserAuthProvider.class).to(UserConfigBasedProvider.class).in(Scopes.SINGLETON);
 		bind(SkypeUserFactory.class).to(SkypeUserFactoryImpl.class).in(Scopes.SINGLETON);
-		bind(GmailStoreFolder.class).to(GmailStoreFolderImpl.class).in(Scopes.SINGLETON);
+		bind(GmailStore.class).to(GmailStoreImpl.class).in(Scopes.SINGLETON);
 		bind(LoggerProvider.class).to(LoggerProviderImpl.class).in(Scopes.SINGLETON);
 	}
 }

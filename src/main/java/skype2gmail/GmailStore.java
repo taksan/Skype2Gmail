@@ -2,7 +2,7 @@ package skype2gmail;
 
 import gmail.GmailMessage;
 
-public interface GmailStoreFolder {
+public interface GmailStore {
 
 	GmailMessage[] getMessages();
 	void deleteMessageBasedOnId(String chatId);
