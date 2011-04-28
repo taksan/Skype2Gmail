@@ -1,6 +1,5 @@
 package skype2gmail;
 
-import gmail.GmailFolder;
 import gmail.GmailMessage;
 
 import java.util.Date;
@@ -54,9 +53,8 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 
 	@Override
 	public void save() {
-		GmailFolder root = storeFolder.getFolder();
-		root.deleteMessageBasedOnId(gmailMessage.getChatId()); 
-		root.appendMessage(gmailMessage);
+		storeFolder.deleteMessageBasedOnId(gmailMessage.getChatId()); 
+		storeFolder.appendMessage(gmailMessage);
 	}
 
 	@Override

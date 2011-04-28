@@ -1,9 +1,11 @@
 package skype2gmail;
 
-import gmail.GmailFolder;
+import gmail.GmailMessage;
 
 public interface GmailStoreFolder {
 
-	GmailFolder getFolder();
+	GmailMessage[] getMessages();
+	void deleteMessageBasedOnId(String chatId);
+	void appendMessage(GmailMessage gmailMessage);
 	void close();
 }

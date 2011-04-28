@@ -1,6 +1,7 @@
 package skype2gmail;
 
 import gmail.GmailFolder;
+import gmail.GmailMessage;
 
 import javax.mail.Folder;
 import javax.mail.MessagingException;
@@ -12,7 +13,7 @@ import skype.ApplicationException;
 
 import com.google.inject.Inject;
 
-public class GmailStoreFolderImpl implements GmailStoreFolder {
+public class GmailStoreFolderImpl implements GmailStoreFolder, GmailFolder {
 
 	private final Session session;
 	private final SkypeChatFolderProvider chatFolderProvider;
@@ -34,16 +35,10 @@ public class GmailStoreFolderImpl implements GmailStoreFolder {
 		this.session = sessionProvider.getInstance();
 	}
 
-	@Override
-	public GmailFolder getFolder() {
+	private GmailFolder getGmailFolder() {
 		if (gmailFolder != null)
 			return gmailFolder;
 		
-		gmailFolder = getGmailFolder();
-		return gmailFolder;
-	}
-
-	private GmailFolder getGmailFolder() {
 		String user = userInfoProvider.getUser();
 		String password = userInfoProvider.getPassword();
 		try {
@@ -58,7 +53,8 @@ public class GmailStoreFolderImpl implements GmailStoreFolder {
 				root.open(Folder.READ_WRITE);
 			}
 			
-			return this.gmailFolderFactory.produce(root);
+			gmailFolder = this.gmailFolderFactory.produce(root);
+			return gmailFolder;
 		} catch (NoSuchProviderException e) {
 			throw new ApplicationException(e);
 		} catch (MessagingException e) {
@@ -70,7 +66,7 @@ public class GmailStoreFolderImpl implements GmailStoreFolder {
 	public void close() {
 		if (store != null) {
 			try {
-				getFolder().close();
+				getGmailFolder().close();
 			}
 			finally {
 				closeStore();
@@ -84,5 +80,20 @@ public class GmailStoreFolderImpl implements GmailStoreFolder {
 		} catch (MessagingException e) {
 			throw new ApplicationException(e);
 		}
+	}
+
+	@Override
+	public GmailMessage[] getMessages() {
+		return getGmailFolder().getMessages();
+	}
+
+	@Override
+	public void deleteMessageBasedOnId(String chatId) {
+		getGmailFolder().deleteMessageBasedOnId(chatId);
+	}
+
+	@Override
+	public void appendMessage(GmailMessage gmailMessage) {
+		getGmailFolder().appendMessage(gmailMessage);
 	}
 }
