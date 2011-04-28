@@ -28,6 +28,10 @@ public class LazySkypeChat implements SkypeChat {
 		return baseChat.getId();
 	}
 	
+	@Override
+	public String getBodySignature() {
+		return previousChatMessage.getBodySignature();
+	}
 
 	@Override
 	public String getTopic() {
@@ -38,12 +42,6 @@ public class LazySkypeChat implements SkypeChat {
 	public Date getTime() {
 		return previousChatMessage.getDate();
 	}
-
-	@Override
-	public String getBodySignature() {
-		return previousChatMessage.getBodySignature();
-	}
-
 
 	@Override
 	public SkypeUser getChatAuthor() {

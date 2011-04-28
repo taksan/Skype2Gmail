@@ -28,17 +28,11 @@ public class GmailMessageImpl implements GmailMessage {
 		this.mimeMessage = message;
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#getMimeMessage()
-	 */
 	@Override
 	public MimeMessage getMimeMessage() {
 		return mimeMessage;
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#setFrom(java.lang.String)
-	 */
 	@Override
 	public void setFrom(String chatAuthor) {
 		try {
@@ -48,9 +42,6 @@ public class GmailMessageImpl implements GmailMessage {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#setSubject(java.lang.String)
-	 */
 	@Override
 	public void setSubject(String topic) {
 		try {
@@ -60,9 +51,6 @@ public class GmailMessageImpl implements GmailMessage {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#addRecipient(skype.SkypeUser)
-	 */
 	@Override
 	public void addRecipient(SkypeUser skypeUser) {
 		try {
@@ -75,9 +63,6 @@ public class GmailMessageImpl implements GmailMessage {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#setBody(java.lang.String)
-	 */
 	@Override
 	public void setBody(String messageBody) {
 		try {
@@ -87,25 +72,16 @@ public class GmailMessageImpl implements GmailMessage {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#getChatId()
-	 */
 	@Override
 	public String getChatId() {
 		return getFirstHeaderOrNull(GmailMessage.X_MESSAGE_ID);
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#getBodySignature()
-	 */
 	@Override
 	public String getBodySignature() {
 		return getFirstHeaderOrNull(GmailMessage.X_BODY_SIGNATURE);
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#getTopic()
-	 */
 	@Override
 	public String getTopic() {
 		try {
@@ -115,9 +91,6 @@ public class GmailMessageImpl implements GmailMessage {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#getBody()
-	 */
 	@Override
 	public String getBody() {
 		try {
@@ -129,33 +102,21 @@ public class GmailMessageImpl implements GmailMessage {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#setChatId(java.lang.String)
-	 */
 	@Override
 	public void setChatId(String id) {
 		this.setHeader(GmailMessage.X_MESSAGE_ID, id);
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#setBodySignature(java.lang.String)
-	 */
 	@Override
 	public void setBodySignature(String bodySignature) {
 		this.setHeader(GmailMessage.X_BODY_SIGNATURE, bodySignature);
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#setMessagesSignatures(java.lang.String)
-	 */
 	@Override
 	public void setMessagesSignatures(String signatures) {
 		this.setHeader(GmailMessage.X_MESSAGES_SIGNATURES, signatures);
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#getDate()
-	 */
 	@Override
 	public Date getDate() {
 		try {
@@ -165,34 +126,22 @@ public class GmailMessageImpl implements GmailMessage {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#getMessagesSignatures()
-	 */
 	@Override
 	public String[] getMessagesSignatures() {
 		String signatures = this.getFirstHeaderOrNull(X_MESSAGES_SIGNATURES);
 		return signatures.split(",");
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#getPosters()
-	 */
 	@Override
 	public String[] getPosters() {
 		return this.getHeader(X_SKYPE_POSTERS);
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#addPoster(skype.SkypeUser)
-	 */
 	@Override
 	public void addPoster(SkypeUser skypeUser) {
 		this.addHeader(X_SKYPE_POSTERS, skypeUser.getPosterHeader());
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#getFrom()
-	 */
 	@Override
 	public InternetAddress[] getFrom() {
 		try {
@@ -202,9 +151,6 @@ public class GmailMessageImpl implements GmailMessage {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#getRecipients(javax.mail.Message.RecipientType)
-	 */
 	@Override
 	public InternetAddress[] getRecipients(javax.mail.Message.RecipientType to) {
 		try {
@@ -214,9 +160,6 @@ public class GmailMessageImpl implements GmailMessage {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#setDate(java.lang.String)
-	 */
 	@Override
 	public void setDate(String timeAsString) {
 		try {
@@ -233,9 +176,6 @@ public class GmailMessageImpl implements GmailMessage {
 		return header[0];
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#delete()
-	 */
 	@Override
 	public void delete() {
 		try {
@@ -275,9 +215,6 @@ public class GmailMessageImpl implements GmailMessage {
 		} 
 	}
 
-	/* (non-Javadoc)
-	 * @see gmail.GmailMessageInterface#setSentDate(java.util.Date)
-	 */
 	@Override
 	public void setSentDate(Date time) {
 		try {
