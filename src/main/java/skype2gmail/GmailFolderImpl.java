@@ -11,12 +11,9 @@ import javax.mail.MessagingException;
 import javax.mail.search.HeaderTerm;
 import javax.mail.search.SearchTerm;
 
-import org.apache.log4j.Logger;
-
 import skype.ApplicationException;
 import skype.MessageProcessingException;
 import skype.SkypeChat;
-import utils.LoggerProvider;
 
 import com.google.inject.Inject;
 import com.sun.mail.imap.IMAPMessage;
@@ -25,17 +22,14 @@ public class GmailFolderImpl implements GmailFolder {
 
 	private final SkypeChatFolderProvider chatFolderProvider;
 	private Folder skypeChatFolder;
-	private Logger logger;
-	private GmailMessage[] retrievedMessages;
 	private final Map<String, GmailMessage> gmailMessages = new LinkedHashMap<String, GmailMessage>();
 	private final GmailStore gmailStore;
 
 	@Inject
 	public GmailFolderImpl(SkypeChatFolderProvider chatFolderProvider,
-			LoggerProvider loggerProvider, GmailStore gmailStore) {
+			GmailStore gmailStore) {
 		this.chatFolderProvider = chatFolderProvider;
 		this.gmailStore = gmailStore;
-		this.logger = loggerProvider.getLogger(getClass());
 	}
 
 	@Override
@@ -54,7 +48,6 @@ public class GmailFolderImpl implements GmailFolder {
 				.getMimeMessage() };
 		try {
 			rootFolder.appendMessages(msgs);
-			replaceOldMessage(gmailMessage);
 		} catch (MessagingException e) {
 			throw new ApplicationException(e);
 		}
@@ -83,11 +76,6 @@ public class GmailFolderImpl implements GmailFolder {
 		return gmailStore.getFolder(chatFolderProvider.getFolder());
 	}
 
-	private void replaceOldMessage(GmailMessage gmailMessage) {
-		gmailMessages.put(gmailMessage.getChatId(), gmailMessage);
-		retrievedMessages = gmailMessages.values().toArray(new GmailMessage[0]);
-	}
-
 	@Override
 	public GmailMessage retrieveMessageEntryFor(SkypeChat skypeChat) {
 		SearchTerm st = new HeaderTerm(GmailMessage.X_MESSAGE_ID,
@@ -102,6 +90,8 @@ public class GmailFolderImpl implements GmailFolder {
 		if (foundMessages.length == 0)
 			return null;
 
-		return new GmailMessage((IMAPMessage) foundMessages[0]);
+		GmailMessage gmailMessage = new GmailMessage((IMAPMessage) foundMessages[0]);
+		gmailMessages.put(skypeChat.getId(), gmailMessage);
+		return gmailMessage;
 	}
 }
