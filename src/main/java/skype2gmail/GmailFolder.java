@@ -9,4 +9,5 @@ public interface GmailFolder {
 	void appendMessage(GmailMessage gmailMessage);
 	void close();
 	GmailMessage retrieveMessageEntryFor(SkypeChat skypeChat);
+	String retrieveIndexFromMail();
 }

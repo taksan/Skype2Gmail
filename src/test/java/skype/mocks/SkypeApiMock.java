@@ -33,18 +33,23 @@ public class SkypeApiMock implements SkypeApi {
 		mockChatList.add(mockChat);
 	}
 	
-
-	public static SkypeChatMock produceChatMock(String chatId, String member1, String member2) {
+	public static SkypeChatMock produceChatMock(String chatId, String member1, String member2, String bodySignature)
+	{
 		String[] members= new String[]{member1,member2};
 		
 		Date aDate = DateHelper.makeDate(2011, 3, 21, 15, 0, 0);
 		
-		SkypeChatMock chat = new SkypeChatMock(chatId, aDate, "FOO", members);
+		SkypeChatMock chat = new SkypeChatMock(chatId, aDate, "FOO", members, bodySignature);
 		
 		createMockMessage(member1, chat, "2011/04/21 15:14:18", "Hya");
 		createMockMessage(member2, chat, "2011/04/21 15:14:24", "Howdy\n	I'm doing fine");
 		
 		return chat;
+	}
+	
+
+	public static SkypeChatMock produceChatMock(String chatId, String member1, String member2) {
+		return produceChatMock(chatId,member1,member2,"content-id-mock");
 	}
 
 	private static SkypeChatMock createMockMessage(String memberId, SkypeChatMock chat,

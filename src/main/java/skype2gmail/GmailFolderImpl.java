@@ -1,7 +1,7 @@
 package skype2gmail;
 
-import gmail.GmailMessageImpl;
 import gmail.GmailMessage;
+import gmail.GmailMessageImpl;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -74,13 +74,13 @@ public class GmailFolderImpl implements GmailFolder {
 		if (skypeChatFolder != null)
 			return skypeChatFolder;
 
-		return gmailStore.getFolder(chatFolderProvider.getFolder());
+		skypeChatFolder = gmailStore.getFolder(chatFolderProvider.getFolderName());
+		return skypeChatFolder;
 	}
 
 	@Override
 	public GmailMessage retrieveMessageEntryFor(SkypeChat skypeChat) {
-		SearchTerm st = new HeaderTerm(GmailMessage.X_MESSAGE_ID,
-				skypeChat.getId());
+		SearchTerm st = new HeaderTerm(GmailMessage.X_MESSAGE_ID, skypeChat.getId());
 		Folder folder = getSkypeChatFolder();
 		Message[] foundMessages;
 		try {
@@ -94,5 +94,22 @@ public class GmailFolderImpl implements GmailFolder {
 		GmailMessageImpl gmailMessage = new GmailMessageImpl((IMAPMessage) foundMessages[0]);
 		gmailMessages.put(skypeChat.getId(), gmailMessage);
 		return gmailMessage;
+	}
+
+	@Override
+	public String retrieveIndexFromMail() {
+		SearchTerm st = new HeaderTerm(GmailMessage.X_SKYPE_2_GMAIL_INDEX, "skype2gmail");
+		Folder folder = getSkypeChatFolder();
+		Message[] foundMessages;
+		try {
+			foundMessages = folder.search(st);
+		} catch (MessagingException e) {
+			throw new MessageProcessingException(e);
+		}
+		if (foundMessages.length == 0)
+			return null;
+		GmailMessageImpl indexMessage = new GmailMessageImpl((IMAPMessage) foundMessages[0]);
+		
+		return indexMessage.getBody();
 	}
 }

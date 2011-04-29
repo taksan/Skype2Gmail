@@ -13,6 +13,7 @@ public interface GmailMessage {
 	public static final String X_BODY_SIGNATURE = "X-SKYPE-BODY-SIGNATURE";
 	public static final String X_MESSAGE_ID = "X-SKYPE-MESSAGE-ID";
 	public static final String X_SKYPE_POSTERS = "X_SKYPE_POSTERS";
+	public static final String X_SKYPE_2_GMAIL_INDEX = "X_SKYPE_2_GMAIL_INDEX";
 
 	public abstract MimeMessage getMimeMessage();
 

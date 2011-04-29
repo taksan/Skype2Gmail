@@ -23,14 +23,21 @@ public class SkypeChatMock implements SkypeChat {
 	private final String topic;
 	private final UsersSortedByUserId members;
 	private final DigestProvider digestProvider;
+	private final String bodySignature;
 
 	public SkypeChatMock(String chatId, Date date, String topic,
 			String[] members) {
+		this(chatId,date,topic,members,"content-id-mock");
+	}
+
+	public SkypeChatMock(String chatId, Date date, String topic,
+			String[] members, String bodySignature) {
 		digestProvider = DigestProviderForTestFactory.getInstance();
 		this.chatId = chatId;
 		this.chatDate = date;
 		this.topic = topic;
 		this.members = SkypeChatHelper.makeUserList(members);
+		this.bodySignature = bodySignature;
 	}
 
 	@Override
@@ -82,7 +89,7 @@ public class SkypeChatMock implements SkypeChat {
 
 	@Override
 	public String getBodySignature() {
-		return "content-id-mock";
+		return this.bodySignature;
 	}
 
 	@Override

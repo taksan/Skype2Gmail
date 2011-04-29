@@ -9,7 +9,7 @@ import org.junit.Test;
 import skype.AbstractRecordingTest;
 import skype.SkypeHistoryRecorder;
 import skype.mocks.Skype2GmailModuleMockingSkypeApi;
-import skype.mocks.StoreMock;
+import skype.mocks.FolderMock;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -29,7 +29,7 @@ public class Skype2GmailModuleTest extends AbstractRecordingTest {
 		final Injector injector = Guice.createInjector(new Skype2GmailModuleMockingSkypeApi());
 		
 		testRecording(injector);
-		StoreMock folderProvider = (StoreMock) injector.getInstance(GmailFolder.class);
+		FolderMock folderProvider = (FolderMock) injector.getInstance(GmailFolder.class);
 		
 		Assert.assertEquals(3, folderProvider.getMessages().length);
 	}

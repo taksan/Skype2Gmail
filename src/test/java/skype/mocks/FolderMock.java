@@ -1,6 +1,5 @@
 package skype.mocks;
 
-import gmail.GmailMessageImpl;
 import gmail.GmailMessage;
 
 import java.util.HashMap;
@@ -9,12 +8,18 @@ import java.util.Map;
 import skype.SkypeChat;
 import skype2gmail.GmailFolder;
 
-public class StoreMock implements GmailFolder {
+public class FolderMock implements GmailFolder {
 
 	
 	private final Map<String, GmailMessage> messageList;
+	private final String mockIndex;
 
-	public StoreMock() {
+	public FolderMock() {
+		this(null);
+	}
+	
+	public FolderMock(String mockIndex) {
+		this.mockIndex = mockIndex;
 		messageList = new HashMap<String, GmailMessage>();
 	}
 
@@ -45,6 +50,11 @@ public class StoreMock implements GmailFolder {
 	}
 	
 	public GmailMessage[] getMessages() {
-		return messageList.values().toArray(new GmailMessageImpl[0]);
+		return messageList.values().toArray(new GmailMessage[0]);
+	}
+
+	@Override
+	public String retrieveIndexFromMail() {
+		return mockIndex;
 	}
 }
