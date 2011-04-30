@@ -18,5 +18,6 @@ public class Skype2GmailModuleCommons extends Skype2StorageModuleCommons {
 		bind(SessionProvider.class).to(SessionProviderImpl.class).in(Scopes.SINGLETON);
 		bind(GmailStorageEntryFactory.class).to(GmailStorageEntryFactoryImpl.class).in(Scopes.SINGLETON);
 		bind(Skype2GmailConfigContents.class).to(Skype2GmailConfigContentsImpl.class).in(Scopes.SINGLETON);
+		bind(GmailMessageFactory.class).to(GmailMessageFactoryImpl.class).in(Scopes.SINGLETON);
 	}
 }

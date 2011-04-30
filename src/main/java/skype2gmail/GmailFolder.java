@@ -1,6 +1,9 @@
 package skype2gmail;
 
 import gmail.GmailMessage;
+
+import javax.mail.search.SearchTerm;
+
 import skype.SkypeChat;
 
 public interface GmailFolder {
@@ -9,5 +12,6 @@ public interface GmailFolder {
 	void appendMessage(GmailMessage gmailMessage);
 	void close();
 	GmailMessage retrieveMessageEntryFor(SkypeChat skypeChat);
-	String retrieveIndexFromMail();
+	GmailMessage retrieveFirstMessageMatchingSearchTerm(SearchTerm st);
+	void replaceMessageMatchingTerm(SearchTerm chatIndexSearchTerm, GmailMessage replacementMessage);
 }

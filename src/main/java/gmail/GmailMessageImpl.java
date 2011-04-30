@@ -223,4 +223,9 @@ public class GmailMessageImpl implements GmailMessage {
 			throw new MessageProcessingException(e);
 		}
 	}
+
+	@Override
+	public void setCustomHeader(String headerField, String value) {
+		this.setHeader(headerField, value);
+	}
 }

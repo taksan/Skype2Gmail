@@ -27,7 +27,7 @@ public class GmailStorageEntryTest {
 	public void happyDay() throws MessagingException, IOException {
 		final Injector injector = Guice.createInjector(new Skype2GmailModuleMockingSkypeApi());
 		
-		SessionProvider sessionProvider = injector.getInstance(SessionProvider.class);
+		GmailMessageFactory gmailMessageFactory = injector.getInstance(GmailMessageFactory.class);
 		GmailFolder rootFolderProvider  = injector.getInstance(GmailFolder.class);
 		SkypeChatDateFormat skypeChatDateFormat = injector.getInstance(SkypeChatDateFormat.class);
 		
@@ -46,7 +46,8 @@ public class GmailStorageEntryTest {
 		
 		SkypeChat chat = chatHelper.getChat("#joe$moe", "chit chat");
 		injector.getInstance(GmailStorageEntryFactory.class);
-		GmailStorageEntry gmailStorageEntry = new GmailStorageEntry(sessionProvider, rootFolderProvider, chat, skypeChatDateFormat);
+		GmailStorageEntry gmailStorageEntry =
+			new GmailStorageEntry(rootFolderProvider, chat, skypeChatDateFormat, gmailMessageFactory);
 		
 		gmailStorageEntry.store(new SkypeChatSetter(chat));
 		

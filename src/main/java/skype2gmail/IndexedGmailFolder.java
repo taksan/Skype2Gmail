@@ -1,6 +1,9 @@
 package skype2gmail;
 
 import gmail.GmailMessage;
+
+import javax.mail.search.SearchTerm;
+
 import skype.SkypeChat;
 
 import com.google.inject.Inject;
@@ -45,7 +48,12 @@ public class IndexedGmailFolder implements GmailFolder {
 	}
 
 	@Override
-	public String retrieveIndexFromMail() {
-		return this.nonIndexedGmailFolder.retrieveIndexFromMail();
+	public GmailMessage retrieveFirstMessageMatchingSearchTerm(SearchTerm st) {
+		return this.nonIndexedGmailFolder.retrieveFirstMessageMatchingSearchTerm(st);
+	}
+
+	@Override
+	public void replaceMessageMatchingTerm(SearchTerm chatIndexSearchTerm, GmailMessage replacementMessage) {
+		this.nonIndexedGmailFolder.replaceMessageMatchingTerm(chatIndexSearchTerm, replacementMessage);
 	}
 }

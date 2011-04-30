@@ -1,13 +1,10 @@
 package skype2gmail;
 
-import gmail.GmailMessageImpl;
 import gmail.GmailMessage;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.mail.Session;
 
 import skype.MessageBodyBuilder;
 import skype.SkypeChat;
@@ -21,50 +18,50 @@ import skype2disk.SkypeChatSetterVisitor;
 public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 
 	private final SkypeChat chat;
-	private final Session session;
 	private final SkypeChatDateFormat skypeChatDateFormat;
 	private final GmailFolder storeFolder;
 	private final MessageBodyBuilder messageBodyBuilder = new MessageBodyBuilder();
-	private GmailMessage gmailMessage;
+	private final GmailMessageFactory gmailMessageFactory;
+	private GmailMessage storedGmailMessage;
 	private SkypeUser chatAuthor;
 
 	public GmailStorageEntry(
-			SessionProvider sessionProvider,
 			GmailFolder storeFolder, 
 			SkypeChat chat,
-			SkypeChatDateFormat skypeChatDateFormat) 
+			SkypeChatDateFormat skypeChatDateFormat,
+			GmailMessageFactory gmailMessageFactory) 
 	{
 		this.storeFolder = storeFolder;
-		this.session = sessionProvider.getInstance();
 		this.chat = chat;
 		this.skypeChatDateFormat = skypeChatDateFormat;
+		this.gmailMessageFactory = gmailMessageFactory;
 	}
 	
 	GmailMessage getMessage() {
-		return this.gmailMessage;
+		return this.storedGmailMessage;
 	}
 
 	@Override
 	public void store(SkypeChatSetter content) {
-		gmailMessage = new GmailMessageImpl(session);
+		storedGmailMessage = gmailMessageFactory.factory();
 		content.accept(this);
 		
-		gmailMessage.setBody(messageBodyBuilder.getMessageBody());
+		storedGmailMessage.setBody(messageBodyBuilder.getMessageBody());
 	}
 
 	@Override
 	public void save() {
-		storeFolder.deleteMessageBasedOnId(gmailMessage.getChatId()); 
-		storeFolder.appendMessage(gmailMessage);
+		storeFolder.deleteMessageBasedOnId(storedGmailMessage.getChatId()); 
+		storeFolder.appendMessage(storedGmailMessage);
 	}
 
 	@Override
 	public void setLastModificationTime(Date time) {
-		if (gmailMessage == null) {
+		if (storedGmailMessage == null) {
 			throw new IllegalStateException("You must store the message before invoking setLastModificationTime");
 		}
-		gmailMessage.setDate(skypeChatDateFormat.format(time));
-		gmailMessage.setSentDate(time);
+		storedGmailMessage.setDate(skypeChatDateFormat.format(time));
+		storedGmailMessage.setSentDate(time);
 	}
 
 	@Override
@@ -76,12 +73,12 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 	public void visitChatAuthor(SkypeUser chatAuthor) {
 		this.chatAuthor = chatAuthor;
 		String fromUser = String.format("%s <%s>", chatAuthor.getDisplayName(), chatAuthor.getUserId());
-		gmailMessage.setFrom(fromUser);
+		storedGmailMessage.setFrom(fromUser);
 	}
 
 	@Override
 	public void visitChatId(String id) {
-		gmailMessage.setChatId(id);
+		storedGmailMessage.setChatId(id);
 	}
 
 	@Override
@@ -91,23 +88,23 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 
 	@Override
 	public void visitBodySignature(String bodySignature) {
-		gmailMessage.setBodySignature(bodySignature);
+		storedGmailMessage.setBodySignature(bodySignature);
 	}
 
 	@Override
 	public void visitMessagesSignatures(String signatures) {
-		gmailMessage.setMessagesSignatures(signatures);
+		storedGmailMessage.setMessagesSignatures(signatures);
 	}
 
 	@Override
 	public void visitTopic(String topic) {
-		gmailMessage.setSubject(topic);
+		storedGmailMessage.setSubject(topic);
 	}
 
 	private Set<String> visitedPosters = new HashSet<String>();
 	@Override
 	public void visitPoster(SkypeUser skypeUser) {
-		gmailMessage.addPoster(skypeUser);
+		storedGmailMessage.addPoster(skypeUser);
 		if (visitedPosters.contains(skypeUser.getUserId())) {
 			return;
 		}
@@ -115,7 +112,7 @@ public class GmailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {
 		if (this.chatAuthor.getUserId().equals(skypeUser.getUserId())) {
 			return;
 		}
-		gmailMessage.addRecipient(skypeUser);
+		storedGmailMessage.addRecipient(skypeUser);
 	}
 
 	@Override

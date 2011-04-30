@@ -58,4 +58,6 @@ public interface GmailMessage {
 
 	public abstract void setSentDate(Date time);
 
+	public abstract void setCustomHeader(String indexHeaderName, String indexHeaderValue);
+
 }

@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.mail.search.HeaderTerm;
 import javax.mail.search.SearchTerm;
 
@@ -17,7 +18,6 @@ import skype.MessageProcessingException;
 import skype.SkypeChat;
 
 import com.google.inject.Inject;
-import com.sun.mail.imap.IMAPMessage;
 
 public class GmailFolderImpl implements GmailFolder {
 
@@ -34,24 +34,67 @@ public class GmailFolderImpl implements GmailFolder {
 	}
 
 	@Override
-	public void deleteMessageBasedOnId(String chatId) {
-		GmailMessage gmailMessage = gmailMessages.get(chatId);
-		if (gmailMessage == null)
-			return;
-
-		gmailMessage.delete();
-	}
-
-	@Override
 	public void appendMessage(GmailMessage gmailMessage) {
 		Folder rootFolder = getSkypeChatFolder();
-		Message[] msgs = new javax.mail.Message[] { gmailMessage
-				.getMimeMessage() };
+		Message[] msgs = new javax.mail.Message[] { 
+				gmailMessage.getMimeMessage() 
+		};
 		try {
 			rootFolder.appendMessages(msgs);
 		} catch (MessagingException e) {
 			throw new ApplicationException(e);
 		}
+	}
+	
+	@Override
+	public GmailMessage retrieveMessageEntryFor(SkypeChat skypeChat) {
+		SearchTerm st = new HeaderTerm(GmailMessage.X_MESSAGE_ID, skypeChat.getId());
+		GmailMessage gmailMessage = retrieveFirstMessageMatchingSearchTerm(st);
+		
+		if (gmailMessage.getBody() == null)
+			return null;
+		
+		gmailMessages.put(skypeChat.getId(), gmailMessage);
+		return gmailMessage;
+	}
+
+	@Override
+	public void deleteMessageBasedOnId(String chatId) {
+		
+		GmailMessage gmailMessage = gmailMessages.get(chatId);
+		if (gmailMessage == null) {
+			SearchTerm st = new HeaderTerm(GmailMessage.X_MESSAGE_ID, chatId);
+			gmailMessage = retrieveFirstMessageMatchingSearchTerm(st);
+			if (gmailMessage == null)
+				return;
+		}
+
+		gmailMessage.delete();
+	}
+
+	@Override
+	public GmailMessage retrieveFirstMessageMatchingSearchTerm(SearchTerm st) {
+		GmailMessage gmailMessage;
+		Folder folder = getSkypeChatFolder();
+		Message[] foundMessages;
+		try {
+			foundMessages = folder.search(st);
+		} catch (MessagingException e) {
+			throw new MessageProcessingException(e);
+		}
+		if (foundMessages.length == 0)
+			gmailMessage = new EmptyGmailMessage();
+		else
+			gmailMessage = new GmailMessageImpl((MimeMessage) foundMessages[0]);
+		return gmailMessage;
+	}
+
+	@Override
+	public void replaceMessageMatchingTerm(SearchTerm chatIndexSearchTerm,
+			GmailMessage replacementMessage) {
+		GmailMessage messageToReplace = retrieveFirstMessageMatchingSearchTerm(chatIndexSearchTerm);
+		messageToReplace.delete();
+		this.appendMessage(replacementMessage);
 	}
 
 	@Override
@@ -76,40 +119,5 @@ public class GmailFolderImpl implements GmailFolder {
 
 		skypeChatFolder = gmailStore.getFolder(chatFolderProvider.getFolderName());
 		return skypeChatFolder;
-	}
-
-	@Override
-	public GmailMessage retrieveMessageEntryFor(SkypeChat skypeChat) {
-		SearchTerm st = new HeaderTerm(GmailMessage.X_MESSAGE_ID, skypeChat.getId());
-		Folder folder = getSkypeChatFolder();
-		Message[] foundMessages;
-		try {
-			foundMessages = folder.search(st);
-		} catch (MessagingException e) {
-			throw new MessageProcessingException(e);
-		}
-		if (foundMessages.length == 0)
-			return null;
-
-		GmailMessageImpl gmailMessage = new GmailMessageImpl((IMAPMessage) foundMessages[0]);
-		gmailMessages.put(skypeChat.getId(), gmailMessage);
-		return gmailMessage;
-	}
-
-	@Override
-	public String retrieveIndexFromMail() {
-		SearchTerm st = new HeaderTerm(GmailMessage.X_SKYPE_2_GMAIL_INDEX, "skype2gmail");
-		Folder folder = getSkypeChatFolder();
-		Message[] foundMessages;
-		try {
-			foundMessages = folder.search(st);
-		} catch (MessagingException e) {
-			throw new MessageProcessingException(e);
-		}
-		if (foundMessages.length == 0)
-			return null;
-		GmailMessageImpl indexMessage = new GmailMessageImpl((IMAPMessage) foundMessages[0]);
-		
-		return indexMessage.getBody();
 	}
 }

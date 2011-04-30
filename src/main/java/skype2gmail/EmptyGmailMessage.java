@@ -2,65 +2,28 @@ package skype2gmail;
 
 import gmail.GmailMessage;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.mail.Message.RecipientType;
-import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang.NotImplementedException;
 
-import skype.SkypeChat;
 import skype.SkypeUser;
-import skype.UsersSortedByUserId;
 
-public class GmailMessageMock implements GmailMessage {
-
-	private final SkypeChat previousSkypeChat;
-	private String mockBody;
-	private MimeMessage mimeMessage;
-
-	public GmailMessageMock(SkypeChat previousSkypeChat) {
-		this.previousSkypeChat = previousSkypeChat;
-		this.mimeMessage = new MimeMessage(new SessionProviderImpl().getInstance());
-		try {
-			this.mimeMessage.setHeader(GmailMessage.X_MESSAGE_ID, previousSkypeChat.getId());
-			this.mimeMessage.setContent("", "text/plain");
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
-	public GmailMessageMock() {
-		this.previousSkypeChat  = null;
-	}
-
-	public void setMockBody(String mockBody) {
-		this.mockBody = mockBody;
-	}
-
-	@Override
-	public String[] getPosters() {
-		List<String> posterIds = new LinkedList<String>();
-		UsersSortedByUserId posters = previousSkypeChat.getPosters();
-		for (SkypeUser skypeUser : posters) {
-			posterIds.add(skypeUser.getUserId());
-		}
-		
-		String[] postersArray = posterIds.toArray(new String[0]);
-		Arrays.sort(postersArray);
-		return postersArray;
-	}
-	
+public class EmptyGmailMessage implements GmailMessage {
 
 	@Override
 	public MimeMessage getMimeMessage() {
-		return mimeMessage;
+		throw new NotImplementedException();
 	}
+	
+
+	@Override
+	public String getBody() {
+		return null;
+	}	
 
 	@Override
 	public void setFrom(String chatAuthor) {
@@ -79,12 +42,12 @@ public class GmailMessageMock implements GmailMessage {
 
 	@Override
 	public void setBody(String messageBody) {
-		this.mockBody = messageBody;
+		throw new NotImplementedException();
 	}
 
 	@Override
 	public String getChatId() {
-		return this.previousSkypeChat.getId();
+		throw new NotImplementedException();
 	}
 
 	@Override
@@ -95,11 +58,6 @@ public class GmailMessageMock implements GmailMessage {
 	@Override
 	public String getTopic() {
 		throw new NotImplementedException();
-	}
-
-	@Override
-	public String getBody() {
-		return mockBody;
 	}
 
 	@Override
@@ -124,6 +82,11 @@ public class GmailMessageMock implements GmailMessage {
 
 	@Override
 	public String[] getMessagesSignatures() {
+		throw new NotImplementedException();
+	}
+
+	@Override
+	public String[] getPosters() {
 		throw new NotImplementedException();
 	}
 
@@ -157,7 +120,11 @@ public class GmailMessageMock implements GmailMessage {
 		throw new NotImplementedException();
 	}
 
+
 	@Override
 	public void setCustomHeader(String indexHeaderName, String indexHeaderValue) {
+		throw new NotImplementedException();
 	}
+
+
 }

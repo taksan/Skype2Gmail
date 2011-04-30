@@ -5,14 +5,18 @@ import gmail.GmailMessage;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.mail.search.SearchTerm;
+
 import skype.SkypeChat;
+import skype2gmail.FolderIndex;
 import skype2gmail.GmailFolder;
+import skype2gmail.GmailMessageMock;
 
 public class FolderMock implements GmailFolder {
 
 	
 	private final Map<String, GmailMessage> messageList;
-	private final String mockIndex;
+	private String mockIndex;
 
 	public FolderMock() {
 		this(null);
@@ -54,7 +58,18 @@ public class FolderMock implements GmailFolder {
 	}
 
 	@Override
-	public String retrieveIndexFromMail() {
-		return mockIndex;
+	public GmailMessage retrieveFirstMessageMatchingSearchTerm(SearchTerm st) {
+		if (st == null || !st.equals(FolderIndex.CHAT_INDEX_SEARCH_TERM)) {
+			throw new RuntimeException("Search term to retrieve index must be FolderIndex.CHAT_INDEX_SEARCH_TERM");
+		}
+		GmailMessageMock gmailMessageMock = new GmailMessageMock();
+		gmailMessageMock.setMockBody(mockIndex);
+		return gmailMessageMock;
+	}
+
+	@Override
+	public void replaceMessageMatchingTerm(SearchTerm chatIndexSearchTerm,
+			GmailMessage replacementMessage) {
+		mockIndex = replacementMessage.getBody();
 	}
 }

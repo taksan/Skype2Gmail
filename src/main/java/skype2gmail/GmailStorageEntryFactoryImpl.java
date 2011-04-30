@@ -11,19 +11,19 @@ import com.google.inject.Inject;
 public class GmailStorageEntryFactoryImpl implements GmailStorageEntryFactory {
 
 	private final SkypeChatDateFormat chatDateFormat;
-	private final SessionProvider sessionProvider;
 	private final GmailFolder gmailFolder;
 	private final GmailMessageChatParser gmailMessageChatParser;
-	private final SkypeChatFactory skypeChatFactory;	
+	private final SkypeChatFactory skypeChatFactory;
+	private final GmailMessageFactory gmailMessageFactory;	
 	
 	@Inject
 	public GmailStorageEntryFactoryImpl(SkypeChatDateFormat chatDateFormat,
-			SessionProvider sessionProvider,
 			GmailFolder gmailFolder,
 			GmailMessageChatParser gmailMessageChatParser,
-			SkypeChatFactory skypeChatFactory) {
+			SkypeChatFactory skypeChatFactory,
+			GmailMessageFactory gmailMessageFactory) {
 		this.chatDateFormat = chatDateFormat;
-		this.sessionProvider = sessionProvider;
+		this.gmailMessageFactory = gmailMessageFactory;
 		this.gmailFolder = gmailFolder;
 		this.gmailMessageChatParser = gmailMessageChatParser;
 		this.skypeChatFactory = skypeChatFactory;
@@ -31,7 +31,7 @@ public class GmailStorageEntryFactoryImpl implements GmailStorageEntryFactory {
 
 	@Override
 	public StorageEntry produce(SkypeChat chat) {
-		return new GmailStorageEntry(sessionProvider, gmailFolder, chat, this.chatDateFormat);
+		return new GmailStorageEntry(gmailFolder, chat, this.chatDateFormat, gmailMessageFactory);
 	}
 	
 	@Override
