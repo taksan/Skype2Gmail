@@ -58,7 +58,7 @@ public class Skype2DiskModuleTest extends AbstractRecordingTest {
 			Assert.assertEquals(expectedFoo42Contents, foo42Contents);
 		}finally
 		{
-			tempTarget.delete();
+			FileUtils.deleteDirectory(tempTarget);
 		}
 	}
 }

@@ -10,6 +10,7 @@ public interface Skype2GmailConfigContents {
 	public void setPassword(String p);
 	
 	public boolean isOutputVerbose();
+	public boolean isSyncWithRecentsDisabled();
 	
 	
 }

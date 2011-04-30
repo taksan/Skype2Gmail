@@ -4,14 +4,18 @@ import java.io.File;
 import java.io.IOException;
 
 import skype.ApplicationException;
+import skype.BasePath;
+
+import com.google.inject.Inject;
 
 public class Skype2GmailConfigDir {
 	
 	private final File configDir;
 
-	public Skype2GmailConfigDir()
+	@Inject
+	public Skype2GmailConfigDir(BasePath basePath)
 	{
-		configDir = new File(System.getProperty("user.home"), ".skype2gmail");
+		configDir = new File(basePath.getPath(), ".skype2gmail");
 	}
 
 	public String getFileNameUnder(String sub) {

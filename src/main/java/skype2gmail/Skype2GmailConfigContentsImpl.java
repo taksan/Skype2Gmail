@@ -53,6 +53,16 @@ public class Skype2GmailConfigContentsImpl implements Skype2GmailConfigContents 
 		setProperty("gmail.password", p);
 	}
 
+
+	@Override
+	public boolean isSyncWithRecentsDisabled() {
+		Maybe<String> property = getProperty("skype.neverSyncWithRecentChats");
+		if (property.unbox() == null) {
+			return false;
+		}
+		return Boolean.parseBoolean(property.unbox());
+	}
+
 	
 	private Maybe<String> getProperty(String key) {
 		if (config == null) {

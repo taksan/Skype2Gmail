@@ -4,6 +4,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import skype.mocks.LastSynchronizationProviderMock;
 import skype.mocks.SkypeApiMock;
 import skype.mocks.SkypeStorageMock;
 import utils.SimpleLoggerProvider;
@@ -19,7 +20,9 @@ public class SkypeRecorderTest {
 		
 		SkypeStorage skypeStorage = new SkypeStorageMock();
 		
-		SkypeRecorder skypeRecorder_SUBJECT = new SkypeRecorder(skypeApi, skypeStorage, new SimpleLoggerProvider());
+		LastSynchronizationProviderMock lspMock = new LastSynchronizationProviderMock();
+		SkypeRecorder skypeRecorder_SUBJECT = new SkypeRecorder(
+				skypeApi, skypeStorage, new SimpleLoggerProvider(), lspMock);
 		skypeRecorder_SUBJECT.record();
 		
 		final String actualForFirstRecord = skypeStorage.toString().trim();
@@ -61,5 +64,6 @@ public class SkypeRecorderTest {
 		Assert.assertEquals(expected , actualForSecondRecord);
 		
 		skypeRecorder_SUBJECT.record();
+		Assert.assertTrue("Should have invoked update", lspMock.updateWasInvoked());
 	}
 }

@@ -5,12 +5,14 @@ import java.io.IOException;
 
 import junit.framework.Assert;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
 import skype.SkypeChat;
 import skype.SkypeChatSetter;
 import skype.mocks.PreviousSkypeChatMock;
 import skype.mocks.SkypeApiMock;
+import skype2disk.mocks.BasePathMock;
 import testutils.IOHelper;
 
 public class FileSystemStorageTest {
@@ -20,7 +22,8 @@ public class FileSystemStorageTest {
 		File baseTmpDir = IOHelper.createTempDirOrCry();
 		
 		String[] args = new String[]{baseTmpDir.getCanonicalPath()};
-		CustomHistoryDir baseDir = new CustomHistoryDir(args, new Skype2GmailConfigDir());
+		Skype2GmailConfigDir skype2GmailConfigDir = new Skype2GmailConfigDir(new BasePathMock());
+		CustomHistoryDir baseDir = new CustomHistoryDir(args, skype2GmailConfigDir);
 		try {
 			SkypeChat chat = SkypeApiMock.produceChatMock("#42;$foo","moe","joe");
 			FileSystemStorage fileSystemStorage = new FileSystemStorage(null, mockContentParser(), baseDir);
@@ -33,7 +36,7 @@ public class FileSystemStorageTest {
 			
 			Assert.assertEquals( "<Previous Entry>", storedChat.toString() );
 		}finally {
-			baseTmpDir.delete();
+			FileUtils.deleteDirectory(baseTmpDir);
 		}
 	}
 

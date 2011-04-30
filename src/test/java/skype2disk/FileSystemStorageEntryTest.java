@@ -6,6 +6,7 @@ import java.util.Date;
 
 import junit.framework.Assert;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
 import skype.SkypeChat;
@@ -39,7 +40,7 @@ public class FileSystemStorageEntryTest {
 			Assert.assertEquals(expectedModTimeInMillis, lastModified);
 		}
 		finally {
-			baseDir.delete();
+			FileUtils.deleteDirectory(baseDir);
 		}
 	}
 }

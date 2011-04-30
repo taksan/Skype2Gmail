@@ -12,12 +12,17 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 	private final SkypeApi skypeApi;
 	private final LoggerProvider loggerProvider;
 	private Logger logger;
+	private final LastSynchronizationProvider lastSynchronizationProvider;
 
 	@Inject
-	public SkypeRecorder(SkypeApi skypeApi, SkypeStorage skypeStorage, LoggerProvider loggerProvider) {
+	public SkypeRecorder(SkypeApi skypeApi, 
+			SkypeStorage skypeStorage, 
+			LoggerProvider loggerProvider, 
+			LastSynchronizationProvider lastSynchronizationProvider) {
 		this.skypeApi = skypeApi;
 		this.skypeStorage = skypeStorage;
 		this.loggerProvider = loggerProvider;
+		this.lastSynchronizationProvider = lastSynchronizationProvider;
 	}
 
 	@Override
@@ -44,6 +49,7 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 		long elapsedMills = endTime - startTime;
 		getLogger().info("Took " + DurationFormatUtils.formatDuration(elapsedMills, "H:m:s"));
 		getLogger().info("Done.");
+		this.lastSynchronizationProvider.updateSynch();
 	}
 
 	private Logger getLogger() {

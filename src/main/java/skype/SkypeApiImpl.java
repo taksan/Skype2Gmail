@@ -27,10 +27,10 @@ public class SkypeApiImpl implements SkypeApi {
 	private Profile profile;
 	private SkypeUser currentUser;
 	private final LoggerProvider loggerProvider;
-	private final ChatFetchStrategy chatFetchStrategy;
+	private final ChatFetchStrategyChooser chatFetchStrategy;
 
 	@Inject
-	public SkypeApiImpl(SkypeChatFactory chatFactory, LoggerProvider loggerProvider, ChatFetchStrategy chatFetchStrategy) {
+	public SkypeApiImpl(SkypeChatFactory chatFactory, LoggerProvider loggerProvider, ChatFetchStrategyChooser chatFetchStrategy) {
 		this.chatFactory = chatFactory;
 		this.loggerProvider = loggerProvider;
 		this.chatFetchStrategy = chatFetchStrategy;
@@ -60,6 +60,14 @@ public class SkypeApiImpl implements SkypeApi {
 	}
 
 	private Chat[] getChatHistory() {
+		Callable<Chat[]> getChatsCallable = pickFetchStrategy();
+		
+		Chat[] allChatsArray = executeWithTimeout(getChatsCallable);
+		
+		return allChatsArray;
+	}
+
+	private Callable<Chat[]> pickFetchStrategy() {
 		final Callable<Chat[]> getAllChats = new Callable<Chat[]>() {
 			@Override
 			public Chat[] call() throws Exception {
@@ -73,13 +81,10 @@ public class SkypeApiImpl implements SkypeApi {
 			}
 		};
 		Callable<Chat[]> getChatsCallable = getAllChats;
-		if (chatFetchStrategy.fetchOnlyRecent()) {
+		if (chatFetchStrategy.areRecentChatsEnoughToUpdate()) {
 			getChatsCallable = getRecentChats;
 		}
-		
-		Chat[] allChatsArray = executeWithTimeout(getChatsCallable);
-		
-		return allChatsArray;
+		return getChatsCallable;
 	}
 
 	@Override
