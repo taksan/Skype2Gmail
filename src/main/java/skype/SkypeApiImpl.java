@@ -50,13 +50,16 @@ public class SkypeApiImpl implements SkypeApi {
 	public void accept(final SkypeApiChatVisitor visitor) {
 		Chat[] chatsArray = getChatHistory();
 		
-		Logger logger = loggerProvider.getPriorityLogger(getClass());
-		logger.info((String.format("Found %d chats.", chatsArray.length)));
+		getLogger().info((String.format("Found %d chats.", chatsArray.length)));
 		
 		for (Chat chat : chatsArray) {
 			final SkypeChat skypeChat = chatFactory.produce(chat);
 			visitor.visit(skypeChat);
 		}
+	}
+
+	private Logger getLogger() {
+		return loggerProvider.getPriorityLogger(getClass());
 	}
 
 	private Chat[] getChatHistory() {
@@ -81,8 +84,12 @@ public class SkypeApiImpl implements SkypeApi {
 			}
 		};
 		Callable<Chat[]> getChatsCallable = getAllChats;
-		if (chatFetchStrategy.lastSyncWasLessThan24hoursAgo()) {
+		if (chatFetchStrategy.catFetchJustTheRecentChats()) {
 			getChatsCallable = getRecentChats;
+			getLogger().info("Will send just the recent chats.");
+		}
+		else {
+			getLogger().info("Will send all chats in history.");
 		}
 		return getChatsCallable;
 	}

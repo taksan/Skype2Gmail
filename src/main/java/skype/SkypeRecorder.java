@@ -13,6 +13,7 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 	private final LoggerProvider loggerProvider;
 	private Logger logger;
 	private final LastSynchronizationProvider lastSynchronizationProvider;
+	private int updatedChats = 0;
 
 	@Inject
 	public SkypeRecorder(SkypeApi skypeApi, 
@@ -48,6 +49,14 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 		long endTime = System.currentTimeMillis();
 		long elapsedMills = endTime - startTime;
 		getLogger().info("Took " + DurationFormatUtils.formatDuration(elapsedMills, "H:m:s"));
+		String message = updatedChats + " messages have been sent.";
+		if(updatedChats == 0) {
+			message = "No messages were sent. All of them were up to date.";
+		}
+		else {
+			message = updatedChats + " messages have been sent.";
+		}
+		getLogger().info(message);
 		getLogger().info("Done.");
 		this.lastSynchronizationProvider.updateSynch();
 	}
@@ -86,6 +95,7 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 			storageEntry.save();
 	
 			getVerboseLogger().info("Entry " + skypeChat.getId() + " written");
+			updatedChats ++;
 		} catch(MessageProcessingException e) {
 			String message = String.format(
 					"An error was found processing message with the following id: %s",

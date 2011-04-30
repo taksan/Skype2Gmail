@@ -20,7 +20,7 @@ public class ChatFetchStrategyChooserImpl implements ChatFetchStrategyChooser {
 	}
 
 	@Override
-	public boolean lastSyncWasLessThan24hoursAgo() {
+	public boolean catFetchJustTheRecentChats() {
 		if (config.isSyncWithRecentsDisabled()) {
 			return false;
 		}

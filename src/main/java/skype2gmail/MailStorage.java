@@ -46,7 +46,7 @@ public class MailStorage implements SkypeStorage {
 
 	@Override
 	public void open() {
-		getLogger().info("Will send messages to " + userAuthProvider.getUser());
+		getLogger().info("Will send chat messages to " + userAuthProvider.getUser());
 		fetchPasswordJustToForceItToAskHereIfNotSet();
 	}
 
@@ -57,7 +57,7 @@ public class MailStorage implements SkypeStorage {
 	@Override
 	public void close() {
 		skypeFolder.close();
-		getLogger().info("Messages sent to account " + userAuthProvider.getUser());
+		getLogger().info(String.format("Account %s was updated.", userAuthProvider.getUser()));
 	}
 
 	

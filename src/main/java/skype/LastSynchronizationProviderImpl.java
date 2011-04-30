@@ -29,6 +29,7 @@ public class LastSynchronizationProviderImpl implements LastSynchronizationProvi
 		File syncPlaceHolder = configDir.getFileUnder(LastSynchronizationProvider.LAST_SYNCH_PLACE_HOLDER);
 		Calendar c = Calendar.getInstance();
 		if (!syncPlaceHolder.exists()) {
+			getLogger().info("No sync place holder found.");
 			c.set(Calendar.YEAR, 1900);
 			return c.getTime();
 		}
@@ -41,12 +42,19 @@ public class LastSynchronizationProviderImpl implements LastSynchronizationProvi
 		File syncPlaceHolder = configDir.getFileUnder(LastSynchronizationProvider.LAST_SYNCH_PLACE_HOLDER);
 		try {
 			FileUtils.touch(syncPlaceHolder);
+			long lastModified = syncPlaceHolder.lastModified();
+			String lastSyncDate = new Date(lastModified).toString();
+			String placeHolderContent = String.format("Last synchronization at %s.", lastSyncDate);
+			FileUtils.writeStringToFile(syncPlaceHolder, placeHolderContent);
 		} catch (IOException e) {
 			String absolutePath = syncPlaceHolder.getAbsolutePath();
 			String errorMessage = "Failed to update sync place holder file: "+absolutePath;
-			Logger logger = loggerProvider.getPriorityLogger(getClass());
-			logger.warn(errorMessage, e);
+			getLogger().warn(errorMessage, e);
 		}
+	}
+
+	private Logger getLogger() {
+		return loggerProvider.getPriorityLogger(getClass());
 	}
 
 }
