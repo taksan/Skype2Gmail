@@ -112,7 +112,6 @@ public class EmptyGmailMessage implements GmailMessage {
 
 	@Override
 	public void delete() {
-		throw new NotImplementedException();
 	}
 
 	@Override

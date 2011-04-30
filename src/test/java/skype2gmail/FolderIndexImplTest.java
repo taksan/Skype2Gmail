@@ -2,14 +2,19 @@ package skype2gmail;
 
 import gmail.GmailMessage;
 import gmail.mocks.FolderMock;
+
+import javax.mail.internet.InternetAddress;
+
 import junit.framework.Assert;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
 import skype.SkypeChat;
 import skype.mocks.SkypeApiMock;
 import skype2gmail.mocks.GmailMessageFactoryMock;
 import skype2gmail.mocks.GmailMessageMock;
+import utils.SimpleLoggerProvider;
 
 public class FolderIndexImplTest {
 	@Test
@@ -26,7 +31,9 @@ public class FolderIndexImplTest {
 		GmailMessageMock gmailMessageMock = new GmailMessageMock(skypeChat1);
 		folderMock.appendMessage(gmailMessageMock);
 		
-		FolderIndexImpl subject = new FolderIndexImpl(folderMock, new GmailMessageFactoryMock());
+		SimpleLoggerProvider loggerProvider = new SimpleLoggerProvider();
+		GmailMessageFactoryMock gmailMessageFactory = new GmailMessageFactoryMock();
+		FolderIndexImpl subject = new FolderIndexImpl(folderMock, gmailMessageFactory, loggerProvider);
 		String actual = subject.getSignatureFor("#43$foo");
 		
 		Assert.assertEquals(skypeChat2.getBodySignature(), actual);
@@ -41,6 +48,12 @@ public class FolderIndexImplTest {
 		final String expectedIndex = mockIndex+"\n"+makeEntry(skypeChat3);
 		
 		Assert.assertEquals(expectedIndex, updatedIndex);
+		
+		InternetAddress[] senderAddress = indexMessage.getFrom();
+		String senderName = StringUtils.join(senderAddress, "");
+		Assert.assertEquals("Skype2Gmail", senderName);
+		String topic = indexMessage.getTopic();
+		Assert.assertEquals("Skype2Gmail chat index", topic);
 	}
 
 	private String makeEntry(SkypeChat skypeChat) {

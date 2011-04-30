@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -24,6 +25,8 @@ public class GmailMessageMock implements GmailMessage {
 	private final SkypeChat previousSkypeChat;
 	private String mockBody;
 	private MimeMessage mimeMessage;
+	private InternetAddress[] fromAdress;
+	private String topic;
 
 	public GmailMessageMock(SkypeChat previousSkypeChat) {
 		this.previousSkypeChat = previousSkypeChat;
@@ -65,12 +68,16 @@ public class GmailMessageMock implements GmailMessage {
 
 	@Override
 	public void setFrom(String chatAuthor) {
-		throw new NotImplementedException();
+		try {
+			fromAdress = new InternetAddress[]{new InternetAddress(chatAuthor)};
+		} catch (AddressException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
 	public void setSubject(String topic) {
-		throw new NotImplementedException();
+		this.topic = topic;
 	}
 
 	@Override
@@ -95,7 +102,7 @@ public class GmailMessageMock implements GmailMessage {
 
 	@Override
 	public String getTopic() {
-		throw new NotImplementedException();
+		return topic;
 	}
 
 	@Override
@@ -135,7 +142,7 @@ public class GmailMessageMock implements GmailMessage {
 
 	@Override
 	public InternetAddress[] getFrom() {
-		throw new NotImplementedException();
+		return fromAdress;
 	}
 
 	@Override

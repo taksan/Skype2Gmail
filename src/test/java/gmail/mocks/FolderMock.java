@@ -5,6 +5,7 @@ import gmail.GmailMessage;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.mail.search.HeaderTerm;
 import javax.mail.search.SearchTerm;
 
 import skype.SkypeChat;
@@ -62,6 +63,13 @@ public class FolderMock implements GmailFolder {
 		if (st == null || !st.equals(FolderIndex.CHAT_INDEX_SEARCH_TERM)) {
 			throw new RuntimeException("Search term to retrieve index must be FolderIndex.CHAT_INDEX_SEARCH_TERM");
 		}
+		HeaderTerm ht = (HeaderTerm)st;
+		if (ht.getHeaderName().equals(FolderIndex.INDEX_HEADER_NAME)) {
+			GmailMessage gmailMessage = messageList.get("INDEX");
+			if (gmailMessage != null) {
+				return gmailMessage;
+			}
+		}
 		GmailMessageMock gmailMessageMock = new GmailMessageMock();
 		gmailMessageMock.setMockBody(mockIndex);
 		return gmailMessageMock;
@@ -71,5 +79,6 @@ public class FolderMock implements GmailFolder {
 	public void replaceMessageMatchingTerm(SearchTerm chatIndexSearchTerm,
 			GmailMessage replacementMessage) {
 		mockIndex = replacementMessage.getBody();
+		messageList.put("INDEX", replacementMessage);
 	}
 }
