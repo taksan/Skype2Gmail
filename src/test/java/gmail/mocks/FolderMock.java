@@ -1,4 +1,4 @@
-package skype.mocks;
+package gmail.mocks;
 
 import gmail.GmailMessage;
 
@@ -10,7 +10,7 @@ import javax.mail.search.SearchTerm;
 import skype.SkypeChat;
 import skype2gmail.FolderIndex;
 import skype2gmail.GmailFolder;
-import skype2gmail.GmailMessageMock;
+import skype2gmail.mocks.GmailMessageMock;
 
 public class FolderMock implements GmailFolder {
 

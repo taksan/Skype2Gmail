@@ -1,11 +1,13 @@
-package skype.mocks;
+package skype2gmail.mocks;
 
+import gmail.mocks.FolderMock;
 import skype.SkypeApi;
 import skype.SkypeUserFactory;
+import skype.mocks.SkypeApiImplMock;
+import skype.mocks.SkypeUserFactoryMock;
 import skype2gmail.GmailFolder;
 import skype2gmail.Skype2GmailModuleCommons;
 import skype2gmail.UserAuthProvider;
-import skype2gmail.mocks.MockAuthProvider;
 import utils.LoggerProvider;
 import utils.SimpleLoggerProvider;
 

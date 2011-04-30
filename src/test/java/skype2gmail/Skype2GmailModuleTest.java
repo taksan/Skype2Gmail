@@ -1,5 +1,7 @@
 package skype2gmail;
 
+import gmail.mocks.FolderMock;
+
 import java.io.IOException;
 
 import junit.framework.Assert;
@@ -8,8 +10,7 @@ import org.junit.Test;
 
 import skype.AbstractRecordingTest;
 import skype.SkypeHistoryRecorder;
-import skype.mocks.Skype2GmailModuleMockingSkypeApi;
-import skype.mocks.FolderMock;
+import skype2gmail.mocks.Skype2GmailModuleMockingSkypeApi;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

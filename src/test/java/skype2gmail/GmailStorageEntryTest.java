@@ -15,7 +15,7 @@ import org.junit.Test;
 import skype.SkypeChat;
 import skype.SkypeChatDateFormat;
 import skype.SkypeChatSetter;
-import skype.mocks.Skype2GmailModuleMockingSkypeApi;
+import skype2gmail.mocks.Skype2GmailModuleMockingSkypeApi;
 import testutils.SkypeChatBuilderHelper;
 
 import com.google.inject.Guice;

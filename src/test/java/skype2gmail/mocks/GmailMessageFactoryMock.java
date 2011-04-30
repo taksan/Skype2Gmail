@@ -1,6 +1,7 @@
-package skype2gmail;
+package skype2gmail.mocks;
 
 import gmail.GmailMessage;
+import skype2gmail.GmailMessageFactory;
 
 public class GmailMessageFactoryMock implements GmailMessageFactory {
 

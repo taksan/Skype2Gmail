@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import skype.SkypeChat;
 import skype.mocks.SkypeApiMock;
+import skype2gmail.mocks.GmailMessageMock;
 import skype2gmail.mocks.GmailStoreMock;
 
 public class GmailFolderImplTest {

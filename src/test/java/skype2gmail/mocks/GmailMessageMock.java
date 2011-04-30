@@ -1,4 +1,4 @@
-package skype2gmail;
+package skype2gmail.mocks;
 
 import gmail.GmailMessage;
 
@@ -17,6 +17,7 @@ import org.apache.commons.lang.NotImplementedException;
 import skype.SkypeChat;
 import skype.SkypeUser;
 import skype.UsersSortedByUserId;
+import skype2gmail.SessionProviderImpl;
 
 public class GmailMessageMock implements GmailMessage {
 

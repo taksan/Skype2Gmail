@@ -1,13 +1,15 @@
 package skype2gmail;
 
 import gmail.GmailMessage;
+import gmail.mocks.FolderMock;
 import junit.framework.Assert;
 
 import org.junit.Test;
 
 import skype.SkypeChat;
-import skype.mocks.FolderMock;
 import skype.mocks.SkypeApiMock;
+import skype2gmail.mocks.GmailMessageFactoryMock;
+import skype2gmail.mocks.GmailMessageMock;
 
 public class FolderIndexImplTest {
 	@Test
