@@ -64,4 +64,9 @@ public class MailStorage implements SkypeStorage {
 	private Logger getLogger() {
 		return loggerProvider.getPriorityLogger(getClass());
 	}
+
+	@Override
+	public String getSyncId() {
+		return getClass().getSimpleName()+"-"+userAuthProvider.getUser();
+	}
 }

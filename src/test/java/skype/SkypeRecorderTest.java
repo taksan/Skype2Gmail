@@ -18,7 +18,7 @@ public class SkypeRecorderTest {
 		skypeApi.addMockChat(SkypeApiMock.produceChatMock("42","moe","joe"));
 		skypeApi.addMockChat(SkypeApiMock.produceChatMock("73","john","doe"));
 		
-		SkypeStorage skypeStorage = new SkypeStorageMock();
+		SkypeStorage skypeStorage = new SkypeStorageMock(null);
 		
 		LastSynchronizationProviderMock lspMock = new LastSynchronizationProviderMock();
 		SkypeRecorder skypeRecorder_SUBJECT = new SkypeRecorder(

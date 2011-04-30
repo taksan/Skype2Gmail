@@ -91,4 +91,9 @@ public class FileSystemStorage implements SkypeStorage {
 		LOGGER = loggerProvider.getLogger(FileSystemStorage.class);
 		return LOGGER;
 	}
+
+	@Override
+	public String getSyncId() {
+		return getClass().getSimpleName();
+	}
 }

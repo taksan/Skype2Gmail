@@ -10,4 +10,6 @@ public interface SkypeStorage {
 	void close();
 
 	void open();
+
+	String getSyncId();
 }

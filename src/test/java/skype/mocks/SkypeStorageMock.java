@@ -12,7 +12,12 @@ import utils.SimpleLoggerProvider;
 
 public class SkypeStorageMock implements SkypeStorage {
 	final List<StorageEntryMock> recordedChats = new LinkedList<StorageEntryMock>();
+	private final String syncId;
 	
+	public SkypeStorageMock(String syncId) {
+		this.syncId = syncId;
+	}
+
 	@Override
 	public StorageEntry newEntry(SkypeChat chat) {
 		final StorageEntryMock storageEntryMock = new StorageEntryMock(chat);
@@ -50,6 +55,11 @@ public class SkypeStorageMock implements SkypeStorage {
 	@Override
 	public void close() {
 		// nothing to do here
+	}
+
+	@Override
+	public String getSyncId() {
+		return syncId;
 	}
 
 }

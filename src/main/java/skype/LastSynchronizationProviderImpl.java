@@ -17,34 +17,37 @@ public class LastSynchronizationProviderImpl implements LastSynchronizationProvi
 
 	Skype2GmailConfigDir configDir;
 	private final LoggerProvider loggerProvider;
+	private final SkypeStorage skypeStorage;
 	@Inject
-	public LastSynchronizationProviderImpl(Skype2GmailConfigDir configDir, LoggerProvider loggerProvider)
+	public LastSynchronizationProviderImpl(Skype2GmailConfigDir configDir, 
+			LoggerProvider loggerProvider,
+			SkypeStorage storage)
 	{
 		this.configDir = configDir;
 		this.loggerProvider = loggerProvider;
+		this.skypeStorage = storage;
 	}
 	
 	@Override
 	public Date getLastSynch() {
-		File syncPlaceHolder = configDir.getFileUnder(LastSynchronizationProvider.LAST_SYNCH_PLACE_HOLDER);
+		File syncPlaceHolder = getPlaceHolderFile();
 		Calendar c = Calendar.getInstance();
 		if (!syncPlaceHolder.exists()) {
-			getLogger().info("No sync place holder found.");
+			getLogger().info(String.format("No sync place holder found for this storage (%s)", syncPlaceHolder));
 			c.set(Calendar.YEAR, 1900);
 			return c.getTime();
 		}
 		long lastModifiedTimeInMillis = syncPlaceHolder.lastModified();
 		return new Date(lastModifiedTimeInMillis);
 	}
-
 	@Override
 	public void updateSynch() {
-		File syncPlaceHolder = configDir.getFileUnder(LastSynchronizationProvider.LAST_SYNCH_PLACE_HOLDER);
+		File syncPlaceHolder = getPlaceHolderFile();
 		try {
 			FileUtils.touch(syncPlaceHolder);
 			long lastModified = syncPlaceHolder.lastModified();
 			String lastSyncDate = new Date(lastModified).toString();
-			String placeHolderContent = String.format("Last synchronization at %s.", lastSyncDate);
+			String placeHolderContent = String.format("Last synchronization at %s.\n", lastSyncDate);
 			FileUtils.writeStringToFile(syncPlaceHolder, placeHolderContent);
 		} catch (IOException e) {
 			String absolutePath = syncPlaceHolder.getAbsolutePath();
@@ -57,4 +60,7 @@ public class LastSynchronizationProviderImpl implements LastSynchronizationProvi
 		return loggerProvider.getPriorityLogger(getClass());
 	}
 
+	File getPlaceHolderFile() {
+		return configDir.getFileUnder("/syncs/"+skypeStorage.getSyncId());
+	}
 }

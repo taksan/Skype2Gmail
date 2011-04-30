@@ -49,12 +49,12 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 		long endTime = System.currentTimeMillis();
 		long elapsedMills = endTime - startTime;
 		getLogger().info("Took " + DurationFormatUtils.formatDuration(elapsedMills, "H:m:s"));
-		String message = updatedChats + " messages have been sent.";
+		final String message;
 		if(updatedChats == 0) {
-			message = "No messages were sent. All of them were up to date.";
+			message = "No messages were synchronized. All of them were up to date.";
 		}
 		else {
-			message = updatedChats + " messages have been sent.";
+			message = updatedChats + " messages have been synchronized.";
 		}
 		getLogger().info(message);
 		getLogger().info("Done.");
