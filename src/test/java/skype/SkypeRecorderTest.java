@@ -32,7 +32,7 @@ public class SkypeRecorderTest {
 				"Time:2011/04/21 15:00:00\n" + 
 				"Body Signature:content-id-mock\n" + 
 				"Messages Signatures:17f4007f9024da870afae8e60f6635fd,d6bbf5c7f50d1a96fcc3a2156dbf2b86\n" + 
-				"Topic:FOO\n" + 
+				"Topic:(2 lines)FOO\n" + 
 				"Poster:id=joe; displayName=JOE\n" + 
 				"Poster:id=moe; displayName=MOE\n" + 
 				"[2011/04/21 15:14:18] MOE: Hya\n" + 
@@ -45,7 +45,7 @@ public class SkypeRecorderTest {
 				"Time:2011/04/21 15:00:00\n" + 
 				"Body Signature:content-id-mock\n" + 
 				"Messages Signatures:c0687481b3f39aac8fd1ad874f604301,38e57729cade7223217d12bee978a509\n" + 
-				"Topic:FOO\n" + 
+				"Topic:(2 lines)FOO\n" + 
 				"Poster:id=doe; displayName=DOE\n" + 
 				"Poster:id=john; displayName=JOHN\n" + 
 				"[2011/04/21 15:14:18] JOHN: Hya\n" + 

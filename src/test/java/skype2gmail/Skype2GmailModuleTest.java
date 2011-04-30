@@ -1,10 +1,10 @@
 package skype2gmail;
 
-import gmail.mocks.FolderMock;
-
 import java.io.IOException;
 
 import junit.framework.Assert;
+import mail.SkypeMailFolder;
+import mail.mocks.FolderMock;
 
 import org.junit.Test;
 
@@ -30,7 +30,7 @@ public class Skype2GmailModuleTest extends AbstractRecordingTest {
 		final Injector injector = Guice.createInjector(new Skype2GmailModuleMockingSkypeApi());
 		
 		testRecording(injector);
-		FolderMock folderProvider = (FolderMock) injector.getInstance(GmailFolder.class);
+		FolderMock folderProvider = (FolderMock) injector.getInstance(SkypeMailFolder.class);
 		
 		Assert.assertEquals(3, folderProvider.getMessages().length);
 	}

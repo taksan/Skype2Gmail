@@ -55,7 +55,8 @@ public class FileDumpContentParserImpl implements FileDumpContentParser {
 
 		final Date chatTime = makeChatTime(parsedContents.get("Chat Time"));
 		final String chatId = parsedContents.get("Chat Id");
-		final String topic = parsedContents.get("Chat topic");
+		final String topicWithLineCount = parsedContents.get("Chat topic");
+		final String topic = topicWithLineCount.replaceFirst("^\\(.*?lines?\\)", "");
 		final String parsedSignature = parsedContents.get("Chat Body Signature");
 		
 		final String bodySection;

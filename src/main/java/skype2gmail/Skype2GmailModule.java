@@ -1,8 +1,10 @@
 package skype2gmail;
 
+import mail.SkypeMailFolder;
+import mail.UserConfigBasedProvider;
+
 import com.google.inject.Scopes;
 
-import gmail.UserConfigBasedProvider;
 import skype.SkypeApi;
 import skype.SkypeApiImpl;
 import skype.SkypeUserFactory;
@@ -21,6 +23,6 @@ public class Skype2GmailModule extends Skype2GmailModuleCommons {
 		
 		bind(NonIndexGmailFolderProvider.class).to(NonIndexGmailFolderProviderImpl.class).in(Scopes.SINGLETON);
 		bind(FolderIndex.class).to(FolderIndexImpl.class).in(Scopes.SINGLETON);
-		bind(GmailFolder.class).to(IndexedGmailFolder.class).in(Scopes.SINGLETON);
+		bind(SkypeMailFolder.class).to(IndexedSkypeMailFolder.class).in(Scopes.SINGLETON);
 	}
 }

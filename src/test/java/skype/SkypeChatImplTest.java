@@ -87,7 +87,7 @@ public class SkypeChatImplTest {
 			"Chat Time: 2011/04/21 15:00:00\n" + 
 			"Chat Body Signature: e87d53e14718f6ffdae477160b8aea197aefd203d727cdb9e3c54d42cf25ca36\n" + 
 			"Messages signatures: [765addc4c3fa9bf96af260131af55c3a,209cfb52f20f1310a2de704eb5ccc0ed,501fb6ccae7c8806d56daa1ee89ba949,765addc4c3fa9bf96af260131af55c3a,8917de92790e1dde41f70f5eb9ff96f9]\n" + 
-			"Chat topic: FOO\n" + 
+			"Chat topic: (5 lines)FOO\n" + 
 			"Poster: id=joe; display=JOE\n" + 
 			"Poster: id=moe; display=MOE\n" + 
 			"[2011/04/21 15:15:18] JOE: fellow\n" + 

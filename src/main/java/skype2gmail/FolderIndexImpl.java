@@ -1,12 +1,17 @@
 package skype2gmail;
 
-import gmail.GmailMessage;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
 import javax.mail.search.SearchTerm;
+
+import mail.SkypeMailFolder;
+import mail.SkypeMailMessage;
+import mail.SkypeMailMessageFactory;
 
 import org.apache.log4j.Logger;
 
@@ -18,12 +23,12 @@ import com.google.inject.Inject;
 public class FolderIndexImpl implements FolderIndex {
 	
 	Map<String,String> idToSignature;
-	private final GmailFolder folder;
-	private final GmailMessageFactory gmailMessageFactory;
+	private final SkypeMailFolder folder;
+	private final SkypeMailMessageFactory gmailMessageFactory;
 	private Logger logger;
 
 	@Inject
-	public FolderIndexImpl(GmailFolder folder, GmailMessageFactory gmailMessageFactory, LoggerProvider loggerProvider) {
+	public FolderIndexImpl(SkypeMailFolder folder, SkypeMailMessageFactory gmailMessageFactory, LoggerProvider loggerProvider) {
 		this.folder = folder;
 		this.gmailMessageFactory = gmailMessageFactory;
 		this.logger = loggerProvider.getLogger(getClass());
@@ -42,7 +47,7 @@ public class FolderIndexImpl implements FolderIndex {
 		idToSignature = new LinkedHashMap<String, String>();
 		
 		final SearchTerm st = FolderIndex.CHAT_INDEX_SEARCH_TERM;
-		GmailMessage indexMailMessage = folder.retrieveFirstMessageMatchingSearchTerm(st);
+		SkypeMailMessage indexMailMessage = folder.retrieveSingleMessageMatchingSearchTerm(st);
 		
 		String indexMessage = indexMailMessage.getBody();
 		if (indexMessage == null) {
@@ -68,16 +73,24 @@ public class FolderIndexImpl implements FolderIndex {
 	public void save() {
 		this.logger.info("Saving chat index.");
 		String indexBody = convertMapToString();
-		GmailMessage indexMailMessage = gmailMessageFactory.factory();
+		SkypeMailMessage indexMailMessage = gmailMessageFactory.factory();
 		indexMailMessage.setCustomHeader(FolderIndex.INDEX_HEADER_NAME, FolderIndex.INDEX_HEADER_VALUE);
 		indexMailMessage.setFrom("Skype2Gmail");
 		indexMailMessage.setBody(indexBody);
 		indexMailMessage.setSubject("Skype2Gmail chat index");
+		indexMailMessage.setDate("1942/8/13 10:00");
+		Calendar sentDateCal = Calendar.getInstance();
+		sentDateCal.set(1942, 8, 13);
+		Date sentDateToMakeSureIndexIsTheOldestMessage = sentDateCal.getTime();
+		indexMailMessage.setSentDate(sentDateToMakeSureIndexIsTheOldestMessage);
 		folder.replaceMessageMatchingTerm(FolderIndex.CHAT_INDEX_SEARCH_TERM, indexMailMessage);
 		this.logger.info("Chat index saved successfully.");
 	}
 
 	private String convertMapToString() {
+		if (idToSignature == null) {
+			return "";
+		}
 		StringBuilder sb = new StringBuilder();
 		Set<String> chatIdSet = idToSignature.keySet();
 		for (String chatId : chatIdSet) {

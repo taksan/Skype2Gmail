@@ -12,19 +12,21 @@ public class SkypeChatSetter {
 	}
 
 	public void accept(SkypeChatSetterVisitor skypeChatSetterVisitor) {
+		final TimeSortedMessages chatMessages = chat.getChatMessages();
+		String topic = String.format("(%s lines)%s", chatMessages.size(), this.chat.getTopic());
+		
 		skypeChatSetterVisitor.visitChatAuthor(this.chat.getChatAuthor());
 		skypeChatSetterVisitor.visitChatId(this.chat.getId());
 		skypeChatSetterVisitor.visitDate(this.chat.getTime());
 		skypeChatSetterVisitor.visitBodySignature(this.chat.getBodySignature());
 		skypeChatSetterVisitor.visitMessagesSignatures(getSignatures());
-		skypeChatSetterVisitor.visitTopic(this.chat.getTopic());
+		skypeChatSetterVisitor.visitTopic(topic);
 		skypeChatSetterVisitor.visitLastModifiedDate(this.chat.getLastModificationTime());
 		
 		UsersSortedByUserId chatPosters = this.chat.getPosters();
 		for (SkypeUser skypeUser : chatPosters) {
 			skypeChatSetterVisitor.visitPoster(skypeUser);
 		}
-		final TimeSortedMessages chatMessages = chat.getChatMessages();
 		for (SkypeChatMessage skypeChatMessage : chatMessages) {
 			skypeChatSetterVisitor.visitMessage(skypeChatMessage);
 		}

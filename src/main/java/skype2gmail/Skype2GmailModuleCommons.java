@@ -1,7 +1,7 @@
 package skype2gmail;
 
-import gmail.Skype2GmailConfigContents;
-import gmail.Skype2GmailConfigContentsImpl;
+import mail.SkypeMailMessageFactoryImpl;
+import mail.SkypeMailMessageFactory;
 
 import com.google.inject.Scopes;
 
@@ -13,11 +13,11 @@ public class Skype2GmailModuleCommons extends Skype2StorageModuleCommons {
 	@Override
 	protected void configure() {
 		super.configure();
-		bind(SkypeStorage.class).to(GmailStorage.class).in(Scopes.SINGLETON);
+		bind(SkypeStorage.class).to(MailStorage.class).in(Scopes.SINGLETON);
 		bind(SkypeChatFolderProvider.class).to(DefaultSkypeChatFolderProvider.class).in(Scopes.SINGLETON);
 		bind(SessionProvider.class).to(SessionProviderImpl.class).in(Scopes.SINGLETON);
-		bind(GmailStorageEntryFactory.class).to(GmailStorageEntryFactoryImpl.class).in(Scopes.SINGLETON);
+		bind(MailStorageEntryFactory.class).to(MailStorageEntryFactoryImpl.class).in(Scopes.SINGLETON);
 		bind(Skype2GmailConfigContents.class).to(Skype2GmailConfigContentsImpl.class).in(Scopes.SINGLETON);
-		bind(GmailMessageFactory.class).to(GmailMessageFactoryImpl.class).in(Scopes.SINGLETON);
+		bind(SkypeMailMessageFactory.class).to(SkypeMailMessageFactoryImpl.class).in(Scopes.SINGLETON);
 	}
 }

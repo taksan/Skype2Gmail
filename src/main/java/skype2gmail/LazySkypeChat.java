@@ -1,8 +1,9 @@
 package skype2gmail;
 
-import gmail.GmailMessage;
 
 import java.util.Date;
+
+import mail.SkypeMailMessage;
 
 import skype.SkypeChat;
 import skype.SkypeUser;
@@ -12,12 +13,12 @@ import skype.UsersSortedByUserId;
 public class LazySkypeChat implements SkypeChat {
 
 	private final SkypeChat baseChat;
-	private final GmailMessage previousChatMessage;
-	private final GmailMessageChatParser gmailMessageChatParser;
+	private final SkypeMailMessage previousChatMessage;
+	private final MailMessageChatParser gmailMessageChatParser;
 	private SkypeChat actualPreviousChat = null;
 
-	public LazySkypeChat(SkypeChat baseChat, GmailMessage previousChatMessage,
-			GmailMessageChatParser gmailMessageChatParser) {
+	public LazySkypeChat(SkypeChat baseChat, SkypeMailMessage previousChatMessage,
+			MailMessageChatParser gmailMessageChatParser) {
 		this.baseChat = baseChat;
 		this.previousChatMessage = previousChatMessage;
 		this.gmailMessageChatParser = gmailMessageChatParser;
