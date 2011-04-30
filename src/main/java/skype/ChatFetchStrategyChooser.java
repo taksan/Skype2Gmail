@@ -2,6 +2,6 @@ package skype;
 
 public interface ChatFetchStrategyChooser {
 
-	boolean areRecentChatsEnoughToUpdate();
+	boolean lastSyncWasLessThan24hoursAgo();
 
 }

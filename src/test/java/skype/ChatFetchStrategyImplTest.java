@@ -20,7 +20,7 @@ public class ChatFetchStrategyImplTest {
 		
 		ChatFetchStrategyChooserImpl fetchStrategy = new ChatFetchStrategyChooserImpl(configMock, lastSynchronizationProviderMock);
 		//setLastModified
-		Assert.assertTrue(fetchStrategy.areRecentChatsEnoughToUpdate());
+		Assert.assertTrue(fetchStrategy.lastSyncWasLessThan24hoursAgo());
 	}
 	
 	@Test
@@ -33,7 +33,7 @@ public class ChatFetchStrategyImplTest {
 		
 		ChatFetchStrategyChooserImpl fetchStrategy = new ChatFetchStrategyChooserImpl(configMock, lastSynchronizationProviderMock);
 		//setLastModified
-		Assert.assertFalse(fetchStrategy.areRecentChatsEnoughToUpdate());
+		Assert.assertFalse(fetchStrategy.lastSyncWasLessThan24hoursAgo());
 	}
 
 	private LastSynchronizationProvider getSynchProvider(final int timeOffset, final int timeUnit) {

@@ -81,7 +81,7 @@ public class SkypeApiImpl implements SkypeApi {
 			}
 		};
 		Callable<Chat[]> getChatsCallable = getAllChats;
-		if (chatFetchStrategy.areRecentChatsEnoughToUpdate()) {
+		if (chatFetchStrategy.lastSyncWasLessThan24hoursAgo()) {
 			getChatsCallable = getRecentChats;
 		}
 		return getChatsCallable;
