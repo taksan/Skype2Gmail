@@ -30,4 +30,7 @@ public class Skype2GmailConfigDir {
 		return configDir;
 	}
 
+	public File getConfigFile() {
+		return new File(this.getDirectory(), "config");
+	}
 }

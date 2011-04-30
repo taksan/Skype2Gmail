@@ -3,15 +3,15 @@ package skype2gmail;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
-
-import mail.RequiredConfigurationMissingException;
 
 import org.apache.commons.io.FileUtils;
 
 import skype.ApplicationException;
 import skype2disk.Skype2GmailConfigDir;
+import utils.Maybe;
 
 import com.google.inject.Inject;
 
@@ -24,9 +24,34 @@ public class Skype2GmailConfigContentsImpl implements Skype2GmailConfigContents 
 		this.configDir = configDir;
 	}
 
-	private void readConfiguration(Skype2GmailConfigDir configDir) {
+	public Maybe<String> getProperty(String key) {
+		if (config == null) {
+			readConfiguration();
+		}
+		String property = config.getProperty(key);
+		return new Maybe<String>(property);
+	}
+
+	@Override
+	public void setProperty(String key, String value) {
+		config.setProperty(key, value);
+		save();
+	}
+
+	private void save() {
+		final File file = configDir.getConfigFile();
 		try {
-			final File file = getConfigFile(configDir);
+			config.store(new FileOutputStream(file), "Skype2Gmail configuration");
+		} catch (FileNotFoundException e) {
+			throw new ApplicationException(e);
+		} catch (IOException e) {
+			throw new ApplicationException(e);
+		}
+	}
+
+	private void readConfiguration() {
+		try {
+			final File file = configDir.getConfigFile();
 			if (!file.exists()) {
 				FileUtils.touch(file);
 			}
@@ -37,23 +62,5 @@ public class Skype2GmailConfigContentsImpl implements Skype2GmailConfigContents 
 		} catch (IOException e) {
 			throw new ApplicationException(e);
 		}
-	}
-
-	private File getConfigFile(Skype2GmailConfigDir configDir) {
-		return new File(configDir.getDirectory(), "config");
-	}
-
-	public String getProperty(String key, Boolean required) {
-		if (config == null) {
-			readConfiguration(configDir);
-		}
-		String value = config.getProperty(key);
-		if (value == null && required) {
-			File configFile = getConfigFile(configDir);
-			String fmtMsg = String.format("Required configuration %s missing in config file %s", 
-					key, configFile.getAbsolutePath());
-			throw new RequiredConfigurationMissingException(fmtMsg);
-		}
-		return value;
 	}
 }

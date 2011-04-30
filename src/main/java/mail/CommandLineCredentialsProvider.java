@@ -21,8 +21,6 @@ public class CommandLineCredentialsProvider implements UserAuthProvider {
 			System.out.print("Password: ");
 			password = new String(System.console().readPassword());
 		}
-		System.out.println(password);
 		return password;
 	}
-
 }

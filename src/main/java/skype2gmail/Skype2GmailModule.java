@@ -2,15 +2,14 @@ package skype2gmail;
 
 import mail.SkypeMailFolder;
 import mail.UserConfigBasedProvider;
-
-import com.google.inject.Scopes;
-
 import skype.SkypeApi;
 import skype.SkypeApiImpl;
 import skype.SkypeUserFactory;
 import skype.SkypeUserFactoryImpl;
-import utils.LoggerProviderImpl;
 import utils.LoggerProvider;
+import utils.LoggerProviderImpl;
+
+import com.google.inject.Scopes;
 
 public class Skype2GmailModule extends Skype2GmailModuleCommons {
 	@Override
