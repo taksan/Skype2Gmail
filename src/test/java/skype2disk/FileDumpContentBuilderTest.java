@@ -21,7 +21,7 @@ public class FileDumpContentBuilderTest {
 			"Chat Time: 2011/04/21 15:00:00\n" + 
 			"Chat Body Signature: content-id-mock\n" + 
 			"Messages signatures: [17f4007f9024da870afae8e60f6635fd,d6bbf5c7f50d1a96fcc3a2156dbf2b86]\n" + 
-			"Chat topic: (2 lines)FOO\n" + 
+			"Chat topic: (2 lines) FOO\n" + 
 			"Poster: id=joe; display=JOE\n" + 
 			"Poster: id=moe; display=MOE\n" + 
 			"[2011/04/21 15:14:18] MOE: Hya\n" + 

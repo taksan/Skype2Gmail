@@ -50,7 +50,7 @@ public class Skype2DiskModuleTest extends AbstractRecordingTest {
 				"Chat Time: 2011/04/21 15:00:00\n" + 
 				"Chat Body Signature: be2fea13a55a0ca638353b71d3f6d35ac94fecceb7d3ce40b99432361356b9a4\n" + 
 				"Messages signatures: [41dfeecec52c4e55bc7301a007539c03,4fa1d6184236ac761356a8fac3daafa4]\n" + 
-				"Chat topic: (2 lines)foo\n" + 
+				"Chat topic: (2 lines) foo\n" + 
 				"Poster: id=joe; display=JOE\n" + 
 				"Poster: id=moe; display=MOE\n" + 
 				"[2011/04/21 15:01:00] JOE: howdy\n" + 

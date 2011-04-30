@@ -13,7 +13,7 @@ public class SkypeChatSetter {
 
 	public void accept(SkypeChatSetterVisitor skypeChatSetterVisitor) {
 		final TimeSortedMessages chatMessages = chat.getChatMessages();
-		String topic = String.format("(%s lines)%s", chatMessages.size(), this.chat.getTopic());
+		String topic = String.format("(%s lines) %s", chatMessages.size(), this.chat.getTopic());
 		
 		skypeChatSetterVisitor.visitChatAuthor(this.chat.getChatAuthor());
 		skypeChatSetterVisitor.visitChatId(this.chat.getId());

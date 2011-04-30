@@ -80,7 +80,7 @@ public class FileDumpContentParserTest {
 				"Chat Time: 2011/04/21 15:00:00\n" + 
 				"Chat Body Signature: 76ec9465d068ca51035fa9e083851f3b107e1ee87dd98ea7c6a092ea5e5429b9\n" + 
 				"Messages signatures: [e134071f020f5efaf163415317580194,055bb32f383cc8d37656f9223e704b95]\n" + 
-				"Chat topic: (2 lines)FOO\n" + 
+				"Chat topic: (2 lines) FOO\n" + 
 				"Poster: id=moe; display=MOE\n" + 
 				"[2011/04/21 15:24:19] MOE: \n" + 
 				"\\[2011/03/16 11:49:10] bla said\n" + 
