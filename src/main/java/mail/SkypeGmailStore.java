@@ -12,13 +12,13 @@ import skype.ApplicationException;
 import skype2gmail.SessionProvider;
 import skype2gmail.UserAuthProvider;
 
-public class SkypeImapStore implements SkypeMailStore {
+public class SkypeGmailStore implements SkypeMailStore {
 	private Store store;
 	private final Session session;
 	private final UserAuthProvider userInfoProvider;
 
 	@Inject
-	public SkypeImapStore(SessionProvider sessionProvider,
+	public SkypeGmailStore(SessionProvider sessionProvider,
 			UserAuthProvider userInfoProvider) {
 		this.userInfoProvider = userInfoProvider;
 		this.session = sessionProvider.getInstance();

@@ -4,7 +4,7 @@ import javax.mail.Folder;
 
 import com.google.inject.ImplementedBy;
 
-@ImplementedBy(SkypeImapStore.class)
+@ImplementedBy(SkypeGmailStore.class)
 public interface SkypeMailStore {
 
 	Folder getFolder(String folder);
