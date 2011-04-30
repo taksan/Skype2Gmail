@@ -54,7 +54,7 @@ public class FolderIndexImpl implements FolderIndex {
 		for (String aLine : lines) {
 			String[] columns = aLine.split(",");
 			String id = columns[0];
-			String bodySignature = columns[1];
+			String bodySignature = columns[1].trim();
 			idToSignature.put(id, bodySignature);
 		}
 	}

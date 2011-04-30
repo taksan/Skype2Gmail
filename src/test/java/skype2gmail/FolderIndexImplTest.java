@@ -23,7 +23,7 @@ public class FolderIndexImplTest {
 		SkypeChat skypeChat1 = SkypeApiMock.produceChatMock("#42$foo", "zoe", "joe","body-sig1");
 		SkypeChat skypeChat2 = SkypeApiMock.produceChatMock("#43$foo", "zoe", "joe","body-sig2");
 		String mockIndex = 
-			makeEntry(skypeChat1)+"\n"+
+			makeEntry(skypeChat1)+"\r\n"+
 			makeEntry(skypeChat2);
 		
 		
@@ -34,9 +34,12 @@ public class FolderIndexImplTest {
 		SimpleLoggerProvider loggerProvider = new SimpleLoggerProvider();
 		GmailMessageFactoryMock gmailMessageFactory = new GmailMessageFactoryMock();
 		FolderIndexImpl subject = new FolderIndexImpl(folderMock, gmailMessageFactory, loggerProvider);
-		String actual = subject.getSignatureFor("#43$foo");
+		String actualForSkypeChat1 = subject.getSignatureFor("#42$foo");
+		Assert.assertEquals(skypeChat1.getBodySignature(), actualForSkypeChat1);
 		
-		Assert.assertEquals(skypeChat2.getBodySignature(), actual);
+		String actualForSkypeChat2 = subject.getSignatureFor("#43$foo");
+		
+		Assert.assertEquals(skypeChat2.getBodySignature(), actualForSkypeChat2);
 
 		SkypeChat skypeChat3 = SkypeApiMock.produceChatMock("#44$foo", "zoe", "joe","body-sig3");
 		subject.addIndexFor(skypeChat3);
@@ -45,7 +48,7 @@ public class FolderIndexImplTest {
 		GmailMessage indexMessage = folderMock.retrieveFirstMessageMatchingSearchTerm(FolderIndex.CHAT_INDEX_SEARCH_TERM);
 		String updatedIndex = indexMessage.getBody();
 		
-		final String expectedIndex = mockIndex+"\n"+makeEntry(skypeChat3);
+		final String expectedIndex = mockIndex.replaceAll("\r", "")+"\n"+makeEntry(skypeChat3);
 		
 		Assert.assertEquals(expectedIndex, updatedIndex);
 		
