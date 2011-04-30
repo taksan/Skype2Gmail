@@ -20,7 +20,6 @@ public class MailStorage implements SkypeStorage {
 	private final SkypeMailFolder skypeFolder;
 	private final LoggerProvider loggerProvider;
 	private final UserAuthProvider userAuthProvider;
-	private Logger LOGGER;
 
 	@Inject
 	public MailStorage(
@@ -48,6 +47,11 @@ public class MailStorage implements SkypeStorage {
 	@Override
 	public void open() {
 		getLogger().info("Will send messages to " + userAuthProvider.getUser());
+		fetchPasswordJustToForceItToAskHereIfNotSet();
+	}
+
+	private String fetchPasswordJustToForceItToAskHereIfNotSet() {
+		return userAuthProvider.getPassword();
 	}
 	
 	@Override
@@ -58,10 +62,6 @@ public class MailStorage implements SkypeStorage {
 
 	
 	private Logger getLogger() {
-		if (LOGGER != null)
-			return LOGGER;
-		LOGGER = loggerProvider.getLogger(getClass());
-		return LOGGER;
-		
+		return loggerProvider.getPriorityLogger(getClass());
 	}
 }

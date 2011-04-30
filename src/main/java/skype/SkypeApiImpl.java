@@ -50,7 +50,7 @@ public class SkypeApiImpl implements SkypeApi {
 	public void accept(final SkypeApiChatVisitor visitor) {
 		Chat[] chatsArray = getChatHistory();
 		
-		Logger logger = loggerProvider.getLogger(getClass());
+		Logger logger = loggerProvider.getPriorityLogger(getClass());
 		logger.info((String.format("Found %d chats.", chatsArray.length)));
 		
 		for (Chat chat : chatsArray) {

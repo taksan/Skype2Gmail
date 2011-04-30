@@ -23,8 +23,38 @@ public class Skype2GmailConfigContentsImpl implements Skype2GmailConfigContents 
 	public Skype2GmailConfigContentsImpl(Skype2GmailConfigDir configDir) {
 		this.configDir = configDir;
 	}
+	
+	@Override
+	public boolean isOutputVerbose() {
+		Maybe<String> l = getProperty("verbosity");
+		if (l.unbox() == null)
+			return true;
+		return l.unbox().equals("verbose");
+	}
 
-	public Maybe<String> getProperty(String key) {
+
+	@Override
+	public Maybe<String> getUserName() {
+		return this.getProperty("gmail.user");
+	}
+
+	@Override
+	public void setUserName(String u) {
+		setProperty("gmail.user", u);
+	}
+
+	@Override
+	public Maybe<String> getPassword() {
+		return getProperty("gmail.password");
+	}
+
+	@Override
+	public void setPassword(String p) {
+		setProperty("gmail.password", p);
+	}
+
+	
+	private Maybe<String> getProperty(String key) {
 		if (config == null) {
 			readConfiguration();
 		}
@@ -32,8 +62,7 @@ public class Skype2GmailConfigContentsImpl implements Skype2GmailConfigContents 
 		return new Maybe<String>(property);
 	}
 
-	@Override
-	public void setProperty(String key, String value) {
+	private void setProperty(String key, String value) {
 		config.setProperty(key, value);
 		save();
 	}
@@ -63,4 +92,5 @@ public class Skype2GmailConfigContentsImpl implements Skype2GmailConfigContents 
 			throw new ApplicationException(e);
 		}
 	}
+
 }

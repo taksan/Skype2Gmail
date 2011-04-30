@@ -20,10 +20,4 @@
 		<level value="info" />
 		<appender-ref ref="SkypeFrameworkLog" />
 	</logger>
-	
-	<root>
-		<level value="info" />
-		<appender-ref ref="ConsoleAppender" />
-	</root>
-
 </log4j:configuration>

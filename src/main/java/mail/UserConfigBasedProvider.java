@@ -10,6 +10,7 @@ public class UserConfigBasedProvider implements UserAuthProvider {
 	
 	private Skype2GmailConfigContents skype2GmailConfigContents;
 	private CommandLineCredentialsProvider credentialsProvider;
+	private String passwordForThisSession;
 
 	@Inject
 	public UserConfigBasedProvider(Skype2GmailConfigContents configContents){
@@ -19,10 +20,10 @@ public class UserConfigBasedProvider implements UserAuthProvider {
 
 	@Override
 	public String getUser() {
-		Maybe<String> user = skype2GmailConfigContents.getProperty("gmail.user");
+		Maybe<String> user = skype2GmailConfigContents.getUserName();
 		if (user.unbox() == null) {
 			String u = credentialsProvider.getUser();
-			skype2GmailConfigContents.setProperty("gmail.user", u);
+			skype2GmailConfigContents.setUserName(u);
 			return u;
 		}
 		return user.unbox();
@@ -30,16 +31,20 @@ public class UserConfigBasedProvider implements UserAuthProvider {
 
 	@Override
 	public String getPassword() {
-		Maybe<String> password = skype2GmailConfigContents.getProperty("gmail.password");
+		if (passwordForThisSession != null)
+			return passwordForThisSession;
+		
+		Maybe<String> password = skype2GmailConfigContents.getPassword();
 		if (password.unbox() == null) {
 			String p = credentialsProvider.getPassword();
 			System.out.print("Would you like to store the password?[y/n] ");
 			String answer = System.console().readLine();
 			if (answer.equalsIgnoreCase("y")) {
-				skype2GmailConfigContents.setProperty("gmail.password", p);
+				skype2GmailConfigContents.setPassword(p);
 				System.out.println("Password stored as plain text in your configuration file!");
 			}
-			return p;
+			passwordForThisSession = p;
+			return passwordForThisSession;
 		}
 		return password.unbox();
 	}

@@ -27,6 +27,7 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 			return;
 		}
 
+		getLogger().info("Starting synchronization...");
 		long startTime = System.currentTimeMillis();
 		skypeStorage.open();
 		try {
@@ -46,24 +47,27 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 	}
 
 	private Logger getLogger() {
-		if (logger == null) {
-			this.logger = loggerProvider.getLogger(getClass());
-		}
+		if (logger == null)
+			logger = loggerProvider.getPriorityLogger(getClass());
 		return logger;
+	}
+	
+	private Logger getVerboseLogger() {
+		return loggerProvider.getLogger(getClass().toString()+"Verbose");
 	}
 
 	@Override
 	public void visit(SkypeChat skypeChat) {
 		try {
 			if (skypeChat.getChatMessages().size() == 0) {
-				getLogger().info("Entry " + skypeChat.getId() + " skipped because it has no messages.");
+				getVerboseLogger().warn("Entry " + skypeChat.getId() + " skipped because it has no messages.");
 				return;
 			}
 			final StorageEntry previousEntry = skypeStorage.retrievePreviousEntryFor(skypeChat);
 			boolean chatIsAlreadyRecorded = previousEntry.getChat()
 					.getBodySignature().equals(skypeChat.getBodySignature());
 			if (chatIsAlreadyRecorded) {
-				getLogger().info("Entry " + skypeChat.getId() + " already up to date. Skipping.");
+				getVerboseLogger().info("Entry " + skypeChat.getId() + " already up to date. Skipping.");
 				return;
 			}
 	
@@ -75,7 +79,7 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 			storageEntry.setLastModificationTime(skypeChat.getLastModificationTime());
 			storageEntry.save();
 	
-			getLogger().info("Entry " + skypeChat.getId() + " written");
+			getVerboseLogger().info("Entry " + skypeChat.getId() + " written");
 		} catch(MessageProcessingException e) {
 			String message = String.format(
 					"An error was found processing message with the following id: %s",
