@@ -10,5 +10,4 @@ public interface SkypeMailStore {
 	Folder getFolder(String folder);
 
 	void close();
-
 }

@@ -25,5 +25,4 @@ public class SkypeMailStoreMock implements SkypeMailStore {
 	public void close() {
 		throw new NotImplementedException();
 	}
-
 }

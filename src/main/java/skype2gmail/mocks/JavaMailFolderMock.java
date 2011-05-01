@@ -70,7 +70,7 @@ public class JavaMailFolderMock extends Folder {
 
 	@Override
 	public boolean exists() throws MessagingException {
-		throw new NotImplementedException();
+		return true;
 	}
 
 	@Override
@@ -115,12 +115,10 @@ public class JavaMailFolderMock extends Folder {
 
 	@Override
 	public void open(int mode) throws MessagingException {
-		throw new NotImplementedException();
 	}
 
 	@Override
 	public void close(boolean expunge) throws MessagingException {
-		throw new NotImplementedException();
 	}
 
 	@Override
@@ -130,7 +128,7 @@ public class JavaMailFolderMock extends Folder {
 
 	@Override
 	public Message[] expunge() throws MessagingException {
-		throw new NotImplementedException();
+		return new Message[0];
 	}
 
 }

@@ -22,17 +22,17 @@ public class SkypeMailFolderImpl implements SkypeMailFolder {
 
 	private final SkypeChatFolderProvider chatFolderProvider;
 	private Folder skypeChatFolder;
-	private final Map<String, SkypeMailMessage> gmailMessages = new LinkedHashMap<String, SkypeMailMessage>();
-	private final SkypeMailStore gmailStore;
-	private final SkypeMailMessageFactory gmailMessageFactory;
+	private final Map<String, SkypeMailMessage> mailMessages = new LinkedHashMap<String, SkypeMailMessage>();
+	private final SkypeMailStore mailStore;
+	private final SkypeMailMessageFactory mailMessageFactory;
 
 	@Inject
 	public SkypeMailFolderImpl(SkypeChatFolderProvider chatFolderProvider,
-			SkypeMailStore gmailStore,
-			SkypeMailMessageFactory gmailMessageFactory) {
+			SkypeMailStore mailStore,
+			SkypeMailMessageFactory mailMessageFactory) {
 		this.chatFolderProvider = chatFolderProvider;
-		this.gmailStore = gmailStore;
-		this.gmailMessageFactory = gmailMessageFactory;
+		this.mailStore = mailStore;
+		this.mailMessageFactory = mailMessageFactory;
 	}
 
 	@Override
@@ -56,22 +56,22 @@ public class SkypeMailFolderImpl implements SkypeMailFolder {
 		if (gmailMessage.getBody() == null)
 			return null;
 		
-		gmailMessages.put(skypeChat.getId(), gmailMessage);
+		mailMessages.put(skypeChat.getId(), gmailMessage);
 		return gmailMessage;
 	}
 
 	@Override
 	public void deleteMessageBasedOnId(String chatId) {
 		
-		SkypeMailMessage gmailMessage = gmailMessages.get(chatId);
-		if (gmailMessage == null) {
+		SkypeMailMessage mailMessage = mailMessages.get(chatId);
+		if (mailMessage == null) {
 			SearchTerm st = new HeaderTerm(SkypeMailMessage.X_MESSAGE_ID, chatId);
-			gmailMessage = retrieveSingleMessageMatchingSearchTerm(st);
-			if (gmailMessage == null)
+			mailMessage = retrieveSingleMessageMatchingSearchTerm(st);
+			if (mailMessage == null)
 				return;
 		}
 
-		gmailMessage.delete();
+		mailMessage.delete();
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class SkypeMailFolderImpl implements SkypeMailFolder {
 		if (foundMessages.length == 0)
 			gmailMessage = new EmptySkypeMailMessage();
 		else
-			gmailMessage = gmailMessageFactory.factory((MimeMessage) foundMessages[0]);
+			gmailMessage = mailMessageFactory.factory((MimeMessage) foundMessages[0]);
 		return gmailMessage;
 	}
 
@@ -119,7 +119,7 @@ public class SkypeMailFolderImpl implements SkypeMailFolder {
 				throw new ApplicationException(e);
 			}
 		} finally {
-			gmailStore.close();
+			mailStore.close();
 		}
 	}
 
@@ -127,7 +127,7 @@ public class SkypeMailFolderImpl implements SkypeMailFolder {
 		if (skypeChatFolder != null)
 			return skypeChatFolder;
 
-		skypeChatFolder = gmailStore.getFolder(chatFolderProvider.getFolderName());
+		skypeChatFolder = mailStore.getFolder(chatFolderProvider.getFolderName());
 		return skypeChatFolder;
 	}
 }

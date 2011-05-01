@@ -11,14 +11,23 @@ import mail.SkypeMailFolder;
 import mail.SkypeMailFolderImpl;
 import mail.SkypeMailMessage;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import skype.SkypeChat;
 import skype.mocks.SkypeApiMock;
 import skype2gmail.mocks.SkypeMailMessageMock;
 import skype2gmail.mocks.SkypeMailStoreMock;
+import utils.SimpleLoggerProvider;
 
 public class SkypeMailFolderTest {
+	private SkypeMailStore mockStore;
+	
+	@Before
+	public void before(){
+		mockStore = new SkypeMailStoreMock();
+	}
+
 	@Test
 	public void testAppendAndRetrieve() {
 		SkypeMailFolder subject = createSubject();
@@ -68,13 +77,16 @@ public class SkypeMailFolderTest {
 
 	private SkypeMailMessageFactoryImpl getGmailMessageFactory() {
 		SessionProviderImpl sessionProvider = new SessionProviderImpl();
-		SkypeMailMessageFactoryImpl gmailMessageFactoryImpl = new SkypeMailMessageFactoryImpl(sessionProvider);
+		DefaultSkypeChatFolderProvider cfp = new DefaultSkypeChatFolderProvider();
+		SimpleLoggerProvider loggerProvider = new SimpleLoggerProvider();
+		
+		SkypeMailMessageFactoryImpl gmailMessageFactoryImpl = 
+			new SkypeMailMessageFactoryImpl(sessionProvider, cfp, mockStore, loggerProvider);
 		return gmailMessageFactoryImpl;
 	}
 
 	private SkypeMailFolder createSubject() {
 		SkypeChatFolderProvider fp = new DefaultSkypeChatFolderProvider();
-		SkypeMailStore mockStore = new SkypeMailStoreMock();
 		return new SkypeMailFolderImpl(fp, mockStore, getGmailMessageFactory());
 	}
 }

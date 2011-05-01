@@ -17,7 +17,8 @@ import skype2gmail.mocks.SkypeMailMessageMock;
 public class MailMessageIndexEntryTest {
 	@Test
 	public void testLazyRehydration() {
-		SkypeChat previousSkypeChat = SkypeApiMock.produceChatMock("#42$foo", "moe", "joe");
+		String actualBodySignature = "actual-signature";
+		SkypeChat previousSkypeChat = SkypeApiMock.produceChatMock("#42$foo", "moe", "joe", actualBodySignature);
 		
 		MailMessageIndexEntryFactoryImpl gmailMessageIndexEntryFactory = new MailMessageIndexEntryFactoryImpl();
 		
@@ -27,11 +28,11 @@ public class MailMessageIndexEntryTest {
 		
 		
 		SkypeChat skypeChat = SkypeApiMock.produceChatMock("#42$foo", "zoe", "joe");
-		String previousChatSignature = "previous-signature";
-		SkypeMailMessage gmailMessage = gmailMessageIndexEntryFactory.produce(nonIndexedGmailFolder, skypeChat, previousChatSignature );
+		String indexSignature = "previous-signature";
+		SkypeMailMessage gmailMessage = gmailMessageIndexEntryFactory.produce(nonIndexedGmailFolder, skypeChat, indexSignature );
 		
 		String bodySignature = gmailMessage.getBodySignature();
-		Assert.assertEquals(previousChatSignature, bodySignature);
+		Assert.assertEquals(indexSignature, bodySignature);
 		
 		MailMessageIndexEntry indexEntry = 
 			(MailMessageIndexEntry) Proxy.getInvocationHandler(gmailMessage);
@@ -43,5 +44,7 @@ public class MailMessageIndexEntryTest {
 		
 		String postersString = StringUtils.join(posters,",");
 		Assert.assertEquals("joe,moe", postersString);
+		
+		Assert.assertEquals(actualBodySignature, gmailMessage.getBodySignature());
 	}
 }

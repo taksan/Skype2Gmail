@@ -27,10 +27,12 @@ public class MailMessageIndexEntry implements InvocationHandler {
 	public Object invoke(Object proxy, Method method, Object[] paramArrayArgs)
 			throws Throwable {
 		if (method.getName().equals("getBodySignature")) {
-			return previousChatSignature;
+			if (actualMessage == null)
+				return previousChatSignature;
 		}
 		if (method.getName().equals("getId")) {
-			return skypeChat.getId();
+			if (actualMessage == null) 
+				return skypeChat.getId();
 		}
 		if (actualMessage == null) {
 			actualMessage = retrieveActualMessage();

@@ -14,6 +14,7 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 	private Logger logger;
 	private final LastSynchronizationProvider lastSynchronizationProvider;
 	private int updatedChats = 0;
+	private int chatsWithProblems = 0;
 
 	@Inject
 	public SkypeRecorder(SkypeApi skypeApi, 
@@ -51,12 +52,19 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 		getLogger().info("Took " + DurationFormatUtils.formatDuration(elapsedMills, "H:m:s"));
 		final String message;
 		if(updatedChats == 0) {
-			message = "No messages were synchronized. All of them were up to date.";
+			if (chatsWithProblems > 0) {
+				message = "No messages were synchronized.";
+			}
+			else
+				message = "No messages were synchronized. All of them were up to date.";
 		}
 		else {
 			message = updatedChats + " messages have been synchronized.";
 		}
 		getLogger().info(message);
+		if (chatsWithProblems > 0) {
+			getLogger().warn(chatsWithProblems+ " chat messages were not synchronized because of errors");
+		}
 		getLogger().info("Done.");
 		this.lastSynchronizationProvider.updateSynch();
 	}
@@ -103,6 +111,7 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 					);
 			getLogger().error(message, e);
 			getLogger().info("Message processing skipped");
+			chatsWithProblems ++;
 		}
 	}
 }

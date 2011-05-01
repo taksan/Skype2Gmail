@@ -99,7 +99,7 @@ public class SkypeMailMessageMock implements SkypeMailMessage {
 
 	@Override
 	public String getBodySignature() {
-		throw new NotImplementedException();
+		return this.previousSkypeChat.getBodySignature();
 	}
 
 	@Override

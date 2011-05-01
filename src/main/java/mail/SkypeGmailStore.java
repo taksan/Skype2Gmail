@@ -6,11 +6,11 @@ import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Store;
 
-import com.google.inject.Inject;
-
 import skype.ApplicationException;
 import skype2gmail.SessionProvider;
 import skype2gmail.UserAuthProvider;
+
+import com.google.inject.Inject;
 
 public class SkypeGmailStore implements SkypeMailStore {
 	private Store store;
@@ -19,7 +19,8 @@ public class SkypeGmailStore implements SkypeMailStore {
 
 	@Inject
 	public SkypeGmailStore(SessionProvider sessionProvider,
-			UserAuthProvider userInfoProvider) {
+			UserAuthProvider userInfoProvider) 
+	{
 		this.userInfoProvider = userInfoProvider;
 		this.session = sessionProvider.getInstance();
 	}
@@ -55,5 +56,4 @@ public class SkypeGmailStore implements SkypeMailStore {
 			throw new ApplicationException(e);
 		}
 	}
-
 }
