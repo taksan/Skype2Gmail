@@ -95,6 +95,9 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 			}
 	
 			final SkypeChat newChat = previousEntry.getChat().merge(skypeChat);
+			if (newChat.getBodySignature().equals(previousEntry.getChat().getBodySignature())) {
+				return;
+			}
 	
 			final StorageEntry storageEntry = skypeStorage.newEntry(newChat);
 	

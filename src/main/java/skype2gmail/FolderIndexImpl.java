@@ -1,7 +1,6 @@
 package skype2gmail;
 
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -16,6 +15,7 @@ import mail.SkypeMailMessageFactory;
 import org.apache.log4j.Logger;
 
 import skype.SkypeChat;
+import skype.SkypeChatDateFormatImpl;
 import utils.LoggerProvider;
 
 import com.google.inject.Inject;
@@ -26,11 +26,19 @@ public class FolderIndexImpl implements FolderIndex {
 	private final SkypeMailFolder folder;
 	private final SkypeMailMessageFactory gmailMessageFactory;
 	private Logger logger;
+	private final CurrentUserProvider currentUser;
+	private final CurrentTimeProvider currentTimeProvider;
 
 	@Inject
-	public FolderIndexImpl(SkypeMailFolder folder, SkypeMailMessageFactory gmailMessageFactory, LoggerProvider loggerProvider) {
+	public FolderIndexImpl(SkypeMailFolder folder, 
+			SkypeMailMessageFactory gmailMessageFactory, 
+			LoggerProvider loggerProvider, 
+			CurrentUserProvider currentUser,
+			CurrentTimeProvider currentTimeProvider) {
 		this.folder = folder;
 		this.gmailMessageFactory = gmailMessageFactory;
+		this.currentUser = currentUser;
+		this.currentTimeProvider = currentTimeProvider;
 		this.logger = loggerProvider.getLogger(getClass());
 	}
 
@@ -76,13 +84,13 @@ public class FolderIndexImpl implements FolderIndex {
 		SkypeMailMessage indexMailMessage = gmailMessageFactory.factory();
 		indexMailMessage.setCustomHeader(FolderIndex.INDEX_HEADER_NAME, FolderIndex.INDEX_HEADER_VALUE);
 		indexMailMessage.setFrom("Skype2Gmail");
+		indexMailMessage.addRecipient(currentUser.getUser());
 		indexMailMessage.setBody(indexBody);
-		indexMailMessage.setSubject("Skype2Gmail chat index");
-		indexMailMessage.setDate("1942/8/13 10:00");
-		Calendar sentDateCal = Calendar.getInstance();
-		sentDateCal.set(1942, 8, 13);
-		Date sentDateToMakeSureIndexIsTheOldestMessage = sentDateCal.getTime();
-		indexMailMessage.setSentDate(sentDateToMakeSureIndexIsTheOldestMessage);
+		Date sentTime = this.currentTimeProvider.now();
+		SkypeChatDateFormatImpl df = new SkypeChatDateFormatImpl();
+		indexMailMessage.setSubject("Skype2Gmail chat index - last update " + df.format(sentTime));
+		indexMailMessage.setSentDate(sentTime);
+		indexMailMessage.setDate(sentTime.toString());
 		folder.replaceMessageMatchingTerm(FolderIndex.CHAT_INDEX_SEARCH_TERM, indexMailMessage);
 		this.logger.info("Chat index saved successfully.");
 	}

@@ -76,8 +76,7 @@ public class SkypeMailMessageFactoryImpl implements SkypeMailMessageFactory {
 				Message[] messages = trash.search(FolderIndex.CHAT_INDEX_SEARCH_TERM);
 				if (messages.length>0)
 					messages[0].setFlag(Flags.Flag.DELETED, true);
-				Message[] expunge = trash.expunge();
-				System.out.println(expunge.length);
+				trash.close(true);
 			} catch (MessagingException e) {
 				throw new MessageProcessingException(e);
 			}

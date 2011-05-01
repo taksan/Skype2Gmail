@@ -84,7 +84,6 @@ public class SkypeMailMessageMock implements SkypeMailMessage {
 
 	@Override
 	public void addRecipient(SkypeUser skypeUser) {
-		throw new NotImplementedException();
 	}
 
 	@Override
