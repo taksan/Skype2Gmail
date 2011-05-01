@@ -23,7 +23,8 @@ public class SkypeHistory {
 		try {
 			if (args.length > 0 && args[0].equals("--mail")) {
 				skype2gmail();
-			} else {
+			} else
+			if (args.length > 0 && args[0].equals("--disk")) {
 				final String [] argsForDisk;
 				if (args.length == 0) {
 					argsForDisk = new String[0];
@@ -32,6 +33,9 @@ public class SkypeHistory {
 					argsForDisk = Arrays.copyOfRange(args, 1, args.length);
 				}
 				skype2disk(argsForDisk);
+			}
+			else {
+				printHelpAndExit();
 			}
 		}
 		catch(IllegalStateException ex) {
@@ -44,6 +48,13 @@ public class SkypeHistory {
 				ex.printStackTrace();
 			}
 		}
+	}
+
+	private static void printHelpAndExit() {
+		System.out.println("Usage:");
+		System.out.println("	--mail : synchronize with a gmail account");
+		System.out.println("	--disk : synchornize with local disk (in the .skype2gmail directory)");
+		System.exit(1);
 	}
 
 	private static Throwable getRootCause(Throwable ex) {
