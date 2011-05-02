@@ -1,0 +1,49 @@
+Skype2Gmail is a simple application that can be used to send your
+skype chat messages to gmail or save it in your local disk as plain
+text messages.
+
+Right now, there's an alpha version available in the Downloads
+sections, which can be used from the command line. The usage is very
+simple, just make sure skype is running before running one of the
+following commands:
+
+- java -jar skype2gmail-1.0-alpha.jar --mail
+
+Will send all your messages to your e-mail account. When you run it
+for the first time, it will ask for your credentials and will save
+them (if you allow) in a configuration file in your home directory.
+
+Chat dates will be preserved as the mail "sent date", so all your
+chats will be sorted accordingly.
+
+- java -jar skype2gmail-1.0-alpha.jar --disk
+
+Will write all your messages in your home directory, under the
+.skype2gmail/history directory. Doing so, you can easly use any sort
+of tools to search through the text messages, for example, to locate
+that piece of information someone told you, but you forgot.
+
+Chat dates will be preserved as the file "modification date", so
+you'll be to use any sort of tool that allows you to list the files 
+based on the modification date.
+
+There's still some work to do! I have the following features planned:
+
+- allow the application to keep running and synchronizing your chats
+periodically
+- create a .deb package and a windows installer do easy installation
+- deploy the project in a launchpad PPA, allowing anyone to install it
+using apt-get
+- look into the user's gmail contact list to figure the skype user's
+  mail address, so the application can automatically put their mail
+  addresses in the senders and recipients fields
+- create java web start file to allow starting the application
+  directly from the web and helping the users keep it as up-to-date as
+  possible
+  
+Please, try and let me know what you think, report bugs and feel free
+to make suggestions!
+
+See ya!
+
+

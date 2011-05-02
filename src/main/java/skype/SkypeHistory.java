@@ -53,7 +53,7 @@ public class SkypeHistory {
 	private static void printHelpAndExit() {
 		System.out.println("Usage:");
 		System.out.println("	--mail : synchronize with a gmail account");
-		System.out.println("	--disk : synchornize with local disk (in the .skype2gmail directory)");
+		System.out.println("	--disk : synchronize with local disk (in the .skype2gmail directory)");
 		System.exit(1);
 	}
 
