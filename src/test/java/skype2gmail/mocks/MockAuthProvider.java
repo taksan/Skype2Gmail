@@ -6,12 +6,12 @@ public class MockAuthProvider implements UserAuthProvider {
 
 	@Override
 	public String getUser() {
-		return "anhanga.tinhoso@gmail.com";
+		return "foo.bar@gmail.com";
 	}
 
 	@Override
 	public String getPassword() {
-		return "nukekubi";
+		return "foobaz";
 	}
 
 }
