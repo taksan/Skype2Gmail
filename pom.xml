@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>skype</groupId>
+	<groupId>com.github.taksan</groupId>
 	<artifactId>skype2gmail</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<name>Skype 2 Gmail</name>
@@ -9,6 +9,7 @@
 	<url>https://github.com/taksan/Skype2Gmail</url>
 	<scm>
 		<connection>scm:git:git@github.com:taksan/Skype2Gmail.git</connection>
+		<developerConnection>scm:git:git@github.com:taksan/Skype2Gmail.git</developerConnection>
 		<url>git@github.com:taksan/Skype2Gmail.git</url>
 	</scm>
 	<build>
