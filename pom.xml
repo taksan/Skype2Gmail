@@ -1,5 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>oss-parent</artifactId>
+		<groupId>org.sonatype.oss</groupId>
+		<version>7</version>
+	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.taksan</groupId>
 	<artifactId>skype2gmail</artifactId>
@@ -25,6 +30,13 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<releaseProfiles>sign</releaseProfiles>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
 				<version>1.4</version>
 				<executions>
@@ -40,21 +52,6 @@
 									<mainClass>skype.SkypeHistory</mainClass>
 								</transformer>
 							</transformers>
-
-							<filters>
-								<filter>
-									<artifact>org.eclipse.swt.win32.win32:x86</artifact>
-									<includes>
-										<include>org/eclipse/swt/internal/win32/*</include>
-									</includes>
-								</filter>
-								<filter>
-									<artifact>org.eclipse.swt.carbon:macosx</artifact>
-									<excludes>
-										<exclude>META-INF/*</exclude>
-									</excludes>
-								</filter>
-							</filters>
 						</configuration>
 					</execution>
 				</executions>
@@ -158,5 +155,8 @@
 			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
 			<distribution>repo</distribution>
 		</license>
-	</licenses>		
+	</licenses>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>		
 </project>
