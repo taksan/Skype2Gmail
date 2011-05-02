@@ -48,6 +48,8 @@ public class SkypeMailMessageFactoryImpl implements SkypeMailMessageFactory {
 	}
 	
 	private class SkypeMailMessageImpl extends AbstractSkypeMailMessage {
+		private Folder trashFolder;
+
 		SkypeMailMessageImpl(Session session) {
 			super(session);
 		}
@@ -60,11 +62,10 @@ public class SkypeMailMessageFactoryImpl implements SkypeMailMessageFactory {
 		public void delete() {
 			String skypeFolderName = chatFolderProvider.getFolderName();
 			Folder skypeFolder = mailStore.getFolder(skypeFolderName);
-			Folder trash = mailStore.getFolder("[Gmail]/Trash");
+			Folder trash = getTrashFolder();
 			MimeMessage mimeMessage = this.getMimeMessage();
 			Message messageToRemove = mimeMessage;
 			try {
-				logger.info("Removing previous mail message: " + this.getTopic());
 				Message[] messagesToRemove = new Message[]{messageToRemove};
 				skypeFolder.copyMessages(messagesToRemove, trash);
 			} catch (MessagingException e) {
@@ -76,10 +77,16 @@ public class SkypeMailMessageFactoryImpl implements SkypeMailMessageFactory {
 				Message[] messages = trash.search(FolderIndex.CHAT_INDEX_SEARCH_TERM);
 				if (messages.length>0)
 					messages[0].setFlag(Flags.Flag.DELETED, true);
-				trash.close(true);
+				trash.expunge();
 			} catch (MessagingException e) {
 				throw new MessageProcessingException(e);
 			}
+		}
+
+		private Folder getTrashFolder() {
+			if (trashFolder == null)
+				trashFolder = mailStore.getFolder("[Gmail]/Trash");
+			return trashFolder;
 		}
 	}
 }
