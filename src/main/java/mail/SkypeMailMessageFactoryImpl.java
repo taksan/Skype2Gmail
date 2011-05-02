@@ -60,7 +60,7 @@ public class SkypeMailMessageFactoryImpl implements SkypeMailMessageFactory {
 		@Override
 		public void delete() {
 			String skypeFolderName = chatFolderProvider.getFolderName();
-			Folder skypeFolder = mailStore.getFolder(skypeFolderName)
+			Folder skypeFolder = mailStore.getFolder(skypeFolderName);
 			Folder trash =  mailStore.getFolder("[Gmail]/Trash");
 			MimeMessage mimeMessage = this.getMimeMessage();
 			Message messageToRemove = mimeMessage;
