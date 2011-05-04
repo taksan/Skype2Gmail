@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.taksan</groupId>
 	<artifactId>skype2gmail</artifactId>
-	<version>1.0</version>
+	<version>1.1-SNAPSHOT</version>
 	<name>Skype 2 Gmail</name>
 	<description>Send skype chat history to a gmail account	</description>
 	<url>https://github.com/taksan/Skype2Gmail</url>
