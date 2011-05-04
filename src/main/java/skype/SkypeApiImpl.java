@@ -71,19 +71,10 @@ public class SkypeApiImpl implements SkypeApi {
 	}
 
 	private Callable<Chat[]> pickFetchStrategy() {
-		final Callable<Chat[]> getAllChats = new Callable<Chat[]>() {
-			@Override
-			public Chat[] call() throws Exception {
-				return getAllChats();
-			}
-		};
-		final Callable<Chat[]> getRecentChats = new Callable<Chat[]>() {
-			@Override
-			public Chat[] call() throws Exception {
-				return getRecentChats();
-			}
-		};
+		final Callable<Chat[]> getAllChats = createAllChatsCallable();
+		final Callable<Chat[]> getRecentChats = createRecentChatsCallable();
 		Callable<Chat[]> getChatsCallable = getAllChats;
+		
 		if (chatFetchStrategy.catFetchJustTheRecentChats()) {
 			getChatsCallable = getRecentChats;
 			getLogger().info("Will send just the recent chats.");
@@ -92,6 +83,24 @@ public class SkypeApiImpl implements SkypeApi {
 			getLogger().info("Will send all chats in history.");
 		}
 		return getChatsCallable;
+	}
+
+	private Callable<Chat[]> createRecentChatsCallable() {
+		return new Callable<Chat[]>() {
+			@Override
+			public Chat[] call() throws Exception {
+				return getRecentChats();
+			}
+		};
+	}
+
+	private Callable<Chat[]> createAllChatsCallable() {
+		return new Callable<Chat[]>() {
+			@Override
+			public Chat[] call() throws Exception {
+				return getAllChats();
+			}
+		};
 	}
 
 	@Override

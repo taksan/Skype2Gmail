@@ -1,8 +1,8 @@
 package skype2gmail.mocks;
 
-import skype2gmail.UserAuthProvider;
+import skype2gmail.UserCredentialsProvider;
 
-public class MockAuthProvider implements UserAuthProvider {
+public class MockCredentialsProvider implements UserCredentialsProvider {
 
 	@Override
 	public String getUser() {

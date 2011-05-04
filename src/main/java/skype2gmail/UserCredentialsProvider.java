@@ -1,6 +1,6 @@
 package skype2gmail;
 
-public interface UserAuthProvider {
+public interface UserCredentialsProvider {
 
 	String getUser();
 

@@ -37,7 +37,7 @@ public class SkypeMailFolderImpl implements SkypeMailFolder {
 
 	@Override
 	public void appendMessage(SkypeMailMessage gmailMessage) {
-		Folder rootFolder = getSkypeChatFolder();
+		Folder rootFolder = getSkypeChatFolderEnsuringItIsInitialized();
 		Message[] msgs = new javax.mail.Message[] { 
 				gmailMessage.getMimeMessage() 
 		};
@@ -78,18 +78,27 @@ public class SkypeMailFolderImpl implements SkypeMailFolder {
 	public SkypeMailMessage retrieveSingleMessageMatchingSearchTerm(SearchTerm st) {
 		SkypeMailMessage gmailMessage;
 		Message[] foundMessages = retrieveAllMessagesForSearchTerm(st);
-		if (foundMessages.length > 1) {
-			throw new ApplicationException("Found duplicate message, this is a bug! Search Term: " + st);
-		}
-		if (foundMessages.length == 0)
-			gmailMessage = new EmptySkypeMailMessage();
-		else
-			gmailMessage = mailMessageFactory.factory((MimeMessage) foundMessages[0]);
+		ensureNoDuplicatesExists(st, foundMessages);
+		gmailMessage = factoryMessageOrEmptyIfNoneExists(foundMessages);
 		return gmailMessage;
 	}
 
+	private void ensureNoDuplicatesExists(SearchTerm st, Message[] foundMessages) {
+		if (foundMessages.length > 1) {
+			throw new ApplicationException("Found duplicate message, this is a bug! Search Term: " + st);
+		}
+	}
+
+	private SkypeMailMessage factoryMessageOrEmptyIfNoneExists(
+			Message[] foundMessages) {
+		if (foundMessages.length == 0)
+			return new EmptySkypeMailMessage();
+		
+		return mailMessageFactory.factory((MimeMessage) foundMessages[0]);
+	}
+
 	private Message[] retrieveAllMessagesForSearchTerm(SearchTerm st) {
-		Folder folder = getSkypeChatFolder();
+		Folder folder = getSkypeChatFolderEnsuringItIsInitialized();
 		Message[] foundMessages;
 		try {
 			foundMessages = folder.search(st);
@@ -110,20 +119,29 @@ public class SkypeMailFolderImpl implements SkypeMailFolder {
 	@Override
 	public void close() {
 		try {
-			try {
-				if (skypeChatFolder != null) {
-					boolean deleteFlaggedMessages = true;
-					skypeChatFolder.close(deleteFlaggedMessages);
-				}
-			} catch (MessagingException e) {
-				throw new ApplicationException(e);
-			}
+			closeSkypeFolderIfItWasOpened();
 		} finally {
 			mailStore.close();
 		}
 	}
 
-	private Folder getSkypeChatFolder() {
+	private void closeSkypeFolderIfItWasOpened() {
+		try {
+			if (skypeChatFolder != null) {
+				closeFolderAndExpungeDeletedMessages();
+			}
+		} catch (MessagingException e) {
+			throw new ApplicationException(e);
+		}
+	}
+
+	private void closeFolderAndExpungeDeletedMessages()
+			throws MessagingException {
+		boolean deleteFlaggedMessages = true;
+		skypeChatFolder.close(deleteFlaggedMessages);
+	}
+
+	private Folder getSkypeChatFolderEnsuringItIsInitialized() {
 		if (skypeChatFolder != null)
 			return skypeChatFolder;
 

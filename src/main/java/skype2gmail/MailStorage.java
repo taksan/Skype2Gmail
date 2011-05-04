@@ -19,14 +19,14 @@ public class MailStorage implements SkypeStorage {
 	
 	private final SkypeMailFolder skypeFolder;
 	private final LoggerProvider loggerProvider;
-	private final UserAuthProvider userAuthProvider;
+	private final UserCredentialsProvider userAuthProvider;
 
 	@Inject
 	public MailStorage(
 			MailStorageEntryFactory entryFactory, 
 			SkypeMailFolder skypeFolder,
 			LoggerProvider loggerProvider,
-			UserAuthProvider userAuthProvider) {
+			UserCredentialsProvider userAuthProvider) {
 		this.entryFactory = entryFactory;
 		this.skypeFolder = skypeFolder;
 		this.loggerProvider = loggerProvider;

@@ -1,6 +1,5 @@
 package skype;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 import skype2disk.Skype2DiskModule;
@@ -8,30 +7,17 @@ import skype2gmail.Skype2GmailModule;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.skype.SkypeException;
 import com.skype.connector.UnsupportedArchitectureException;
 
 public class SkypeHistory {
 
-	/**
-	 * @param args
-	 * @throws SkypeException
-	 * @throws IOException
-	 * @throws InterruptedException
-	 */
 	public static void main(String[] args) {
 		try {
 			if (args.length > 0 && args[0].equals("--mail")) {
 				skype2gmail();
 			} else
 			if (args.length > 0 && args[0].equals("--disk")) {
-				final String [] argsForDisk;
-				if (args.length == 0) {
-					argsForDisk = new String[0];
-				}
-				else {
-					argsForDisk = Arrays.copyOfRange(args, 1, args.length);
-				}
+				final String[] argsForDisk = createArgsWithoutDiskParameter(args);
 				skype2disk(argsForDisk);
 			}
 			else {
@@ -39,15 +25,31 @@ public class SkypeHistory {
 			}
 		}
 		catch(IllegalStateException ex) {
-			Throwable cause = getRootCause(ex);
-			if (cause != null && cause instanceof UnsupportedArchitectureException) {
-				System.out.println(cause.getMessage());
-			}
-			else {
-				System.out.println(cause.getClass().getName());
-				ex.printStackTrace();
-			}
+			printExceptionMessageIfPossibleOrShowThePrintTheStackTrace(ex);
 		}
+	}
+
+	private static void printExceptionMessageIfPossibleOrShowThePrintTheStackTrace(
+			IllegalStateException ex) {
+		Throwable cause = getRootCause(ex);
+		if (cause != null && cause instanceof UnsupportedArchitectureException) {
+			System.out.println(cause.getMessage());
+		}
+		else {
+			System.out.println(cause.getClass().getName());
+			ex.printStackTrace();
+		}
+	}
+
+	private static String[] createArgsWithoutDiskParameter(String[] args) {
+		final String [] argsForDisk;
+		if (args.length == 0) {
+			argsForDisk = new String[0];
+		}
+		else {
+			argsForDisk = Arrays.copyOfRange(args, 1, args.length);
+		}
+		return argsForDisk;
 	}
 
 	private static void printHelpAndExit() {

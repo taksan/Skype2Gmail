@@ -3,9 +3,9 @@ package mail;
 import java.io.Console;
 
 import skype.ApplicationException;
-import skype2gmail.UserAuthProvider;
+import skype2gmail.UserCredentialsProvider;
 
-public class CommandLineCredentialsProvider implements UserAuthProvider {
+public class CommandLineCredentialsProvider implements UserCredentialsProvider {
 	private String username;
 	private String password;
 

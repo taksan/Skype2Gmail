@@ -11,7 +11,7 @@ import skype.mocks.SkypeApiImplMock;
 import skype.mocks.SkypeUserFactoryMock;
 import skype2disk.mocks.BasePathMock;
 import skype2gmail.Skype2GmailModuleCommons;
-import skype2gmail.UserAuthProvider;
+import skype2gmail.UserCredentialsProvider;
 import utils.LoggerProvider;
 import utils.SimpleLoggerProvider;
 
@@ -23,7 +23,7 @@ public class Skype2GmailModuleMockingSkypeApi extends Skype2GmailModuleCommons {
 	@Override
 	public void configure() {
 		super.configure();
-		bind(UserAuthProvider.class).to(MockAuthProvider.class).in(Scopes.SINGLETON);
+		bind(UserCredentialsProvider.class).to(MockCredentialsProvider.class).in(Scopes.SINGLETON);
 		bind(SkypeMailFolder.class).to(FolderMock.class).in(Scopes.SINGLETON);
 		
 		bind(SkypeApi.class).to(SkypeApiImplMock.class).in(Scopes.SINGLETON);

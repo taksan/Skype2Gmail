@@ -1,12 +1,12 @@
 package mail;
 
 import skype2gmail.Skype2GmailConfigContents;
-import skype2gmail.UserAuthProvider;
+import skype2gmail.UserCredentialsProvider;
 import utils.Maybe;
 
 import com.google.inject.Inject;
 
-public class UserConfigBasedProvider implements UserAuthProvider {
+public class UserConfigBasedProvider implements UserCredentialsProvider {
 	
 	private Skype2GmailConfigContents skype2GmailConfigContents;
 	private CommandLineCredentialsProvider credentialsProvider;
