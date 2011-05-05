@@ -30,8 +30,8 @@ public class LastSynchronizationProviderImplTest {
 	}
 	
 	@After
-	public void after() {
-		basePath.delete();
+	public void after() throws IOException {
+		FileUtils.deleteDirectory(new File(basePath.getPath()));
 	}
 	
 	@Test

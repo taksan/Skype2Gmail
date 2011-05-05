@@ -7,9 +7,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import skype.ApplicationException;
+import skype.MessageProcessingException;
 import skype.SkypeChat;
 import skype.SkypeChatFactory;
-import skype.MessageProcessingException;
 import skype.SkypeStorage;
 import utils.LoggerProvider;
 import utils.SimpleLoggerProvider;
@@ -27,7 +27,7 @@ public class FileSystemStorage implements SkypeStorage {
 	@Inject
 	public FileSystemStorage(SkypeChatFactory skypeChatFactory, 
 			FileDumpContentParser fileDumpContentParser, 
-			CustomHistoryDir baseDir,
+			HistoryDir baseDir,
 			LoggerProvider loggerProvider) {
 		this.skypeChatFactory = skypeChatFactory;
 		this.fileDumpContentParser = fileDumpContentParser;
@@ -37,7 +37,7 @@ public class FileSystemStorage implements SkypeStorage {
 	
 		public FileSystemStorage(SkypeChatFactory skypeChatFactory, 
 			FileDumpContentParser fileDumpContentParser, 
-			CustomHistoryDir baseDir) {
+			HistoryDir baseDir) {
 		this(skypeChatFactory,fileDumpContentParser,baseDir, new SimpleLoggerProvider());
 	}
 

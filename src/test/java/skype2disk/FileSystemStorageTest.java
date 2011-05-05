@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import skype.SkypeChat;
 import skype.SkypeChatSetter;
+import skype.SkypeHistoryCliOptions;
 import skype.mocks.PreviousSkypeChatMock;
 import skype.mocks.SkypeApiMock;
 import skype2disk.mocks.BasePathMock;
@@ -21,12 +22,12 @@ public class FileSystemStorageTest {
 	public void creationAndRetrievalTest() throws IOException {
 		File baseTmpDir = IOHelper.createTempDirOrCry();
 		
-		String[] args = new String[]{baseTmpDir.getCanonicalPath()};
+		String[] args = new String[]{"-historyOutputDir", baseTmpDir.getCanonicalPath()};
 		Skype2GmailConfigDir skype2GmailConfigDir = new Skype2GmailConfigDir(new BasePathMock());
-		CustomHistoryDir baseDir = new CustomHistoryDir(args, skype2GmailConfigDir);
+		SkypeHistoryCliOptions options = new SkypeHistoryCliOptions(args, skype2GmailConfigDir);
 		try {
 			SkypeChat chat = SkypeApiMock.produceChatMock("#42;$foo","moe","joe");
-			FileSystemStorage fileSystemStorage = new FileSystemStorage(null, mockContentParser(), baseDir);
+			FileSystemStorage fileSystemStorage = new FileSystemStorage(null, mockContentParser(), options);
 			FileSystemStorageEntry newEntry = fileSystemStorage.newEntry(chat);
 			newEntry.store(new SkypeChatSetter(chat));
 			newEntry.save();

@@ -31,11 +31,13 @@ public class Skype2DiskModuleTest extends AbstractRecordingTest {
 	{
 		File tempTarget = IOHelper.createTempDirOrCry();
 		try {
-			String [] args = new String[]{tempTarget.getAbsolutePath()};
+			String [] args = new String[]{"-historyOutputDir", tempTarget.getAbsolutePath()};
 			final Injector injector = Guice.createInjector(new Skype2DiskModuleMockingSkypeApi(args));
 			testRecording(injector);
 			
-			final String fileList = IOHelper.getSortedFilesAsString(tempTarget);
+			HistoryDir historyDir = injector.getInstance(HistoryDir.class);
+			
+			final String fileList = IOHelper.getSortedFilesAsString(historyDir.getHistoryDir());
 			
 			final String expectedFileList = 
 				"foo42\n" + 

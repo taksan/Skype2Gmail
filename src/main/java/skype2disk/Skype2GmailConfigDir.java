@@ -7,15 +7,18 @@ import skype.ApplicationException;
 import skype.BasePath;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
+@Singleton
 public class Skype2GmailConfigDir {
 	
-	private final File configDir;
+	private final BasePath basePath;
+	private File configDir;
 
 	@Inject
 	public Skype2GmailConfigDir(BasePath basePath)
 	{
-		configDir = new File(basePath.getPath(), ".skype2gmail");
+		this.basePath = basePath;
 	}
 
 	public String getFileNameUnder(String sub) {
@@ -27,14 +30,16 @@ public class Skype2GmailConfigDir {
 	}
 
 	public File getFileUnder(String sub) {
-		return new File(configDir, sub);
-	}
-	
-	public File getDirectory() {
-		return configDir;
+		return new File(this.getDirectory(), sub);
 	}
 
 	public File getConfigFile() {
 		return new File(this.getDirectory(), "config");
+	}
+	
+	public File getDirectory() {
+		if (configDir == null)
+			configDir = new File(basePath.getPath(), ".skype2gmail");
+		return configDir;
 	}
 }

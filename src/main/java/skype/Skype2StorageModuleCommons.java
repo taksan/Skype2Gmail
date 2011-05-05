@@ -8,7 +8,7 @@ import skype2gmail.Skype2GmailConfigContentsImpl;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 
-public class Skype2StorageModuleCommons extends AbstractModule {
+public class Skype2StorageModuleCommons extends AbstractModule  {
 	@Override
 	protected void configure() {
 		bind(SkypeChatFactory.class).to(SkypeChatFactoryImpl.class).in(Scopes.SINGLETON);

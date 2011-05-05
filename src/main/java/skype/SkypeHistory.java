@@ -1,9 +1,6 @@
 package skype;
 
-import java.util.Arrays;
-
-import skype2disk.Skype2DiskModule;
-import skype2gmail.Skype2GmailModule;
+import skype2disk.SkypeHistoryMainModule;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -13,16 +10,9 @@ public class SkypeHistory {
 
 	public static void main(String[] args) {
 		try {
-			if (args.length > 0 && args[0].equals("--mail")) {
-				skype2gmail();
-			} else
-			if (args.length > 0 && args[0].equals("--disk")) {
-				final String[] argsForDisk = createArgsWithoutDiskParameter(args);
-				skype2disk(argsForDisk);
-			}
-			else {
-				printHelpAndExit();
-			}
+			Injector historyInjector = Guice.createInjector(new SkypeHistoryMainModule(args));
+			SkypeHistoryMain skypeHistoryMain = historyInjector.getInstance(SkypeHistoryMain.class);
+			skypeHistoryMain.run();
 		}
 		catch(IllegalStateException ex) {
 			printExceptionMessageIfPossibleOrShowThePrintTheStackTrace(ex);
@@ -41,45 +31,10 @@ public class SkypeHistory {
 		}
 	}
 
-	private static String[] createArgsWithoutDiskParameter(String[] args) {
-		final String [] argsForDisk;
-		if (args.length == 0) {
-			argsForDisk = new String[0];
-		}
-		else {
-			argsForDisk = Arrays.copyOfRange(args, 1, args.length);
-		}
-		return argsForDisk;
-	}
-
-	private static void printHelpAndExit() {
-		System.out.println("Usage:");
-		System.out.println("	--mail : synchronize with a gmail account");
-		System.out.println("	--disk : synchronize with local disk (in the .skype2gmail directory)");
-		System.exit(1);
-	}
-
 	private static Throwable getRootCause(Throwable ex) {
 		while  (ex.getCause() != null) {
 			ex = ex.getCause();
 		}
 		return ex;
-	}
-
-	private static void skype2gmail() {
-		Injector injector = Guice.createInjector(new Skype2GmailModule());
-
-		SkypeHistoryRecorder recorder = injector.getInstance(SkypeHistoryRecorder.class);
-
-		recorder.record();
-	}
-
-	private static void skype2disk(String[] args) {
-		Injector injector = Guice.createInjector(new Skype2DiskModule(args));
-
-		SkypeHistoryRecorder recorder = injector
-				.getInstance(SkypeHistoryRecorder.class);
-
-		recorder.record();
 	}
 }
