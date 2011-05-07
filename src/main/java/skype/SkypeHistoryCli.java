@@ -67,22 +67,25 @@ public class SkypeHistoryCli implements HistoryDir {
 		return this.getDefaultDumpDirectory();
 	}
 	
-	
-	
 	private String getDefaultDumpDirectory() {
 		return this.skype2GmailConfigDir.getFileNameUnder("history");
 	}
 
 	public void printHelpAndExit() {
+		printVersion();
+		
 		HelpFormatter formatter = new HelpFormatter();
-		System.out.println(version.getVersionMessage());
 		String commandLine = String.format("java -jar skype2gmail-%s.jar", version.getVersion());
 		formatter.printHelp( commandLine, cliOptions );
 		System.exit(1);
 	}
 
 	public void printVersionAndExit() {
-		System.out.println(version.getVersionMessage());
+		printVersion();
 		System.exit(1);
+	}
+	
+	private void printVersion() {
+		System.out.println(version.getVersionMessage());
 	}
 }
