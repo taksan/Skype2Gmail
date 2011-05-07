@@ -5,35 +5,39 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
 @SuppressWarnings("serial")
-public class SkypeHistoryOptions extends Options{
+public class SkypeHistoryOptions extends Options {
+	private static final String HELP_OPTION_NAME = "help";
 	private static final String VERSION_OPTION = "version";
 	private static final String DISK_OPTION_NAME = "disk";
 	private static final String MAIL_OPTION_NAME = "mail";
 	private static final String HISTORY_OUTPUT_DIR_OPTION_NAME = "historyOutputDir";
 
 	public SkypeHistoryOptions() {
-		addOptionalOption(DISK_OPTION_NAME, "Synchronize to local disk");
-		addOptionalOptionWithArgument(HISTORY_OUTPUT_DIR_OPTION_NAME, "Synchronize to local disk");
-		addOptionalOption(MAIL_OPTION_NAME, "Synchronize to gmail");
-		addOptionalOption(VERSION_OPTION, "Prints the application version");
-		}
-	
-	private void addOptionalOptionWithArgument(String optFlag, String description) {
-		Option opt = new Option(optFlag, true, description);
+		addOptionalOption("h", HELP_OPTION_NAME, "Display help");
+		addOptionalOption("d", DISK_OPTION_NAME, "Write chats to local disk");
+		addOptionalOptionWithArgument("out", HISTORY_OUTPUT_DIR_OPTION_NAME, "Directory to write skype messages when disk option is enabled");
+		addOptionalOption("m", MAIL_OPTION_NAME, "Send chats to gmail");
+		addOptionalOption("v", VERSION_OPTION, "Prints the application version");
+	}
+
+	private void addOptionalOptionWithArgument(String shortOptFlag,
+			String optFlag, String description) {
+		Option opt = new Option(shortOptFlag, optFlag, true, description);
 		opt.setRequired(false);
 		this.addOption(opt);
 	}
 
-	private void addOptionalOption(String optFlag, String description) {
-		Option opt = new Option(optFlag, false, description);
+	private void addOptionalOption(String shortOptFlag,
+			String optFlag, String description) {
+		Option opt = new Option(shortOptFlag, optFlag, false, description);
 		opt.setRequired(false);
 		this.addOption(opt);
 	}
-	
+
 	public String getHistoryOutput(CommandLine cmd) {
 		return cmd.getOptionValue(HISTORY_OUTPUT_DIR_OPTION_NAME);
 	}
-	
+
 	public boolean hasHistoryOutput(CommandLine cmd) {
 		return cmd.hasOption(HISTORY_OUTPUT_DIR_OPTION_NAME);
 	}
@@ -48,5 +52,9 @@ public class SkypeHistoryOptions extends Options{
 
 	public boolean hasVersionOption(CommandLine cmd) {
 		return cmd.hasOption(VERSION_OPTION);
+	}
+
+	public boolean hasHelpOption(CommandLine cmd) {
+		return cmd.hasOption(HELP_OPTION_NAME);
 	}
 }

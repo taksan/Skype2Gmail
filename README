@@ -7,7 +7,7 @@ sections, which can be used from the command line. The usage is very
 simple, just make sure skype is running before running one of the
 following commands:
 
-- java -jar skype2gmail-1.0.jar --mail
+- java -jar skype2gmail-1.1-alpha.jar --mail
 
 Will send all your messages to your e-mail account. When you run it
 for the first time, it will ask for your credentials and will save
@@ -16,7 +16,7 @@ them (if you allow) in a configuration file in your home directory.
 Chat dates will be preserved as the mail "sent date", so all your
 chats will be sorted accordingly.
 
-- java -jar skype2gmail-1.0.jar --disk
+- java -jar skype2gmail-1.1-alpha.jar --disk
 
 Will write all your messages in your home directory, under the
 .skype2gmail/history directory. Doing so, you can easly use any sort

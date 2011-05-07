@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import skype.SkypeChat;
 import skype.SkypeChatSetter;
-import skype.SkypeHistoryCliOptions;
+import skype.SkypeHistoryCli;
 import skype.mocks.PreviousSkypeChatMock;
 import skype.mocks.SkypeApiMock;
 import skype2disk.mocks.BasePathMock;
@@ -24,7 +24,7 @@ public class FileSystemStorageTest {
 		
 		String[] args = new String[]{"-historyOutputDir", baseTmpDir.getCanonicalPath()};
 		Skype2GmailConfigDir skype2GmailConfigDir = new Skype2GmailConfigDir(new BasePathMock());
-		SkypeHistoryCliOptions options = new SkypeHistoryCliOptions(args, skype2GmailConfigDir);
+		SkypeHistoryCli options = new SkypeHistoryCli(args, skype2GmailConfigDir);
 		try {
 			SkypeChat chat = SkypeApiMock.produceChatMock("#42;$foo","moe","joe");
 			FileSystemStorage fileSystemStorage = new FileSystemStorage(null, mockContentParser(), options);
