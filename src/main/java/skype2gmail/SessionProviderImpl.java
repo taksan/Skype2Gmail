@@ -4,6 +4,8 @@ import java.util.Properties;
 
 import javax.mail.Session;
 
+import mail.MailSession;
+
 public class SessionProviderImpl implements SessionProvider {
 	
 	private Session session;
@@ -15,8 +17,8 @@ public class SessionProviderImpl implements SessionProvider {
 	}
 
 	@Override
-	public Session getInstance() {
-		return session;
+	public MailSession getInstance() {
+		return new MailSessionImpl(session);
 	}
 
 }

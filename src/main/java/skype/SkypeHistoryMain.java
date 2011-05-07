@@ -48,7 +48,7 @@ public class SkypeHistoryMain {
 		MavenXpp3Reader mavenreader = new MavenXpp3Reader();
 		model = getModelOrCry(pomStream, model, mavenreader);
 		MavenProject project = new MavenProject(model);
-		System.out.println("- skype2gmail version " + project.getVersion());
+		System.out.println("Skype2Gmail version \"" + project.getVersion()+"\"");
 
 		System.exit(1);
 	}

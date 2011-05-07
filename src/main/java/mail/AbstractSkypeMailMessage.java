@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.mail.Flags;
 import javax.mail.MessagingException;
-import javax.mail.Session;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -20,8 +19,8 @@ public abstract class AbstractSkypeMailMessage implements SkypeMailMessage {
 	private MimeMessage mimeMessage;
 	private HeaderCodec headerCodec = new HeaderCodec();
 	
-	AbstractSkypeMailMessage(Session session) {
-		this.mimeMessage = new MimeMessage(session);
+	AbstractSkypeMailMessage(MailSession session) {
+		this.mimeMessage = session.createMimeMessage();
 	}
 
 	public AbstractSkypeMailMessage(MimeMessage message) {

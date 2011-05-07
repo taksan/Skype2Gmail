@@ -14,14 +14,16 @@ import org.apache.commons.lang.NotImplementedException;
 
 public class JavaMailFolderMock extends Folder {
 	ArrayList<Message> storedMessages = new ArrayList<Message>();
+	private boolean open = false;
+	private boolean isExists = true;
 
-	protected JavaMailFolderMock(Store store) {
+	public JavaMailFolderMock(Store store) {
 		super(store);
 	}
 
 	@Override
 	public boolean isOpen() {
-		return true;
+		return open;
 	}
 
 	@Override
@@ -60,7 +62,7 @@ public class JavaMailFolderMock extends Folder {
 
 	@Override
 	public String getFullName() {
-		throw new NotImplementedException();
+		return null;
 	}
 
 	@Override
@@ -70,7 +72,7 @@ public class JavaMailFolderMock extends Folder {
 
 	@Override
 	public boolean exists() throws MessagingException {
-		return true;
+		return isExists ;
 	}
 
 	@Override
@@ -90,7 +92,8 @@ public class JavaMailFolderMock extends Folder {
 
 	@Override
 	public boolean create(int type) throws MessagingException {
-		throw new NotImplementedException();
+		this.isExists = true;
+		return true;
 	}
 
 	@Override
@@ -115,6 +118,7 @@ public class JavaMailFolderMock extends Folder {
 
 	@Override
 	public void open(int mode) throws MessagingException {
+		this.open = true;
 	}
 
 	@Override
@@ -129,6 +133,10 @@ public class JavaMailFolderMock extends Folder {
 	@Override
 	public Message[] expunge() throws MessagingException {
 		return new Message[0];
+	}
+
+	public void setExists(boolean b) {
+		isExists = b;
 	}
 
 }

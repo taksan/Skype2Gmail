@@ -5,7 +5,6 @@ import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
@@ -20,7 +19,7 @@ import com.google.inject.Inject;
 
 public class SkypeMailMessageFactoryImpl implements SkypeMailMessageFactory {
 
-	private final Session session;
+	private final MailSession session;
 	private final SkypeChatFolderProvider chatFolderProvider;
 	private final SkypeMailStore mailStore;
 	private final Logger logger;
@@ -49,7 +48,7 @@ public class SkypeMailMessageFactoryImpl implements SkypeMailMessageFactory {
 	
 	private class SkypeMailMessageImpl extends AbstractSkypeMailMessage {
 
-		SkypeMailMessageImpl(Session session) {
+		SkypeMailMessageImpl(MailSession session) {
 			super(session);
 		}
 

@@ -6,8 +6,6 @@ import java.util.Map;
 import javax.mail.Folder;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
-import javax.mail.Session;
-import javax.mail.Store;
 
 import skype.ApplicationException;
 import skype2gmail.SessionProvider;
@@ -16,13 +14,14 @@ import skype2gmail.UserCredentialsProvider;
 import com.google.inject.Inject;
 
 public class SkypeGmailStore implements SkypeMailStore {
-	private Store store;
-	private final Session session;
+	private MailStore store;
+	private final MailSession session;
 	private final UserCredentialsProvider userInfoProvider;
 	private Map<String, Folder> openedFoldersCached = new LinkedHashMap<String, Folder>();
 
 	@Inject
-	public SkypeGmailStore(SessionProvider sessionProvider,
+	public SkypeGmailStore(
+			SessionProvider sessionProvider,
 			UserCredentialsProvider userInfoProvider) 
 	{
 		this.userInfoProvider = userInfoProvider;
@@ -45,11 +44,7 @@ public class SkypeGmailStore implements SkypeMailStore {
 
 	@Override
 	public void close() {
-		try {
-			store.close();
-		} catch (MessagingException e) {
-			throw new ApplicationException(e);
-		}
+		store.close();
 	}
 	
 
@@ -71,9 +66,8 @@ public class SkypeGmailStore implements SkypeMailStore {
 			throws MessagingException {
 		if (!retrievedFolder.exists()) {
 			retrievedFolder.create(Folder.HOLDS_MESSAGES);
-		} else {
-			retrievedFolder.open(Folder.READ_WRITE);
-		}
+		} 
+		retrievedFolder.open(Folder.READ_WRITE);
 	}
 
 	private void connectToStore() throws NoSuchProviderException,

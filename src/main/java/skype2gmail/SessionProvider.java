@@ -1,9 +1,9 @@
 package skype2gmail;
 
-import javax.mail.Session;
+import mail.MailSession;
 
 public interface SessionProvider {
 
-	Session getInstance();
+	MailSession getInstance();
 
 }

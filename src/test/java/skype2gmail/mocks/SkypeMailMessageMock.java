@@ -12,6 +12,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import mail.MailSession;
 import mail.SkypeMailMessage;
 
 import org.apache.commons.lang.NotImplementedException;
@@ -32,13 +33,20 @@ public class SkypeMailMessageMock implements SkypeMailMessage {
 
 	public SkypeMailMessageMock(SkypeChat previousSkypeChat) {
 		this.previousSkypeChat = previousSkypeChat;
-		this.mimeMessage = new MimeMessage(new SessionProviderImpl().getInstance());
+		MailSession mailSession = createMailSession();
+		this.mimeMessage = mailSession.createMimeMessage();
 		try {
 			this.mimeMessage.setHeader(SkypeMailMessage.X_MESSAGE_ID, previousSkypeChat.getId());
 			this.mimeMessage.setContent("", "text/plain");
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private MailSession createMailSession() {
+		SessionProviderImpl sessionProviderImpl = new SessionProviderImpl();
+		MailSession mailSession = sessionProviderImpl.getInstance();
+		return mailSession;
 	}
 	
 	public SkypeMailMessageMock() {

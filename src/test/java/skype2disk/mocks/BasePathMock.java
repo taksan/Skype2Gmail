@@ -5,8 +5,6 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
-import com.google.inject.Singleton;
-
 import skype.BasePath;
 import testutils.IOHelper;
 
