@@ -4,12 +4,11 @@ package skype2gmail;
 import javax.mail.MessagingException;
 
 import junit.framework.Assert;
-
-import mail.SkypeMailStore;
-import mail.SkypeMailMessageFactoryImpl;
 import mail.SkypeMailFolder;
 import mail.SkypeMailFolderImpl;
 import mail.SkypeMailMessage;
+import mail.SkypeMailMessageFactoryImpl;
+import mail.SkypeMailStore;
 
 import org.junit.Before;
 import org.junit.Test;

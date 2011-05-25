@@ -1,12 +1,11 @@
 package skype2gmail;
 
-import mail.SkypeMailMessageFactoryImpl;
 import mail.SkypeMailMessageFactory;
-
-import com.google.inject.Scopes;
-
+import mail.SkypeMailMessageFactoryImpl;
 import skype.Skype2StorageModuleCommons;
 import skype.SkypeStorage;
+
+import com.google.inject.Scopes;
 
 public class Skype2GmailModuleCommons extends Skype2StorageModuleCommons {
 

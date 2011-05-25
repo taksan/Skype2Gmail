@@ -8,7 +8,6 @@ import java.util.Set;
 import mail.SkypeMailFolder;
 import mail.SkypeMailMessage;
 import mail.SkypeMailMessageFactory;
-
 import skype.MessageBodyBuilder;
 import skype.SkypeChat;
 import skype.SkypeChatDateFormat;

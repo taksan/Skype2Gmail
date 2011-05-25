@@ -54,21 +54,11 @@ public class SkypeHistoryCli implements HistoryDir {
 	}
 	
 	public File getHistoryDir() {
-		String dir = this.getHistoryDirOption();
+		String dir = this.getHistoryDirLocation();
 		File historyDir = new File(dir);
 		if (!historyDir.exists())
 			historyDir.mkdirs();
 		return historyDir;
-	}
-
-	public String getHistoryDirOption() {
-		if (cliOptions.hasHistoryOutput(cmd))
-			return cliOptions.getHistoryOutput(cmd);
-		return this.getDefaultDumpDirectory();
-	}
-	
-	private String getDefaultDumpDirectory() {
-		return this.skype2GmailConfigDir.getFileNameUnder("history");
 	}
 
 	public void printHelpAndExit() {
@@ -83,6 +73,16 @@ public class SkypeHistoryCli implements HistoryDir {
 	public void printVersionAndExit() {
 		printVersion();
 		System.exit(1);
+	}
+
+	private String getHistoryDirLocation() {
+		if (cliOptions.hasHistoryOutput(cmd))
+			return cliOptions.getHistoryOutput(cmd);
+		return this.getDefaultDumpDirectory();
+	}
+	
+	private String getDefaultDumpDirectory() {
+		return this.skype2GmailConfigDir.getFileNameUnder("history");
 	}
 	
 	private void printVersion() {

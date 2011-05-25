@@ -70,7 +70,7 @@ public class LastSynchronizationProviderImplTest {
 	}
 
 	private void checkStorageTime(SkypeStorage firstStorage,
-			int lastSyncYear) {
+			int lastSyncYear) throws IOException {
 		SimpleLoggerProvider loggerProvider = new SimpleLoggerProvider();
 		LastSynchronizationProviderImpl subject = 
 			new LastSynchronizationProviderImpl(mockConfigDir, loggerProvider, firstStorage);
@@ -81,12 +81,8 @@ public class LastSynchronizationProviderImplTest {
 		Assert.assertEquals(lastTime.toString(), lastSynch.toString());
 	}
 
-	private long getPlaceHolderForFileName(File placeHolder, int year) {
-		try {
+	private long getPlaceHolderForFileName(File placeHolder, int year) throws IOException {
 			FileUtils.touch(placeHolder);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
 		long lastSyncTimeInMillis = DateHelper.makeDateInMillis(year, 12, 1, 3, 6, 9);
 		placeHolder.setLastModified(lastSyncTimeInMillis);
 		return lastSyncTimeInMillis;

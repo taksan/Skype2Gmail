@@ -29,12 +29,17 @@ public class SkypeHistoryMain {
 			runSkypeModule(new Skype2DiskModule(args));
 			return;
 		}
-		else
 		if (historyCli.isSyncToMail()) {
 			runSkypeModule(new Skype2GmailModule());
 			return;
 		}
-		historyCli.printHelpAndExit();
+		runSkype2GmailGuiModule();
+	}
+
+	private void runSkype2GmailGuiModule() {
+		Injector injector = Guice.createInjector(new Skype2GmailGuiModule());
+		Skype2GmailGui gui = injector.getInstance(Skype2GmailGui.class);
+		gui.run();
 	}
 
 	private void runSkypeModule(Skype2StorageModuleCommons skype2DiskModule) {

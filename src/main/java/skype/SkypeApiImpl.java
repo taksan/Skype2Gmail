@@ -1,17 +1,11 @@
 package skype;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import org.apache.log4j.Logger;
 
-import utils.DaemonThreadFactory;
 import utils.LoggerProvider;
+import utils.TaskWithTimeOut;
 
 import com.google.inject.Inject;
 import com.skype.Chat;
@@ -148,23 +142,7 @@ public class SkypeApiImpl implements SkypeApi {
 	}
 
 	private <T> T executeWithTimeout(Callable<T> aCallable) {
-
-		FutureTask<T> getChatsTask = new FutureTask<T>(aCallable);
-		ExecutorService executor = Executors.newSingleThreadExecutor(new DaemonThreadFactory());
-		executor.submit(getChatsTask);
-
-		T result;
-		try {
-			result = getChatsTask.get(1L, TimeUnit.MINUTES);
-			executor.shutdown();
-		} catch (InterruptedException e) {
-			throw new ApplicationException(e);
-		} catch (ExecutionException e) {
-			throw new ApplicationException(e);
-		} catch (TimeoutException e) {
-			throw new ApplicationException(e);
-		}
-		return result;
+		return new TaskWithTimeOut<T>(aCallable).run();
 	}
 
 }

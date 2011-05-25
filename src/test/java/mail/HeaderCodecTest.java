@@ -2,8 +2,6 @@ package mail;
 
 import junit.framework.Assert;
 
-import mail.HeaderCodec;
-
 import org.junit.Test;
 
 public class HeaderCodecTest {

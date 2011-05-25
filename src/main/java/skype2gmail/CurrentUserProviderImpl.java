@@ -1,9 +1,9 @@
 package skype2gmail;
 
-import com.google.inject.Inject;
-
 import skype.SkypeApi;
 import skype.SkypeUser;
+
+import com.google.inject.Inject;
 
 public class CurrentUserProviderImpl implements CurrentUserProvider {
 	

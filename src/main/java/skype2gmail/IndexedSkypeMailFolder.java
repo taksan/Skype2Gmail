@@ -5,7 +5,6 @@ import javax.mail.search.SearchTerm;
 
 import mail.SkypeMailFolder;
 import mail.SkypeMailMessage;
-
 import skype.SkypeChat;
 
 import com.google.inject.Inject;

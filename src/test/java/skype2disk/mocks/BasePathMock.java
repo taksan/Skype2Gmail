@@ -1,9 +1,8 @@
 package skype2disk.mocks;
 
 import java.io.File;
-import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.NotImplementedException;
 
 import skype.BasePath;
 import testutils.IOHelper;
@@ -20,13 +19,6 @@ public class BasePathMock implements BasePath {
 	}
 	
 	public void delete() {
-		try {
-			if (CREATE_TEMP_DIR_OR_CRY == null)
-				return;
-			
-			FileUtils.deleteDirectory(CREATE_TEMP_DIR_OR_CRY);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		throw new NotImplementedException();
 	}
 }

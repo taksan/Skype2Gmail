@@ -1,6 +1,5 @@
 package skype;
 
-import skype.MessageProcessingException;
 
 @SuppressWarnings("serial")
 public class SkypeMessageParsingException extends MessageProcessingException {

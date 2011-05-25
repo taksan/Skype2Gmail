@@ -4,7 +4,6 @@ import java.lang.reflect.Proxy;
 
 import mail.SkypeMailFolder;
 import mail.SkypeMailMessage;
-
 import skype.SkypeChat;
 
 

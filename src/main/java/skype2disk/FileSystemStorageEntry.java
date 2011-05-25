@@ -7,8 +7,8 @@ import java.util.Date;
 import org.apache.commons.io.FileUtils;
 
 import skype.ChatContentBuilder;
-import skype.SkypeChat;
 import skype.MessageProcessingException;
+import skype.SkypeChat;
 import skype.SkypeChatSetter;
 import skype.StorageEntry;
 

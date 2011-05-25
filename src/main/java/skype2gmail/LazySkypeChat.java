@@ -4,7 +4,6 @@ package skype2gmail;
 import java.util.Date;
 
 import mail.SkypeMailMessage;
-
 import skype.SkypeChat;
 import skype.SkypeUser;
 import skype.TimeSortedMessages;

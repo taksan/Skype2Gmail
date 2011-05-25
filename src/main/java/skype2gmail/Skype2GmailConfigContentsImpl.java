@@ -73,6 +73,9 @@ public class Skype2GmailConfigContentsImpl implements Skype2GmailConfigContents 
 	}
 
 	private void setProperty(String key, String value) {
+		if (config == null) {
+			readConfiguration();
+		}
 		config.setProperty(key, value);
 		save();
 	}

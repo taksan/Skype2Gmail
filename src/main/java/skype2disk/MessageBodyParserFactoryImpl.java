@@ -1,10 +1,10 @@
 package skype2disk;
 
-import com.google.inject.Inject;
-
 import skype.SkypeChatMessageDataFactory;
 import skype.SkypeMessageDateFormat;
 import skype.UsersSortedByUserId;
+
+import com.google.inject.Inject;
 
 public class MessageBodyParserFactoryImpl implements MessageBodyParserFactory {
 

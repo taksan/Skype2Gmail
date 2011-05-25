@@ -7,7 +7,6 @@ import java.lang.reflect.Method;
 
 import mail.SkypeMailFolder;
 import mail.SkypeMailMessage;
-
 import skype.SkypeChat;
 
 public class MailMessageIndexEntry implements InvocationHandler {
