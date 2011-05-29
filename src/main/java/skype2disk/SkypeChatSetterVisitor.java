@@ -2,8 +2,8 @@ package skype2disk;
 
 import java.util.Date;
 
-import skype.SkypeChatMessage;
-import skype.SkypeUser;
+import skype.commons.SkypeChatMessage;
+import skype.commons.SkypeUser;
 
 public interface SkypeChatSetterVisitor {
 

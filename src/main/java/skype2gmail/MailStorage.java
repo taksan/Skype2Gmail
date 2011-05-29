@@ -6,9 +6,9 @@ import mail.SkypeMailMessage;
 
 import org.apache.log4j.Logger;
 
-import skype.SkypeChat;
-import skype.SkypeStorage;
-import skype.StorageEntry;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeStorage;
+import skype.commons.StorageEntry;
 import utils.LoggerProvider;
 
 import com.google.inject.Inject;

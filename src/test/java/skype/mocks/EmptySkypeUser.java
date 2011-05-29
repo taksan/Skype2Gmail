@@ -2,7 +2,7 @@ package skype.mocks;
 
 import org.apache.commons.lang.NotImplementedException;
 
-import skype.SkypeUser;
+import skype.commons.SkypeUser;
 
 public class EmptySkypeUser implements SkypeUser {
 

@@ -8,8 +8,8 @@ import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
-import skype.AbstractRecordingTest;
-import skype.SkypeHistoryRecorder;
+import skype.commons.AbstractRecordingTest;
+import skype.commons.SkypeHistoryRecorder;
 import skype.mocks.Skype2DiskModuleMockingSkypeApi;
 import testutils.IOHelper;
 

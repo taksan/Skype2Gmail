@@ -8,8 +8,8 @@ import mail.mocks.FolderMock;
 
 import org.junit.Test;
 
-import skype.AbstractRecordingTest;
-import skype.SkypeHistoryRecorder;
+import skype.commons.AbstractRecordingTest;
+import skype.commons.SkypeHistoryRecorder;
 import skype2gmail.mocks.Skype2GmailModuleMockingSkypeApi;
 
 import com.google.inject.Guice;

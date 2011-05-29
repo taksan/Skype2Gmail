@@ -1,8 +1,8 @@
 package skype2disk;
 
-import skype.Skype2StorageModuleCommons;
-import skype.SkypeHistoryCli;
-import skype.SkypeStorage;
+import skype.commons.Skype2StorageModuleCommons;
+import skype.commons.SkypeHistoryCli;
+import skype.commons.SkypeStorage;
 
 import com.google.inject.Scopes;
 

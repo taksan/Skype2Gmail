@@ -1,6 +1,6 @@
 package skype2gmail;
 
-import skype.SkypeUser;
+import skype.commons.SkypeUser;
 
 import com.google.inject.ImplementedBy;
 

@@ -1,8 +1,8 @@
 package skype2disk;
 
-import skype.SkypeChatMessageDataFactory;
-import skype.SkypeMessageDateFormat;
-import skype.UsersSortedByUserId;
+import skype.commons.SkypeChatMessageDataFactory;
+import skype.commons.SkypeMessageDateFormat;
+import skype.commons.UsersSortedByUserId;
 
 import com.google.inject.Inject;
 

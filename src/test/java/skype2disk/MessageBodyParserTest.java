@@ -3,12 +3,12 @@ package skype2disk;
 import org.junit.Assert;
 import org.junit.Test;
 
-import skype.SkypeChatMessageDataFactory;
-import skype.SkypeMessageDateFormat;
-import skype.SkypeMessageDateFormatImpl;
-import skype.SkypeMessageParsingException;
-import skype.SkypeUserImpl;
-import skype.UsersSortedByUserId;
+import skype.commons.SkypeChatMessageDataFactory;
+import skype.commons.SkypeMessageDateFormat;
+import skype.commons.SkypeMessageDateFormatImpl;
+import skype.commons.SkypeMessageParsingException;
+import skype.commons.SkypeUserImpl;
+import skype.commons.UsersSortedByUserId;
 import utils.DigestProvider;
 
 public class MessageBodyParserTest {

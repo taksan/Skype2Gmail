@@ -7,7 +7,7 @@ import javax.mail.internet.MimeMessage;
 
 import mail.MailSession;
 import mail.MailStore;
-import skype.ApplicationException;
+import skype.exceptions.ApplicationException;
 
 public class MailSessionImpl implements MailSession {
 

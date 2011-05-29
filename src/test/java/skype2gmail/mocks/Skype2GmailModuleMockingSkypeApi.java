@@ -2,10 +2,10 @@ package skype2gmail.mocks;
 
 import mail.SkypeMailFolder;
 import mail.mocks.FolderMock;
-import skype.BasePath;
-import skype.LastSynchronizationProvider;
-import skype.SkypeApi;
-import skype.SkypeUserFactory;
+import skype.commons.BasePath;
+import skype.commons.LastSynchronizationProvider;
+import skype.commons.SkypeApi;
+import skype.commons.SkypeUserFactory;
 import skype.mocks.LastSynchronizationProviderMock;
 import skype.mocks.SkypeApiImplMock;
 import skype.mocks.SkypeUserFactoryMock;

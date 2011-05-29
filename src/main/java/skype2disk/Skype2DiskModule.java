@@ -1,13 +1,13 @@
 package skype2disk;
 
-import skype.BasePath;
-import skype.LastSynchronizationProvider;
-import skype.LastSynchronizationProviderImpl;
-import skype.SkypeApi;
-import skype.SkypeApiImpl;
-import skype.SkypeUserFactory;
-import skype.SkypeUserFactoryImpl;
-import skype.UserHomeBasePath;
+import skype.commons.BasePath;
+import skype.commons.LastSynchronizationProvider;
+import skype.commons.LastSynchronizationProviderImpl;
+import skype.commons.SkypeApi;
+import skype.commons.SkypeApiImpl;
+import skype.commons.SkypeUserFactory;
+import skype.commons.SkypeUserFactoryImpl;
+import skype.commons.UserHomeBasePath;
 import skype2gmail.Skype2GmailConfigContents;
 import skype2gmail.Skype2GmailConfigContentsImpl;
 import utils.LoggerProvider;

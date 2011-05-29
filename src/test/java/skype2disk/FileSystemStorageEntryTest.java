@@ -9,8 +9,8 @@ import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
-import skype.SkypeChat;
-import skype.SkypeChatSetter;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeChatSetter;
 import skype.mocks.SkypeApiMock;
 import testutils.DateHelper;
 import testutils.IOHelper;

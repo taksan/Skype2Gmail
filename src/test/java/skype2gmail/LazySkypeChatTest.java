@@ -5,7 +5,7 @@ import mail.SkypeMailMessage;
 
 import org.junit.Test;
 
-import skype.SkypeChat;
+import skype.commons.SkypeChat;
 import skype.mocks.PreviousSkypeChatMock;
 import skype2gmail.mocks.SkypeMailMessageMock;
 import testutils.SkypeChatBuilderHelper;

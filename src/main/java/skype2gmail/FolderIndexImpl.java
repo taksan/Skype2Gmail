@@ -14,8 +14,8 @@ import mail.SkypeMailMessageFactory;
 
 import org.apache.log4j.Logger;
 
-import skype.SkypeChat;
-import skype.SkypeChatDateFormatImpl;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeChatDateFormatImpl;
 import utils.LoggerProvider;
 
 import com.google.inject.Inject;

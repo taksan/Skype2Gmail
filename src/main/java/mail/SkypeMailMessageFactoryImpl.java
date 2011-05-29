@@ -9,7 +9,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
 
-import skype.MessageProcessingException;
+import skype.exceptions.MessageProcessingException;
 import skype2gmail.FolderIndex;
 import skype2gmail.SessionProvider;
 import skype2gmail.SkypeChatFolderProvider;

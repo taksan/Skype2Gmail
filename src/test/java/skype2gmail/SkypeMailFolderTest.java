@@ -8,19 +8,18 @@ import mail.SkypeMailFolder;
 import mail.SkypeMailFolderImpl;
 import mail.SkypeMailMessage;
 import mail.SkypeMailMessageFactoryImpl;
-import mail.SkypeMailStore;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import skype.SkypeChat;
+import skype.commons.SkypeChat;
 import skype.mocks.SkypeApiMock;
 import skype2gmail.mocks.SkypeMailMessageMock;
 import skype2gmail.mocks.SkypeMailStoreMock;
 import utils.SimpleLoggerProvider;
 
 public class SkypeMailFolderTest {
-	private SkypeMailStore mockStore;
+	private SkypeMailStoreMock mockStore;
 	
 	@Before
 	public void before(){
@@ -34,12 +33,26 @@ public class SkypeMailFolderTest {
 		String expectedChatId = "#foo$bar";
 		SkypeChat skypeChat = SkypeApiMock.produceChatMock(expectedChatId,
 				"joe", "moe");
-		subject.appendMessage(new SkypeMailMessageMock(skypeChat));
+		SkypeMailMessageMock mailMessageMock = new SkypeMailMessageMock(skypeChat);
+		subject.appendMessage(mailMessageMock);
 
 		SkypeMailMessage retrievedMessage = subject.retrieveMessageEntryFor(skypeChat);
 
 		String chatId = retrievedMessage.getChatId();
 		Assert.assertEquals(expectedChatId, chatId);
+	}
+	
+	@Test
+	public void testClose() {
+		SkypeMailFolder subject = createSubject();
+
+		SkypeChat skypeChat = SkypeApiMock.produceChatMock("#foo$bar", "joe", "moe");
+		SkypeMailMessageMock mailMessageMock = new SkypeMailMessageMock(skypeChat);
+		subject.appendMessage(mailMessageMock);
+
+		subject.close();
+		Assert.assertTrue(mockStore.closeWasInvoked);
+		Assert.assertFalse(mockStore.javaMailFolderMock.isOpen());
 	}
 
 	@Test

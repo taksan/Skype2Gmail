@@ -123,6 +123,7 @@ public class JavaMailFolderMock extends Folder {
 
 	@Override
 	public void close(boolean expunge) throws MessagingException {
+		this.open = false;
 	}
 
 	@Override

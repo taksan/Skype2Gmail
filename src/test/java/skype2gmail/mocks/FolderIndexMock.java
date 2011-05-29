@@ -3,7 +3,7 @@ package skype2gmail.mocks;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import skype.SkypeChat;
+import skype.commons.SkypeChat;
 import skype2gmail.FolderIndex;
 
 public class FolderIndexMock implements FolderIndex {

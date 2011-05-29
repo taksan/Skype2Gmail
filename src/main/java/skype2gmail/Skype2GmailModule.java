@@ -2,14 +2,14 @@ package skype2gmail;
 
 import mail.SkypeMailFolder;
 import mail.UserConfigBasedProvider;
-import skype.BasePath;
-import skype.LastSynchronizationProvider;
-import skype.LastSynchronizationProviderImpl;
-import skype.SkypeApi;
-import skype.SkypeApiImpl;
-import skype.SkypeUserFactory;
-import skype.SkypeUserFactoryImpl;
-import skype.UserHomeBasePath;
+import skype.commons.BasePath;
+import skype.commons.LastSynchronizationProvider;
+import skype.commons.LastSynchronizationProviderImpl;
+import skype.commons.SkypeApi;
+import skype.commons.SkypeApiImpl;
+import skype.commons.SkypeUserFactory;
+import skype.commons.SkypeUserFactoryImpl;
+import skype.commons.UserHomeBasePath;
 import utils.LoggerProvider;
 import utils.LoggerProviderImpl;
 

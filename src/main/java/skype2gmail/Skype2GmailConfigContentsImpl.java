@@ -9,7 +9,7 @@ import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 
-import skype.ApplicationException;
+import skype.exceptions.ApplicationException;
 import skype2disk.Skype2GmailConfigDir;
 import utils.Maybe;
 

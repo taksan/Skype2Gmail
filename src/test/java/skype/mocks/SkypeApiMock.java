@@ -4,10 +4,10 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import skype.SkypeApi;
-import skype.SkypeApiChatVisitor;
-import skype.SkypeChat;
-import skype.SkypeUser;
+import skype.commons.SkypeApi;
+import skype.commons.SkypeApiChatVisitor;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeUser;
 import testutils.DateHelper;
 
 public class SkypeApiMock implements SkypeApi {

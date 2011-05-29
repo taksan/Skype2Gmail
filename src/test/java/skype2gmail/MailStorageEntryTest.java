@@ -15,9 +15,9 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
-import skype.SkypeChat;
-import skype.SkypeChatDateFormat;
-import skype.SkypeChatSetter;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeChatDateFormat;
+import skype.commons.SkypeChatSetter;
 import skype2gmail.mocks.Skype2GmailModuleMockingSkypeApi;
 import testutils.SkypeChatBuilderHelper;
 

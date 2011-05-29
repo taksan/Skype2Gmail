@@ -1,9 +1,9 @@
 package skype.mocks;
 
-import skype.BasePath;
-import skype.LastSynchronizationProvider;
-import skype.SkypeApi;
-import skype.SkypeUserFactory;
+import skype.commons.BasePath;
+import skype.commons.LastSynchronizationProvider;
+import skype.commons.SkypeApi;
+import skype.commons.SkypeUserFactory;
 import skype2disk.Skype2DiskModuleCommons;
 import skype2disk.mocks.BasePathMock;
 import utils.LoggerProvider;

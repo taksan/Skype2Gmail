@@ -1,7 +1,7 @@
 package skype2disk;
 
-import skype.BasePath;
-import skype.UserHomeBasePath;
+import skype.commons.BasePath;
+import skype.commons.UserHomeBasePath;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;

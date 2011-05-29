@@ -4,8 +4,8 @@ package skype2gmail;
 import java.util.Date;
 
 import mail.SkypeMailMessage;
-import skype.SkypeChat;
-import skype.SkypeChatWithBodyParserFactory;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeChatWithBodyParserFactory;
 
 import com.google.inject.Inject;
 

@@ -8,7 +8,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import skype.ApplicationException;
+import skype.exceptions.ApplicationException;
 
 public class TaskWithTimeOutTest {
 	@Test

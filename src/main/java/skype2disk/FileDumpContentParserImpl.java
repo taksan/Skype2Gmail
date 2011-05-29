@@ -4,10 +4,10 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import skype.SkypeChat;
-import skype.SkypeChatDateFormat;
-import skype.SkypeChatFactory;
-import skype.SkypeChatWithBodyParserFactory;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeChatDateFormat;
+import skype.commons.SkypeChatFactory;
+import skype.commons.SkypeChatWithBodyParserFactory;
 
 import com.google.inject.Inject;
 

@@ -6,11 +6,11 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
-import skype.ApplicationException;
-import skype.MessageProcessingException;
-import skype.SkypeChat;
-import skype.SkypeChatFactory;
-import skype.SkypeStorage;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeChatFactory;
+import skype.commons.SkypeStorage;
+import skype.exceptions.ApplicationException;
+import skype.exceptions.MessageProcessingException;
 import utils.LoggerProvider;
 import utils.SimpleLoggerProvider;
 

@@ -4,7 +4,7 @@ import java.io.File;
 
 import org.apache.commons.lang.NotImplementedException;
 
-import skype.BasePath;
+import skype.commons.BasePath;
 import testutils.IOHelper;
 
 public class BasePathMock implements BasePath {

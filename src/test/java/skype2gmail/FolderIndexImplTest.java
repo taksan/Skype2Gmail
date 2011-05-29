@@ -9,9 +9,9 @@ import mail.mocks.FolderMock;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
-import skype.SkypeChat;
-import skype.SkypeUser;
-import skype.SkypeUserImpl;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeUser;
+import skype.commons.SkypeUserImpl;
 import skype.mocks.SkypeApiMock;
 import skype2gmail.mocks.SkypeMailMessageMock;
 import skype2gmail.mocks.SkypeMimeMessageFactoryMock;

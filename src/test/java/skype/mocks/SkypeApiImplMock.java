@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.apache.commons.lang.NotImplementedException;
 
-import skype.SkypeApi;
-import skype.SkypeApiChatVisitor;
-import skype.SkypeChat;
-import skype.SkypeUser;
+import skype.commons.SkypeApi;
+import skype.commons.SkypeApiChatVisitor;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeUser;
 
 public class SkypeApiImplMock implements SkypeApi {
 

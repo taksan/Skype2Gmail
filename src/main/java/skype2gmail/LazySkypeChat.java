@@ -4,10 +4,10 @@ package skype2gmail;
 import java.util.Date;
 
 import mail.SkypeMailMessage;
-import skype.SkypeChat;
-import skype.SkypeUser;
-import skype.TimeSortedMessages;
-import skype.UsersSortedByUserId;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeUser;
+import skype.commons.TimeSortedMessages;
+import skype.commons.UsersSortedByUserId;
 
 public class LazySkypeChat implements SkypeChat {
 

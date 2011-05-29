@@ -3,10 +3,10 @@ package skype2gmail;
 import mail.SkypeMailFolder;
 import mail.SkypeMailMessage;
 import mail.SkypeMailMessageFactory;
-import skype.SkypeChat;
-import skype.SkypeChatDateFormat;
-import skype.SkypeChatFactory;
-import skype.StorageEntry;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeChatDateFormat;
+import skype.commons.SkypeChatFactory;
+import skype.commons.StorageEntry;
 
 import com.google.inject.Inject;
 

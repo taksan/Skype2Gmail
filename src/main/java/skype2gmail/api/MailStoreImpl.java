@@ -5,7 +5,7 @@ import javax.mail.MessagingException;
 import javax.mail.Store;
 
 import mail.MailStore;
-import skype.ApplicationException;
+import skype.exceptions.ApplicationException;
 
 public class MailStoreImpl implements MailStore {
 

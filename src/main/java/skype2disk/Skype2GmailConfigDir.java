@@ -3,8 +3,8 @@ package skype2disk;
 import java.io.File;
 import java.io.IOException;
 
-import skype.ApplicationException;
-import skype.BasePath;
+import skype.commons.BasePath;
+import skype.exceptions.ApplicationException;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;

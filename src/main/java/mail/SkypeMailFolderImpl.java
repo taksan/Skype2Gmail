@@ -11,9 +11,9 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.search.HeaderTerm;
 import javax.mail.search.SearchTerm;
 
-import skype.ApplicationException;
-import skype.MessageProcessingException;
-import skype.SkypeChat;
+import skype.commons.SkypeChat;
+import skype.exceptions.ApplicationException;
+import skype.exceptions.MessageProcessingException;
 import skype2gmail.SkypeChatFolderProvider;
 
 import com.google.inject.Inject;
@@ -92,7 +92,7 @@ public class SkypeMailFolderImpl implements SkypeMailFolder {
 	private SkypeMailMessage factoryMessageOrEmptyIfNoneExists(
 			Message[] foundMessages) {
 		if (foundMessages.length == 0)
-			return new EmptySkypeMailMessage();
+			return EmptySkypeMailMessage.create();
 		
 		return mailMessageFactory.factory((MimeMessage) foundMessages[0]);
 	}

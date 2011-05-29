@@ -2,11 +2,11 @@ package skype.mocks;
 
 import java.util.Date;
 
-import skype.SkypeChat;
-import skype.SkypeChatMessage;
-import skype.SkypeChatSetter;
-import skype.SkypeUser;
-import skype.StorageEntry;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeChatMessage;
+import skype.commons.SkypeChatSetter;
+import skype.commons.SkypeUser;
+import skype.commons.StorageEntry;
 import skype2disk.SkypeChatSetterVisitor;
 
 public class StorageEntryMock implements StorageEntry, Comparable<StorageEntryMock>, SkypeChatSetterVisitor {

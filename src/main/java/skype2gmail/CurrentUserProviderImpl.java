@@ -1,7 +1,7 @@
 package skype2gmail;
 
-import skype.SkypeApi;
-import skype.SkypeUser;
+import skype.commons.SkypeApi;
+import skype.commons.SkypeUser;
 
 import com.google.inject.Inject;
 

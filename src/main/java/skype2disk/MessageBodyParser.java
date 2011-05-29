@@ -2,14 +2,14 @@ package skype2disk;
 
 import java.util.Date;
 
-import skype.EmptySkypeMessage;
-import skype.SkypeChatMessage;
-import skype.SkypeChatMessageDataFactory;
-import skype.SkypeMessageDateFormat;
-import skype.SkypeMessageParsingException;
-import skype.SkypeUser;
-import skype.TimeSortedMessages;
-import skype.UsersSortedByUserId;
+import skype.commons.EmptySkypeMessage;
+import skype.commons.SkypeChatMessage;
+import skype.commons.SkypeChatMessageDataFactory;
+import skype.commons.SkypeMessageDateFormat;
+import skype.commons.SkypeMessageParsingException;
+import skype.commons.SkypeUser;
+import skype.commons.TimeSortedMessages;
+import skype.commons.UsersSortedByUserId;
 
 public class MessageBodyParser {
 	

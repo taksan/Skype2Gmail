@@ -2,13 +2,13 @@ package skype2disk;
 
 import java.util.Date;
 
-import skype.ChatContentBuilder;
-import skype.MessageBodyBuilder;
-import skype.SkypeChat;
-import skype.SkypeChatMessage;
-import skype.SkypeChatSetter;
-import skype.SkypeUser;
-import skype.TimeSortedMessages;
+import skype.commons.ChatContentBuilder;
+import skype.commons.MessageBodyBuilder;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeChatMessage;
+import skype.commons.SkypeChatSetter;
+import skype.commons.SkypeUser;
+import skype.commons.TimeSortedMessages;
 
 public class FileDumpContentBuilder implements ChatContentBuilder, SkypeChatSetterVisitor {
 

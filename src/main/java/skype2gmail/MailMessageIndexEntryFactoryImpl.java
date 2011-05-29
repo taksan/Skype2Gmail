@@ -4,7 +4,7 @@ import java.lang.reflect.Proxy;
 
 import mail.SkypeMailFolder;
 import mail.SkypeMailMessage;
-import skype.SkypeChat;
+import skype.commons.SkypeChat;
 
 
 public class MailMessageIndexEntryFactoryImpl implements MailMessageIndexEntryFactory {

@@ -1,7 +1,7 @@
 package skype2gmail;
 
 import mail.SkypeMailMessage;
-import skype.SkypeChat;
+import skype.commons.SkypeChat;
 
 import com.google.inject.ImplementedBy;
 

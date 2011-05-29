@@ -8,9 +8,9 @@ import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
-import skype.SkypeChat;
-import skype.SkypeChatSetter;
-import skype.SkypeHistoryCli;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeChatSetter;
+import skype.commons.SkypeHistoryCli;
 import skype.mocks.PreviousSkypeChatMock;
 import skype.mocks.SkypeApiMock;
 import skype2disk.mocks.BasePathMock;
@@ -36,6 +36,8 @@ public class FileSystemStorageTest {
 			SkypeChat storedChat = previousEntry.getChat();
 			
 			Assert.assertEquals( "<Previous Entry>", storedChat.toString() );
+			
+			Assert.assertEquals(FileSystemStorage.class.getSimpleName(), fileSystemStorage.getSyncId());
 		}finally {
 			FileUtils.deleteDirectory(baseTmpDir);
 		}

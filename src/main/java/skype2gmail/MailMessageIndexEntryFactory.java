@@ -2,7 +2,7 @@ package skype2gmail;
 
 import mail.SkypeMailFolder;
 import mail.SkypeMailMessage;
-import skype.SkypeChat;
+import skype.commons.SkypeChat;
 
 public interface MailMessageIndexEntryFactory {
 

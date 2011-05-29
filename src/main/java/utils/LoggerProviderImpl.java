@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.RollingFileAppender;
 import org.apache.log4j.SimpleLayout;
 
-import skype.ApplicationException;
+import skype.exceptions.ApplicationException;
 import skype2disk.Skype2GmailConfigDir;
 import skype2gmail.Skype2GmailConfigContents;
 

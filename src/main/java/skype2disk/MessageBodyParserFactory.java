@@ -1,6 +1,6 @@
 package skype2disk;
 
-import skype.UsersSortedByUserId;
+import skype.commons.UsersSortedByUserId;
 
 public interface MessageBodyParserFactory {
 

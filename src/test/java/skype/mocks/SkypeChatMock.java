@@ -5,12 +5,12 @@ import java.util.Date;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.StringUtils;
 
-import skype.SkypeChat;
-import skype.SkypeChatMessage;
-import skype.SkypeChatMessageData;
-import skype.SkypeUser;
-import skype.TimeSortedMessages;
-import skype.UsersSortedByUserId;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeChatMessage;
+import skype.commons.SkypeChatMessageData;
+import skype.commons.SkypeUser;
+import skype.commons.TimeSortedMessages;
+import skype.commons.UsersSortedByUserId;
 import testutils.DigestProviderForTestFactory;
 import testutils.SkypeChatHelper;
 import utils.DigestProvider;

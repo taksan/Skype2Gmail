@@ -4,10 +4,10 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import skype.EmptySkypeChat;
-import skype.SkypeChat;
-import skype.SkypeStorage;
-import skype.StorageEntry;
+import skype.commons.EmptySkypeChat;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeStorage;
+import skype.commons.StorageEntry;
 import utils.SimpleLoggerProvider;
 
 public class SkypeStorageMock implements SkypeStorage {

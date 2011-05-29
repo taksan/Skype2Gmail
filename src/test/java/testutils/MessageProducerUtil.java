@@ -2,8 +2,8 @@ package testutils;
 
 import java.util.Date;
 
-import skype.SkypeChatMessage;
-import skype.SkypeChatMessageDataFactory;
+import skype.commons.SkypeChatMessage;
+import skype.commons.SkypeChatMessageDataFactory;
 import utils.DigestProvider;
 
 public class MessageProducerUtil {

@@ -12,8 +12,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
 
-import skype.MessageProcessingException;
-import skype.SkypeUser;
+import skype.commons.SkypeUser;
+import skype.exceptions.MessageProcessingException;
 
 public abstract class AbstractSkypeMailMessage implements SkypeMailMessage {
 	private MimeMessage mimeMessage;

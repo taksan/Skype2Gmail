@@ -1,7 +1,7 @@
 package testutils;
 
-import skype.SkypeUserImpl;
-import skype.UsersSortedByUserId;
+import skype.commons.SkypeUserImpl;
+import skype.commons.UsersSortedByUserId;
 
 public class SkypeChatHelper {
 

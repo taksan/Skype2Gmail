@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.apache.commons.lang.NotImplementedException;
 
-import skype.LastSynchronizationProvider;
+import skype.commons.LastSynchronizationProvider;
 
 public class LastSynchronizationProviderMock implements LastSynchronizationProvider {
 

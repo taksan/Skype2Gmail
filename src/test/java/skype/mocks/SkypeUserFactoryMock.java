@@ -1,8 +1,8 @@
 package skype.mocks;
 
-import skype.SkypeUser;
-import skype.SkypeUserFactory;
-import skype.SkypeUserImpl;
+import skype.commons.SkypeUser;
+import skype.commons.SkypeUserFactory;
+import skype.commons.SkypeUserImpl;
 
 public class SkypeUserFactoryMock implements SkypeUserFactory {
 

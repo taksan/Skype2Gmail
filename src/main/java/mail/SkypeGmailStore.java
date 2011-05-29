@@ -7,7 +7,7 @@ import javax.mail.Folder;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 
-import skype.ApplicationException;
+import skype.exceptions.ApplicationException;
 import skype2gmail.SessionProvider;
 import skype2gmail.UserCredentialsProvider;
 
@@ -35,9 +35,7 @@ public class SkypeGmailStore implements SkypeMailStore {
 		}
 		try {
 			return retrieveFolder(folderName);
-		} catch (NoSuchProviderException e) {
-			throw new ApplicationException(e);
-		} catch (MessagingException e) {
+		} catch (Exception e) {
 			throw new ApplicationException(e);
 		}
 	}

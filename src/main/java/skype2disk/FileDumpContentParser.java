@@ -1,6 +1,6 @@
 package skype2disk;
 
-import skype.SkypeChat;
+import skype.commons.SkypeChat;
 
 public interface FileDumpContentParser {
 

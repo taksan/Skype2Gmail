@@ -9,7 +9,7 @@ import javax.mail.search.SearchTerm;
 
 import mail.SkypeMailFolder;
 import mail.SkypeMailMessage;
-import skype.SkypeChat;
+import skype.commons.SkypeChat;
 import skype2gmail.FolderIndex;
 import skype2gmail.mocks.SkypeMailMessageMock;
 

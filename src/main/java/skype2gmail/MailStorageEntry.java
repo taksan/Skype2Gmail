@@ -8,13 +8,13 @@ import java.util.Set;
 import mail.SkypeMailFolder;
 import mail.SkypeMailMessage;
 import mail.SkypeMailMessageFactory;
-import skype.MessageBodyBuilder;
-import skype.SkypeChat;
-import skype.SkypeChatDateFormat;
-import skype.SkypeChatMessage;
-import skype.SkypeChatSetter;
-import skype.SkypeUser;
-import skype.StorageEntry;
+import skype.commons.MessageBodyBuilder;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeChatDateFormat;
+import skype.commons.SkypeChatMessage;
+import skype.commons.SkypeChatSetter;
+import skype.commons.SkypeUser;
+import skype.commons.StorageEntry;
 import skype2disk.SkypeChatSetterVisitor;
 
 public class MailStorageEntry implements StorageEntry, SkypeChatSetterVisitor {

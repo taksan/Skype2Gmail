@@ -4,7 +4,7 @@ import java.io.UnsupportedEncodingException;
 
 import javax.mail.internet.MimeUtility;
 
-import skype.MessageProcessingException;
+import skype.exceptions.MessageProcessingException;
 
 public class HeaderCodec {
 

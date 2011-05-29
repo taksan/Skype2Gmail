@@ -2,12 +2,12 @@ package testutils;
 
 import java.util.Date;
 
-import skype.SkypeChatFactoryImpl;
-import skype.SkypeChatImpl;
-import skype.SkypeChatMessage;
-import skype.SkypeUserImpl;
-import skype.TimeSortedMessages;
-import skype.UsersSortedByUserId;
+import skype.commons.SkypeChatFactoryImpl;
+import skype.commons.SkypeChatImpl;
+import skype.commons.SkypeChatMessage;
+import skype.commons.SkypeUserImpl;
+import skype.commons.TimeSortedMessages;
+import skype.commons.UsersSortedByUserId;
 import skype.mocks.SkypeUserFactoryMock;
 import utils.SimpleLoggerProvider;
 

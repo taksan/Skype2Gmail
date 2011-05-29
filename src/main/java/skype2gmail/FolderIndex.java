@@ -4,7 +4,7 @@ package skype2gmail;
 import javax.mail.search.HeaderTerm;
 
 import mail.SkypeMailMessage;
-import skype.SkypeChat;
+import skype.commons.SkypeChat;
 
 public interface FolderIndex {
 

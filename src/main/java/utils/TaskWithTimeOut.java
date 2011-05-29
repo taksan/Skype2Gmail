@@ -6,7 +6,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 
-import skype.ApplicationException;
+import skype.exceptions.ApplicationException;
 
 public class TaskWithTimeOut<T> {
 

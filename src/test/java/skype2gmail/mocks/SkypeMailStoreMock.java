@@ -5,24 +5,25 @@ import javax.mail.Store;
 
 import mail.SkypeMailStore;
 
-import org.apache.commons.lang.NotImplementedException;
-
 
 public class SkypeMailStoreMock implements SkypeMailStore {
 
-	private Store mockStore;
+	final public JavaMailFolderMock javaMailFolderMock;
+	final private Store mockStore;
+	public boolean closeWasInvoked =false;
 	
 	public SkypeMailStoreMock() {
 		mockStore = new JavaMailStoreMock();
+		javaMailFolderMock = new JavaMailFolderMock(mockStore);
 	}
 	
 	@Override
 	public Folder getFolder(String folder) {
-		return new JavaMailFolderMock(mockStore);
+		return javaMailFolderMock;
 	}
 
 	@Override
 	public void close() {
-		throw new NotImplementedException();
+		closeWasInvoked  = true;
 	}
 }

@@ -5,10 +5,10 @@ import java.util.Date;
 
 import org.apache.commons.lang.NotImplementedException;
 
-import skype.SkypeChat;
-import skype.SkypeUser;
-import skype.TimeSortedMessages;
-import skype.UsersSortedByUserId;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeUser;
+import skype.commons.TimeSortedMessages;
+import skype.commons.UsersSortedByUserId;
 
 public class PreviousSkypeChatMock implements SkypeChat {
 

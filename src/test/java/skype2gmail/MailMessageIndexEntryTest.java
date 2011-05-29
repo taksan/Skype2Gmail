@@ -10,7 +10,7 @@ import mail.mocks.FolderMock;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
-import skype.SkypeChat;
+import skype.commons.SkypeChat;
 import skype.mocks.SkypeApiMock;
 import skype2gmail.mocks.SkypeMailMessageMock;
 

@@ -6,11 +6,11 @@ import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 
-import skype.ChatContentBuilder;
-import skype.MessageProcessingException;
-import skype.SkypeChat;
-import skype.SkypeChatSetter;
-import skype.StorageEntry;
+import skype.commons.ChatContentBuilder;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeChatSetter;
+import skype.commons.StorageEntry;
+import skype.exceptions.MessageProcessingException;
 
 public class FileSystemStorageEntry implements StorageEntry {
 	private final File entryFile;

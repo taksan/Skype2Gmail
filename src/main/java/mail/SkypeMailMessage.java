@@ -5,7 +5,7 @@ import java.util.Date;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import skype.SkypeUser;
+import skype.commons.SkypeUser;
 
 public interface SkypeMailMessage {
 

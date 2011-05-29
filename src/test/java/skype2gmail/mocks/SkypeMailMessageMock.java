@@ -17,9 +17,9 @@ import mail.SkypeMailMessage;
 
 import org.apache.commons.lang.NotImplementedException;
 
-import skype.SkypeChat;
-import skype.SkypeUser;
-import skype.UsersSortedByUserId;
+import skype.commons.SkypeChat;
+import skype.commons.SkypeUser;
+import skype.commons.UsersSortedByUserId;
 import skype2gmail.SessionProviderImpl;
 
 public class SkypeMailMessageMock implements SkypeMailMessage {

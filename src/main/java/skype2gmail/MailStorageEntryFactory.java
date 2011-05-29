@@ -1,8 +1,8 @@
 package skype2gmail;
 
 import mail.SkypeMailMessage;
-import skype.SkypeChat;
-import skype.StorageEntry;
+import skype.commons.SkypeChat;
+import skype.commons.StorageEntry;
 
 public interface MailStorageEntryFactory {
 

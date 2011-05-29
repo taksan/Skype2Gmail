@@ -3,7 +3,7 @@ package mail;
 
 import javax.mail.search.SearchTerm;
 
-import skype.SkypeChat;
+import skype.commons.SkypeChat;
 
 public interface SkypeMailFolder {
 
