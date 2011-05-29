@@ -8,13 +8,13 @@ import com.skype.ChatMessage;
 import com.skype.SkypeException;
 
 public class SkypeChatMessageData implements SkypeChatMessage {
-
 	
 	private final String msgId;
 	private final String userDisplay;
 	private final String message;
 	private final Date date;
 	private final String userId;
+	private final DigestProvider digestProvider;
 	public SkypeChatMessageData(DigestProvider digestProvider, ChatMessage chatMessage) throws SkypeException {
 		this(
 			digestProvider,			
@@ -27,6 +27,7 @@ public class SkypeChatMessageData implements SkypeChatMessage {
 	
 	public SkypeChatMessageData(DigestProvider digestProvider, String userId,
 			String userDisplay, String message, Date time) {
+		this.digestProvider = digestProvider;
 		if(userId == null || userDisplay == null || message == null || time == null)
 			throw new IllegalArgumentException("None of the message arguments can be null");
 		
@@ -87,9 +88,26 @@ public class SkypeChatMessageData implements SkypeChatMessage {
 	public int hashCode() {
 		return this.getSignature().hashCode();
 	}
+	
+	@Override
+	public boolean equals(Object other) {
+		return this.hashCode() == other.hashCode();
+	}
 
 	@Override
 	public boolean isMatchingSignature(String signature) {
 		return this.getSignature().equals(signature);
+	}
+
+	@Override
+	public boolean earlierThan(SkypeChatMessage equivalentMessageInOtherChat) {
+		Date otherDate = equivalentMessageInOtherChat.getTime();
+		Date thisDate = this.getTime();
+		return thisDate.compareTo(otherDate) < 0;
+	}
+
+	@Override
+	public SkypeChatMessage createCopyWithNewTime(Date newMessageTime) {
+		return new SkypeChatMessageData(digestProvider, userId, userDisplay, message, newMessageTime);
 	}
 }

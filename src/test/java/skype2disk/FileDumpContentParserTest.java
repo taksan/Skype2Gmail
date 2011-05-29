@@ -13,6 +13,7 @@ import skype.SkypeUserFactory;
 import skype.TimeSortedMessages;
 import skype.UsersSortedByUserId;
 import skype.mocks.SkypeUserFactoryMock;
+import testutils.MessageProducerUtil;
 import testutils.SkypeChatBuilderHelper;
 
 public class FileDumpContentParserTest {
@@ -142,7 +143,7 @@ public class FileDumpContentParserTest {
 			SkypeChatBuilderHelper chatHelper) {
 		
 		MessageBodyParserFactory messageBodyParserFactory = 
-			new MessageBodyParserFactoryImpl(chatHelper.skypeChatMessageFactory, SkypeChatMessage.chatMessageDateFormat);
+			new MessageBodyParserFactoryImpl(MessageProducerUtil.skypeChatMessageFactory, SkypeChatMessage.chatMessageDateFormat);
 		
 		SkypeUserFactory skypeUserFactory = new SkypeUserFactoryMock();
 		SkypeChatWithBodyParserFactory skypeChatWithBodyParserFactory = new SkypeChatWithBodyParserFactory(

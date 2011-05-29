@@ -2,7 +2,6 @@ package skype;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.log4j.Logger;
 
@@ -88,32 +87,13 @@ public class SkypeChatImpl implements SkypeChat {
 	}
 
 	@Override
-	public SkypeChat merge(SkypeChat skypeChat) {
+	public SkypeChat merge(SkypeChat chatToMerge) {
+		
 		loggerInfo("Previous chat found. Merging chats");
-		final TimeSortedMessages mergedMessages = new TimeSortedMessages();
+		final TimeSortedMessages unifiedMessages = new TimeSortedMessages();
+		unifiedMessages.addMessageListsMergingThem(this.getChatMessages(), chatToMerge.getChatMessages());
 		
-		LinkedBlockingQueue<SkypeChatMessage> messagesToMerge = new LinkedBlockingQueue<SkypeChatMessage>();
-		messagesToMerge.addAll(skypeChat.getChatMessages());
-		
-		for (SkypeChatMessage skypeChatMessage : this.getChatMessages()) {
-			mergedMessages.add(skypeChatMessage);
-			if (skypeChatMessage.equals(messagesToMerge.element())) {
-				messagesToMerge.poll();
-			}
-			else {
-				if (messagesToMerge.contains(skypeChatMessage)) {
-					while (!messagesToMerge.peek().equals(skypeChatMessage)) {
-						mergedMessages.add(messagesToMerge.poll());
-					}
-					mergedMessages.add(messagesToMerge.poll());
-				}
-			}
-		}
-		while(!messagesToMerge.isEmpty()) {
-			mergedMessages.add(messagesToMerge.poll());
-		}
-		
-		final SkypeChatImpl mergedChat = new SkypeChatImpl(digestProvider, chatId, chatTime, topic, memberIds, mergedMessages);
+		final SkypeChatImpl mergedChat = new SkypeChatImpl(digestProvider, chatId, chatTime, topic, memberIds, unifiedMessages);
 		
 		if (mergedChat.getBodySignature().equals(this.getBodySignature())) {
 			loggerInfo("New chat was actually contained on previous chat. Update skipped.");
@@ -122,6 +102,8 @@ public class SkypeChatImpl implements SkypeChat {
 		
 		return mergedChat;
 	}
+
+	
 
 	private void loggerInfo(String message) {
 		LOGGER.info(String.format("<%s> %s", this.getId(), message));

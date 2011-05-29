@@ -43,7 +43,7 @@ public class EmptySkypeChat implements SkypeChat {
 	
 	@Override
 	public TimeSortedMessages getChatMessages() {
-		throw new NotImplementedException();
+		return new TimeSortedMessages();
 	}
 
 	@Override

@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import skype.SkypeApi;
 import skype.SkypeApiChatVisitor;
 import skype.SkypeChat;
@@ -14,6 +12,7 @@ import testutils.DateHelper;
 
 public class SkypeApiMock implements SkypeApi {
 	private List<SkypeChatMock> mockChatList = new LinkedList<SkypeChatMock>();
+	private SkypeUser currentUser;
 	
 
 	@Override
@@ -60,7 +59,12 @@ public class SkypeApiMock implements SkypeApi {
 
 	@Override
 	public SkypeUser getCurrentUser() {
-		throw new NotImplementedException();
+		return currentUser;
+	}
+
+
+	public void setCurrentUser(SkypeUser skypeUser) {
+		currentUser = skypeUser;
 	}
 
 }

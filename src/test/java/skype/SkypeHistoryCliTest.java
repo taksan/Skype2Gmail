@@ -1,3 +1,4 @@
+package skype;
 import java.io.File;
 
 import junit.framework.Assert;
