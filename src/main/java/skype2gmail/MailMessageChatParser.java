@@ -9,7 +9,7 @@ import skype.SkypeChatWithBodyParserFactory;
 
 import com.google.inject.Inject;
 
-public class MailMessageChatParser {
+public class MailMessageChatParser implements MailMessageChatParserInterface {
 	
 	private final SkypeChatWithBodyParserFactory skypeChatWithBodyParserFactory;
 
@@ -29,5 +29,4 @@ public class MailMessageChatParser {
 				chatTime, 
 				message.getBody());
 	}
-
 }

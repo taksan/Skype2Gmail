@@ -1,5 +1,6 @@
 package skype.mocks;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.lang.NotImplementedException;
@@ -26,19 +27,20 @@ public class PreviousSkypeChatMock implements SkypeChat {
 		return "id-mock";
 	}
 
+	private Date someTime = Calendar.getInstance().getTime();
 	@Override
 	public Date getTime() {
-		throw new NotImplementedException();
+		return someTime;
 	}
 
 	@Override
 	public String getTopic() {
-		throw new NotImplementedException();
+		return "mock topic";
 	}
 
 	@Override
 	public String getBodySignature() {
-		throw new NotImplementedException();
+		return "mock sig";
 	}
 
 	@Override
