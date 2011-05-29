@@ -4,6 +4,8 @@ import java.util.Properties;
 
 import javax.mail.Session;
 
+import skype2gmail.api.MailSessionImpl;
+
 import mail.MailSession;
 
 public class SessionProviderImpl implements SessionProvider {

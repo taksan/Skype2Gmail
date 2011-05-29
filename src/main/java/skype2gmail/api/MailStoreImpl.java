@@ -1,4 +1,4 @@
-package skype2gmail;
+package skype2gmail.api;
 
 import javax.mail.Folder;
 import javax.mail.MessagingException;

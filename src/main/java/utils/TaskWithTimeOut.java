@@ -1,12 +1,10 @@
 package utils;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import skype.ApplicationException;
 
@@ -33,11 +31,7 @@ public class TaskWithTimeOut<T> {
 		try {
 			result = getChatsTask.get(timeout, minutes);
 			executor.shutdown();
-		} catch (InterruptedException e) {
-			throw new ApplicationException(e);
-		} catch (ExecutionException e) {
-			throw new ApplicationException(e);
-		} catch (TimeoutException e) {
+		} catch (Exception e) {
 			throw new ApplicationException(e);
 		}
 		return result;
