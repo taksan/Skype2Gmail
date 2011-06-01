@@ -2,9 +2,9 @@ package skype.commons;
 
 import java.util.Date;
 
+import skypeapi.wrappers.ChatMessageWrapper;
 import utils.DigestProvider;
 
-import com.skype.ChatMessage;
 import com.skype.SkypeException;
 
 public class SkypeChatMessageData implements SkypeChatMessage {
@@ -15,7 +15,7 @@ public class SkypeChatMessageData implements SkypeChatMessage {
 	private final Date date;
 	private final String userId;
 	private final DigestProvider digestProvider;
-	public SkypeChatMessageData(DigestProvider digestProvider, ChatMessage chatMessage) throws SkypeException {
+	public SkypeChatMessageData(DigestProvider digestProvider, ChatMessageWrapper chatMessage) throws SkypeException {
 		this(
 			digestProvider,			
 			chatMessage.getSenderId(),

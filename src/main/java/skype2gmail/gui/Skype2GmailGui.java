@@ -1,6 +1,5 @@
 package skype2gmail.gui;
 
-import skype.commons.Skype2GmailTrayProvider;
 
 import com.google.inject.Inject;
 

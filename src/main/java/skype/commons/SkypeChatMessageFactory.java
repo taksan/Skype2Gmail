@@ -2,9 +2,9 @@ package skype.commons;
 
 import java.util.Date;
 
-import com.skype.ChatMessage;
+import skypeapi.wrappers.ChatMessageWrapper;
 
 public interface SkypeChatMessageFactory {
-	public SkypeChatMessageData produce(ChatMessage chatMessage);
+	public SkypeChatMessageData produce(ChatMessageWrapper chatMessage);
 	public SkypeChatMessageData produce(String userId, String userDisplay, String message, Date time);
 }

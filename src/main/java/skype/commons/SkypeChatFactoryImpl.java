@@ -3,14 +3,13 @@ package skype.commons;
 import java.util.Date;
 
 import skype.exceptions.ApplicationException;
+import skypeapi.wrappers.ChatMessageWrapper;
+import skypeapi.wrappers.ChatWrapper;
 import utils.DigestProvider;
 import utils.LoggerProvider;
 
 import com.google.inject.Inject;
-import com.skype.Chat;
-import com.skype.ChatMessage;
 import com.skype.SkypeException;
-import com.skype.User;
 
 public class SkypeChatFactoryImpl implements SkypeChatFactory {
 
@@ -30,7 +29,7 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 	}
 
 	@Override
-	public SkypeChat produce(Chat chat) {
+	public SkypeChat produce(ChatWrapper chat) {
 		try {
 			TimeSortedMessages chatMessages = populateChatList(chat);
 			UsersSortedByUserId chatPosters = populateUserList(chat,
@@ -50,7 +49,7 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 				userList, messageList);
 	}
 
-	UsersSortedByUserId populateUserList(Chat chat,
+	UsersSortedByUserId populateUserList(ChatWrapper chat,
 			TimeSortedMessages chatMessages) throws SkypeException {
 		UsersSortedByUserId chatUsers = new UsersSortedByUserId();
 		addUsersFromMessages(chatMessages, chatUsers);
@@ -59,10 +58,10 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 		return chatUsers;
 	}
 
-	private void addUsersFromChatPosters(Chat chat,
+	private void addUsersFromChatPosters(ChatWrapper chat,
 			UsersSortedByUserId chatUsers) throws SkypeException {
-		User[] allMembers = chat.getAllMembers();
-		for (User user : allMembers) {
+		UserWrapper[] allMembers = chat.getAllMembers();
+		for (UserWrapper user : allMembers) {
 			String userId = user.getId();
 			String fullName = user.getFullName();
 
@@ -80,11 +79,11 @@ public class SkypeChatFactoryImpl implements SkypeChatFactory {
 		}
 	}
 
-	private TimeSortedMessages populateChatList(Chat chat)
+	private TimeSortedMessages populateChatList(ChatWrapper chat)
 			throws SkypeException {
-		ChatMessage[] allChatMessages = chat.getAllChatMessages();
+		ChatMessageWrapper[] allChatMessages = chat.getAllChatMessages();
 		TimeSortedMessages chatMessageList = new TimeSortedMessages();
-		for (ChatMessage chatMessage : allChatMessages) {
+		for (ChatMessageWrapper chatMessage : allChatMessages) {
 			final SkypeChatMessageData skypeChatMessageData = 
 				this.skypeChatMessageFactory.produce(chatMessage);
 

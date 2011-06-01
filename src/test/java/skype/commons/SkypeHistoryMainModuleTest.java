@@ -1,8 +1,9 @@
 package skype.commons;
 
+import main.SkypeHistoryMain;
+
 import org.junit.Test;
 
-import skype.commons.SkypeHistoryMain;
 import skype2disk.SkypeHistoryMainModule;
 
 import com.google.inject.Guice;

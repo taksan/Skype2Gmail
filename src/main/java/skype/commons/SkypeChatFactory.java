@@ -1,8 +1,9 @@
 package skype.commons;
 
-import com.skype.Chat;
+import skypeapi.wrappers.ChatWrapper;
+
 
 public interface SkypeChatFactory {
-	SkypeChat produce(Chat chat);
+	SkypeChat produce(ChatWrapper chat);
 	SkypeChat produceEmpty();
 }

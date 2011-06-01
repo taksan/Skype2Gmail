@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 
-import skype.commons.Skype2GmailTrayProvider;
 import tray.SystemTrayAdapter;
 import tray.SystemTrayProvider;
 import tray.TrayIconAdapter;

@@ -4,11 +4,12 @@ import java.util.LinkedList;
 
 import junit.framework.Assert;
 
+import main.SkypeHistoryMain;
+
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
 import skype.commons.SkypeCliOptions;
-import skype.commons.SkypeHistoryMain;
 
 public class SkypeHistoryMainTest {
 	@Test

@@ -1,6 +1,5 @@
 package main;
 
-import skype.commons.SkypeHistoryMain;
 import skype2disk.SkypeHistoryMainModule;
 import utils.ExceptionHandlingHelper;
 

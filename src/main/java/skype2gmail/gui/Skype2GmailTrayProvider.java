@@ -1,4 +1,4 @@
-package skype.commons;
+package skype2gmail.gui;
 
 import java.awt.SystemTray;
 

@@ -6,6 +6,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 
 import skype.exceptions.MessageProcessingException;
+import skype2disk.FileDumpContentBuilder;
 import utils.DigestProvider;
 
 public class SkypeChatImpl implements SkypeChat {
@@ -104,6 +105,11 @@ public class SkypeChatImpl implements SkypeChat {
 		return mergedChat;
 	}
 
+	@Override
+	public String toString() {
+		FileDumpContentBuilder contentBuilder = new FileDumpContentBuilder(this);
+		return contentBuilder.getContent();
+	}
 	
 
 	private void loggerInfo(String message) {

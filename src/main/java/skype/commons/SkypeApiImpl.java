@@ -4,98 +4,42 @@ import java.util.concurrent.Callable;
 
 import org.apache.log4j.Logger;
 
-import skype.exceptions.ApplicationException;
+import skypeapi.wrappers.ChatWrapper;
+import skypeapi.wrappers.ProfileWrapper;
+import skypeapi.wrappers.SkypeWrapper;
 import utils.LoggerProvider;
 import utils.TaskWithTimeOut;
 
 import com.google.inject.Inject;
-import com.skype.Chat;
-import com.skype.Profile;
-import com.skype.Skype;
 import com.skype.SkypeException;
-import com.skype.connector.Connector;
 
 public class SkypeApiImpl implements SkypeApi {
 
+	private final SkypeWrapper skypeWrapper;
 	private final SkypeChatFactory chatFactory;
-	private Chat[] recentChats;
-	private Profile profile;
-	private SkypeUser currentUser;
 	private final LoggerProvider loggerProvider;
 	private final ChatFetchStrategyChooser chatFetchStrategy;
+	private SkypeUser currentUser;
+	private ProfileWrapper profile;
+	private ChatWrapper[] recentChats;
+	private ChatWrapper[] allChats;
 
 	@Inject
-	public SkypeApiImpl(SkypeChatFactory chatFactory, LoggerProvider loggerProvider, ChatFetchStrategyChooser chatFetchStrategy) {
+	public SkypeApiImpl(SkypeChatFactory chatFactory, 
+			LoggerProvider loggerProvider, 
+			ChatFetchStrategyChooser chatFetchStrategy,
+			SkypeWrapper skypeWrapper) {
+		
 		this.chatFactory = chatFactory;
 		this.loggerProvider = loggerProvider;
 		this.chatFetchStrategy = chatFetchStrategy;
-		Connector.getInstance().setApplicationName("Skype2Gmail");
+		this.skypeWrapper = skypeWrapper;
+		this.skypeWrapper.setApplicationName("Skype2Gmail");
 	}
 
 	@Override
 	public boolean isRunning() {
-		try {
-			return Skype.isRunning();
-		} catch (SkypeException e) {
-			throw new ApplicationException(e);
-		}
-	}
-
-	@Override
-	public void accept(final SkypeApiChatVisitor visitor) {
-		Chat[] chatsArray = getChatHistory();
-		
-		getLogger().info((String.format("Found %d chats.", chatsArray.length)));
-		
-		for (Chat chat : chatsArray) {
-			final SkypeChat skypeChat = chatFactory.produce(chat);
-			visitor.visit(skypeChat);
-		}
-	}
-
-	private Logger getLogger() {
-		return loggerProvider.getPriorityLogger(getClass());
-	}
-
-	private Chat[] getChatHistory() {
-		Callable<Chat[]> getChatsCallable = pickFetchStrategy();
-		
-		Chat[] allChatsArray = executeWithTimeout(getChatsCallable);
-		
-		return allChatsArray;
-	}
-
-	private Callable<Chat[]> pickFetchStrategy() {
-		final Callable<Chat[]> getAllChats = createAllChatsCallable();
-		final Callable<Chat[]> getRecentChats = createRecentChatsCallable();
-		Callable<Chat[]> getChatsCallable = getAllChats;
-		
-		if (chatFetchStrategy.catFetchJustTheRecentChats()) {
-			getChatsCallable = getRecentChats;
-			getLogger().info("Will send just the recent chats.");
-		}
-		else {
-			getLogger().info("Will send all chats in history.");
-		}
-		return getChatsCallable;
-	}
-
-	private Callable<Chat[]> createRecentChatsCallable() {
-		return new Callable<Chat[]>() {
-			@Override
-			public Chat[] call() throws Exception {
-				return getRecentChats();
-			}
-		};
-	}
-
-	private Callable<Chat[]> createAllChatsCallable() {
-		return new Callable<Chat[]>() {
-			@Override
-			public Chat[] call() throws Exception {
-				return getAllChats();
-			}
-		};
+		return skypeWrapper.isRunning();
 	}
 
 	@Override
@@ -106,7 +50,7 @@ public class SkypeApiImpl implements SkypeApi {
 		Callable<SkypeUser> getCurrentUserCallable = new Callable<SkypeUser>() {
 			@Override
 			public SkypeUser call() throws Exception {
-				Profile profile = getProfile();
+				ProfileWrapper profile = getProfile();
 				String fullName = profile.getFullName();
 				String id = profile.getId();
 				if (fullName == null)
@@ -118,26 +62,36 @@ public class SkypeApiImpl implements SkypeApi {
 		return currentUser;
 
 	}
+	
+	@Override
+	public void accept(final SkypeApiChatVisitor visitor) {
+		ChatWrapper[] chatsArray = getChatHistory();
+		
+		getLogger().info((String.format("Found %d chats.", chatsArray.length)));
+		
+		for (ChatWrapper chat : chatsArray) {
+			final SkypeChat skypeChat = chatFactory.produce(chat);
+			visitor.visit(skypeChat);
+		}
+	}
 
-	private Chat[] getAllChats() throws SkypeException {
+	private ChatWrapper[] getAllChats() throws SkypeException {
+		if (allChats != null)
+			return allChats;
+
+		return skypeWrapper.getAllChats();
+	}
+
+	private ChatWrapper[] getRecentChats() throws SkypeException {
 		if (recentChats != null)
 			return recentChats;
 
-		recentChats = Skype.getAllChats();
-		return recentChats;
+		return skypeWrapper.getAllRecentChats();
 	}
 	
-	private Chat[] getRecentChats() throws SkypeException {
-		if (recentChats != null)
-			return recentChats;
-
-		recentChats = Skype.getAllRecentChats();
-		return recentChats;
-	}
-
-	private Profile getProfile() {
+	private ProfileWrapper getProfile() {
 		if (profile == null)
-			profile = Skype.getProfile();
+			profile = skypeWrapper.getProfile();
 
 		return profile;
 	}
@@ -145,5 +99,50 @@ public class SkypeApiImpl implements SkypeApi {
 	private <T> T executeWithTimeout(Callable<T> aCallable) {
 		return new TaskWithTimeOut<T>(aCallable).run();
 	}
+	
 
+	private Logger getLogger() {
+		return loggerProvider.getPriorityLogger(getClass());
+	}
+
+	private ChatWrapper[] getChatHistory() {
+		Callable<ChatWrapper[]> getChatsCallable = pickFetchStrategy();
+		
+		ChatWrapper[] allChatsArray = executeWithTimeout(getChatsCallable);
+		
+		return allChatsArray;
+	}
+
+	private Callable<ChatWrapper[]> pickFetchStrategy() {
+		final Callable<ChatWrapper[]> getAllChats = createAllChatsCallable();
+		final Callable<ChatWrapper[]> getRecentChats = createRecentChatsCallable();
+		Callable<ChatWrapper[]> getChatsCallable = getAllChats;
+		
+		if (chatFetchStrategy.catFetchJustTheRecentChats()) {
+			getChatsCallable = getRecentChats;
+			getLogger().info("Will send just the recent chats.");
+		}
+		else {
+			getLogger().info("Will send all chats in history.");
+		}
+		return getChatsCallable;
+	}
+
+	private Callable<ChatWrapper[]> createRecentChatsCallable() {
+		return new Callable<ChatWrapper[]>() {
+			@Override
+			public ChatWrapper[] call() throws Exception {
+				return getRecentChats();
+			}
+		};
+	}
+
+	private Callable<ChatWrapper[]> createAllChatsCallable() {
+		return new Callable<ChatWrapper[]>() {
+			@Override
+			public ChatWrapper[] call() throws Exception {
+				return getAllChats();
+			}
+		};
+	}
 }

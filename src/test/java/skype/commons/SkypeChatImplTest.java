@@ -6,12 +6,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import skype.commons.EmptySkypeChat;
-import skype.commons.SkypeChat;
-import skype.commons.SkypeChatImpl;
-import skype.commons.SkypeChatMessage;
-import skype.commons.SkypeUserImpl;
-import skype.commons.UsersSortedByUserId;
+import skype.exceptions.MessageProcessingException;
 import testutils.DigestProviderForTestFactory;
 import testutils.SkypeChatBuilderHelper;
 import utils.DigestProvider;
@@ -110,6 +105,48 @@ public class SkypeChatImplTest {
 		
 		final SkypeChatImpl skypeChatImpl = makeSubject(chatHelper);
 		Assert.assertEquals("him", skypeChatImpl.getChatAuthor().getUserId());
+	}
+	
+	@Test
+	public void testGetAuthorWithSingleCurrentUser() {
+		SkypeChatBuilderHelper chatHelper = new SkypeChatBuilderHelper() {
+			
+			@Override
+			public void addChatMessages() {
+			}
+			
+			protected UsersSortedByUserId addPosters() {
+				final UsersSortedByUserId userIds = new UsersSortedByUserId();
+				userIds.add(new SkypeUserImpl("me", "myself", true));
+				
+				return userIds;
+			}
+		};
+		
+		final SkypeChatImpl skypeChatImpl = makeSubject(chatHelper);
+		Assert.assertEquals("me", skypeChatImpl.getChatAuthor().getUserId());
+	}
+	
+	@Test
+	public void testGetAuthorFailsIfNoUserExists() {
+		SkypeChatBuilderHelper chatHelper = new SkypeChatBuilderHelper() {
+			
+			@Override
+			public void addChatMessages() {
+			}
+			
+			protected UsersSortedByUserId addPosters() {
+				final UsersSortedByUserId userIds = new UsersSortedByUserId();
+				return userIds;
+			}
+		};
+		
+		final SkypeChatImpl skypeChatImpl = makeSubject(chatHelper);
+		try {
+			skypeChatImpl.getChatAuthor();
+			Assert.fail("An MessageProcessingException should be thrown because there are no users!");
+		}catch(MessageProcessingException mpe) {
+		}
 	}
 	
 	@Test

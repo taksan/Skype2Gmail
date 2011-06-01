@@ -1,5 +1,8 @@
-package skype.commons;
+package main;
 
+import skype.commons.Skype2StorageModuleCommons;
+import skype.commons.SkypeCliOptions;
+import skype.commons.SkypeRecorder;
 import skype2disk.Skype2DiskModule;
 import skype2gmail.Skype2GmailModule;
 import skype2gmail.gui.Skype2GmailGui;
