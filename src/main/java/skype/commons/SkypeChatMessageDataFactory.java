@@ -2,12 +2,10 @@ package skype.commons;
 
 import java.util.Date;
 
-import skype.exceptions.MessageProcessingException;
 import skypeapi.wrappers.ChatMessageWrapper;
 import utils.DigestProvider;
 
 import com.google.inject.Inject;
-import com.skype.SkypeException;
 
 public class SkypeChatMessageDataFactory implements SkypeChatMessageFactory {
 
@@ -21,11 +19,7 @@ public class SkypeChatMessageDataFactory implements SkypeChatMessageFactory {
 
 	@Override
 	public SkypeChatMessageData produce(ChatMessageWrapper chatMessage) {
-		try {
-			return new SkypeChatMessageData(digestProvider, chatMessage);
-		} catch (SkypeException e) {
-			throw new MessageProcessingException(e);
-		}
+		return new SkypeChatMessageData(digestProvider, chatMessage);
 	}
 
 	@Override

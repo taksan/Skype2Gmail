@@ -1,8 +1,5 @@
 package skypeapi.wrappers;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -14,12 +11,9 @@ import com.skype.ChatMessage;
 import com.skype.SkypeException;
 import com.skype.User;
 
-public class ChatWrapperImpl implements InvocationHandler, ChatWrapper {
+public class ChatWrapperImpl implements ChatWrapper {
 	public static ChatWrapper wrap(Chat chat) {
-		return (ChatWrapper) Proxy.newProxyInstance(
-				ChatWrapper.class.getClassLoader(),
-				new Class<?>[]{ChatWrapper.class},
-				new ChatWrapperImpl(chat));
+		return (ChatWrapper) new ChatWrapperImpl(chat);
 	}
 
 	private final Chat decoratedChat;
@@ -29,11 +23,6 @@ public class ChatWrapperImpl implements InvocationHandler, ChatWrapper {
 	}
 	
 	@Override
-	public Object invoke(Object proxy, Method method, Object[] args)
-			throws Throwable {
-		return method.invoke(decoratedChat, args);
-	}
-
 	public ChatMessageWrapper[] getAllChatMessages() {
 		try {
 			ChatMessage[] allChatMessages = this.decoratedChat.getAllChatMessages();
