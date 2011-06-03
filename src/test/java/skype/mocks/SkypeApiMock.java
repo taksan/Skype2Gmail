@@ -11,7 +11,7 @@ import skype.commons.SkypeUser;
 import testutils.DateHelper;
 
 public class SkypeApiMock implements SkypeApi {
-	private List<SkypeChatMock> mockChatList = new LinkedList<SkypeChatMock>();
+	private List<SkypeChat> mockChatList = new LinkedList<SkypeChat>();
 	private SkypeUser currentUser;
 	
 
@@ -28,7 +28,7 @@ public class SkypeApiMock implements SkypeApi {
 		}
 	}
 
-	public void addMockChat(SkypeChatMock mockChat){
+	public void addMockChat(SkypeChat mockChat){
 		mockChatList.add(mockChat);
 	}
 	

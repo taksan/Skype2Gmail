@@ -7,7 +7,6 @@ import mail.SkypeMailFolder;
 import mail.SkypeMailMessage;
 import mail.mocks.FolderMock;
 
-import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
 import skype.commons.SkypeChat;
@@ -17,9 +16,61 @@ import skype2gmail.mocks.SkypeMailMessageMock;
 
 public class IndexedSkypeMailFolderTest {
 	@Test
-	public void testIndexedGmailFolder() {
-		final FolderMock nonIndexedFolder = new FolderMock();
+	public void retrieveAnIndexedChat_ShouldReturnOnlyAProxyReference() {
+		IndexedSkypeMailFolder indexedGmailFolder_SUBJECT = createIndexedSkypeMailFolder();
+		
+		SkypeChat someIndexedChat = SkypeApiMock.produceChatMock("#42$foo", "zoe", "joe");
+		SkypeMailMessage retrievedEntry = indexedGmailFolder_SUBJECT.retrieveMessageEntryFor(someIndexedChat);
+		Assert.assertTrue(Proxy.isProxyClass(retrievedEntry.getClass()));
+		Assert.assertTrue(Proxy.getInvocationHandler(retrievedEntry) instanceof MailMessageIndexEntry);
+	}
+
+	@Test
+	public void retrieveNonIndexedChat_ShouldRetrieveTheWholeMessage() {
 		FolderIndexMock folderIndex = new FolderIndexMock();
+		IndexedSkypeMailFolder indexedGmailFolder_SUBJECT = createIndexedSkypeMailFolder(folderIndex);
+				
+		SkypeChat nonIndexedSkypeChat = SkypeApiMock.produceChatMock("#is-not-indexed", "not", "indexed");
+		SkypeMailMessage entryForNonIndexedChat = indexedGmailFolder_SUBJECT.retrieveMessageEntryFor(nonIndexedSkypeChat);
+		Assert.assertFalse(Proxy.isProxyClass(entryForNonIndexedChat.getClass()));
+	}
+	
+	@Test
+	public void retrieveNonIndexedChat_ShouldAddNewIndexEntryAfterRetrievalAttempt() {
+		FolderIndexMock folderIndex = new FolderIndexMock();
+		IndexedSkypeMailFolder indexedGmailFolder_SUBJECT = createIndexedSkypeMailFolder(folderIndex);
+				
+		SkypeChat nonIndexedSkypeChat = SkypeApiMock.produceChatMock("#is-not-indexed", "not", "indexed");
+		
+		Assert.assertNull(folderIndex.getSignatureFor("#is-not-indexed"));
+		
+		indexedGmailFolder_SUBJECT.retrieveMessageEntryFor(nonIndexedSkypeChat);
+		
+		String sig = folderIndex.getSignatureFor("#is-not-indexed");
+		Assert.assertEquals(nonIndexedSkypeChat.getBodySignature(), sig);
+	}
+	
+	@Test
+	public void retrieveSomeChat_ShouldSaveIndexAfterClose() {
+		FolderIndexMock folderIndex = new FolderIndexMock();
+		IndexedSkypeMailFolder indexedGmailFolder_SUBJECT = createIndexedSkypeMailFolder(folderIndex);
+				
+		SkypeChat nonIndexedSkypeChat = SkypeApiMock.produceChatMock("#is-not-indexed", "not", "indexed");
+		indexedGmailFolder_SUBJECT.retrieveMessageEntryFor(nonIndexedSkypeChat);
+		
+		Assert.assertEquals(false, folderIndex.wasSaved());
+		indexedGmailFolder_SUBJECT.close();
+		Assert.assertEquals(true, folderIndex.wasSaved());
+	}
+	
+	
+	private IndexedSkypeMailFolder createIndexedSkypeMailFolder() {
+		return createIndexedSkypeMailFolder(new FolderIndexMock());
+	}
+
+	private IndexedSkypeMailFolder createIndexedSkypeMailFolder(
+			FolderIndexMock folderIndex) {
+		final FolderMock nonIndexedFolder = new FolderMock();
 		folderIndex.addSignatureForId("#42$foo", "previous-signature");
 		
 		NonIndexGmailFolderProvider nonIndexedFolderMock = new NonIndexGmailFolderProvider() {
@@ -29,7 +80,11 @@ public class IndexedSkypeMailFolderTest {
 			}
 		}; 
 		IndexedSkypeMailFolder indexedGmailFolder = new IndexedSkypeMailFolder(nonIndexedFolderMock, folderIndex);
-				
+		addPreviousMessages(indexedGmailFolder);
+		return indexedGmailFolder;
+	}
+
+	private void addPreviousMessages(IndexedSkypeMailFolder indexedGmailFolder) {
 		SkypeChat previousSkypeChat = SkypeApiMock.produceChatMock("#42$foo", "zoe", "joe");
 		SkypeMailMessage gmailMessage = new SkypeMailMessageMock(previousSkypeChat);
 		indexedGmailFolder.appendMessage(gmailMessage);
@@ -37,29 +92,5 @@ public class IndexedSkypeMailFolderTest {
 		SkypeChat otherPreviousSkypeChat = SkypeApiMock.produceChatMock("#is-not-indexed", "not", "indexed");
 		SkypeMailMessage otherMessage = new SkypeMailMessageMock(otherPreviousSkypeChat);
 		indexedGmailFolder.appendMessage(otherMessage);
-		
-		SkypeChat skypeChat = SkypeApiMock.produceChatMock("#42$foo", "zoe", "joe");
-		SkypeMailMessage retrievedEntry = indexedGmailFolder.retrieveMessageEntryFor(skypeChat);
-		Assert.assertTrue(Proxy.isProxyClass(retrievedEntry.getClass()));
-		
-		SkypeChat nonIndexedSkypeChat = SkypeApiMock.produceChatMock("#is-not-indexed", "not", "indexed");
-		SkypeMailMessage entryForNonIndexedChat = indexedGmailFolder.retrieveMessageEntryFor(nonIndexedSkypeChat);
-		
-		Assert.assertFalse(Proxy.isProxyClass(entryForNonIndexedChat.getClass()));
-		
-		String[] posters = entryForNonIndexedChat.getPosters();
-	
-		String postersString = StringUtils.join(posters,",");
-		Assert.assertEquals("indexed,not", postersString);
-		
-		String isNotIndexShouldBeIndexedAfterRetrieval = folderIndex.getSignatureFor("#is-not-indexed");
-		
-		Assert.assertEquals(nonIndexedSkypeChat.getBodySignature(), isNotIndexShouldBeIndexedAfterRetrieval);
-		
-		Assert.assertEquals(false, folderIndex.wasSaved());
-		
-		indexedGmailFolder.close();
-		
-		Assert.assertEquals(true, folderIndex.wasSaved());
 	}
 }
