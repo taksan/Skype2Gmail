@@ -4,8 +4,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.google.inject.Singleton;
+
 import skype.exceptions.MessageProcessingException;
 
+@Singleton
 public class SkypeMessageDateFormatImpl implements SkypeMessageDateFormat {
 	private SimpleDateFormat simpleDateFormat;
 

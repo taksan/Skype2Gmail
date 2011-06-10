@@ -1,6 +1,5 @@
 package main;
 
-import skype.commons.Skype2StorageModuleCommons;
 import skype.commons.SkypeCliOptions;
 import skype.commons.SkypeRecorder;
 import skype2disk.Skype2DiskModule;
@@ -8,6 +7,7 @@ import skype2gmail.Skype2GmailModule;
 import skype2gmail.gui.Skype2GmailGui;
 import skype2gmail.gui.Skype2GmailGuiModule;
 
+import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -49,7 +49,7 @@ public class SkypeHistoryMain {
 		gui.run();
 	}
 
-	private void runSkypeModule(Skype2StorageModuleCommons skype2StorageModule) {
+	private void runSkypeModule(AbstractModule skype2StorageModule) {
 		Injector injector = Guice.createInjector(skype2StorageModule);
 		SkypeRecorder skypeRecorder = injector.getInstance(SkypeRecorder.class);
 		skypeRecorder.record();

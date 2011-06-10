@@ -5,7 +5,9 @@ import skype2gmail.UserCredentialsProvider;
 import utils.Maybe;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
+@Singleton
 public class UserConfigBasedProvider implements UserCredentialsProvider {
 	
 	private Skype2GmailConfigContents skype2GmailConfigContents;

@@ -14,7 +14,9 @@ import skype2disk.Skype2GmailConfigDir;
 import skype2gmail.Skype2GmailConfigContents;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
+@Singleton
 public class LoggerProviderImpl implements LoggerProvider {
 	private final Skype2GmailConfigDir configDir;
 	private boolean setupIsDone;

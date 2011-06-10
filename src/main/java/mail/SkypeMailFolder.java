@@ -3,8 +3,12 @@ package mail;
 
 import javax.mail.search.SearchTerm;
 
-import skype.commons.SkypeChat;
+import com.google.inject.ImplementedBy;
 
+import skype.commons.SkypeChat;
+import skype2gmail.IndexedSkypeMailFolder;
+
+@ImplementedBy(IndexedSkypeMailFolder.class)
 public interface SkypeMailFolder {
 
 	void deleteMessageBasedOnId(String chatId);

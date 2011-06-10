@@ -13,7 +13,9 @@ import skype2disk.HistoryDir;
 import skype2disk.Skype2GmailConfigDir;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
+@Singleton
 public class SkypeHistoryCli implements HistoryDir, SkypeCliOptions {
 	private final Skype2GmailConfigDir skype2GmailConfigDir;
 	private CommandLine cmd;

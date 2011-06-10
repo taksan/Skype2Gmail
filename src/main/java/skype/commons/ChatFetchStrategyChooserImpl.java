@@ -6,7 +6,9 @@ import java.util.Date;
 import skype2gmail.Skype2GmailConfigContents;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
+@Singleton
 public class ChatFetchStrategyChooserImpl implements ChatFetchStrategyChooser {
 	
 	private LastSynchronizationProvider lastSynchronizationProvider;

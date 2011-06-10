@@ -9,7 +9,9 @@ import skype.commons.SkypeChatFactory;
 import skype.commons.StorageEntry;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
+@Singleton
 public class MailStorageEntryFactoryImpl implements MailStorageEntryFactory {
 
 	private final SkypeChatDateFormat chatDateFormat;

@@ -9,13 +9,15 @@ import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 
-import skype.commons.Skype2StorageModuleCommons;
 import skype.exceptions.ApplicationException;
 import skype2disk.Skype2GmailConfigDir;
 import utils.Maybe;
 
+import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
+@Singleton
 public class Skype2GmailConfigContentsImpl implements Skype2GmailConfigContents {
 	private Properties config;
 	private final Skype2GmailConfigDir configDir;
@@ -65,7 +67,7 @@ public class Skype2GmailConfigContentsImpl implements Skype2GmailConfigContents 
 	}
 	
 	@Override
-	public Class<? extends Skype2StorageModuleCommons> getSelectedRecorder() {
+	public Class<? extends AbstractModule> getSelectedRecorder() {
 		Maybe<String> selectedRecorder = getProperty("skype2gmail.selectedRecorder");
 		if (selectedRecorder.unbox() == null) {
 			return Skype2GmailModule.class;
@@ -75,14 +77,14 @@ public class Skype2GmailConfigContentsImpl implements Skype2GmailConfigContents 
 	
 	@Override
 	public void setSelectedRecorderModule(
-			Class<? extends Skype2StorageModuleCommons> recorderModuleClass) {
+			Class<? extends AbstractModule> recorderModuleClass) {
 		setProperty("skype2gmail.selectedRecorder", recorderModuleClass.getName());
 	}
 
 	@SuppressWarnings("unchecked")
-	private Class<? extends Skype2StorageModuleCommons> getModuleClassOrCry(Maybe<String> selectedRecorder) {
+	private Class<? extends AbstractModule> getModuleClassOrCry(Maybe<String> selectedRecorder) {
 		try {
-			return (Class<? extends Skype2StorageModuleCommons>) Class.forName(selectedRecorder.unbox());
+			return (Class<? extends AbstractModule>) Class.forName(selectedRecorder.unbox());
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}

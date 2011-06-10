@@ -1,8 +1,9 @@
 package skype.commons;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
-
+@Singleton
 public class SkypeUserFactoryImpl implements SkypeUserFactory {
 
 	private SkypeApi skypeApi;

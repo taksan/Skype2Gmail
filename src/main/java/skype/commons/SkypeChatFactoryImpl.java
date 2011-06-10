@@ -9,8 +9,10 @@ import utils.DigestProvider;
 import utils.LoggerProvider;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.skype.SkypeException;
 
+@Singleton
 public class SkypeChatFactoryImpl implements SkypeChatFactory {
 
 	private final DigestProvider digestProvider;

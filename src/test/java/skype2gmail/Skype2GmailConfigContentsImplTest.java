@@ -10,11 +10,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import skype.commons.Skype2StorageModuleCommons;
 import skype2disk.Skype2DiskModule;
 import skype2disk.Skype2GmailConfigDir;
 import skype2disk.mocks.BasePathMock;
 import utils.Maybe;
+
+import com.google.inject.AbstractModule;
 
 public class Skype2GmailConfigContentsImplTest {
 	private BasePathMock basePath;
@@ -56,7 +57,7 @@ public class Skype2GmailConfigContentsImplTest {
 	@Test
 	public void setSelectedRecorder_ShouldChangeStoredRecorder()
 	{
-		Class<? extends Skype2StorageModuleCommons> newSelectedRecorder = Skype2DiskModule.class;
+		Class<? extends AbstractModule> newSelectedRecorder = Skype2DiskModule.class;
 		configContents.setSelectedRecorderModule(newSelectedRecorder);
 		Class<?> selectedRecorderModule = configContents.getSelectedRecorder();
 		Assert.assertEquals(newSelectedRecorder, selectedRecorderModule);
@@ -86,7 +87,7 @@ public class Skype2GmailConfigContentsImplTest {
 		boolean syncWithRecentsDisabled = configContents.isSyncWithRecentsDisabled();
 		Assert.assertTrue("Sync with recents chats should be disabled", syncWithRecentsDisabled);
 		
-		Class<? extends Skype2StorageModuleCommons> expectedRecorder = Skype2DiskModule.class;
+		Class<? extends AbstractModule> expectedRecorder = Skype2DiskModule.class;
 		Class<?> selectedRecorderModule = configContents.getSelectedRecorder();
 		Assert.assertEquals(expectedRecorder, selectedRecorderModule);
 	}

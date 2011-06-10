@@ -1,8 +1,11 @@
 package skype2gmail;
 
-import skype.commons.Skype2StorageModuleCommons;
 import utils.Maybe;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.ImplementedBy;
+
+@ImplementedBy(Skype2GmailConfigContentsImpl.class)
 public interface Skype2GmailConfigContents {
 	public Maybe<String> getUserName();
 	public void setUserName(String u);
@@ -12,8 +15,8 @@ public interface Skype2GmailConfigContents {
 	
 	public boolean isOutputVerbose();
 	public boolean isSyncWithRecentsDisabled();
-	public Class<? extends Skype2StorageModuleCommons> getSelectedRecorder();
-	public void setSelectedRecorderModule(Class<? extends Skype2StorageModuleCommons> recorderModuleClass);
+	public Class<? extends AbstractModule> getSelectedRecorder();
+	public void setSelectedRecorderModule(Class<? extends AbstractModule> recorderModuleClass);
 	
 	
 }

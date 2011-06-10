@@ -8,7 +8,9 @@ import skype.exceptions.MessageProcessingException;
 import utils.LoggerProvider;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
+@Singleton
 public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor {
 	private final SkypeStorage skypeStorage;
 	private final SkypeApi skypeApi;

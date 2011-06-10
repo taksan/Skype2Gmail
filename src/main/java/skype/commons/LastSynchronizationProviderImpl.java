@@ -12,7 +12,9 @@ import skype2disk.Skype2GmailConfigDir;
 import utils.LoggerProvider;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
+@Singleton
 public class LastSynchronizationProviderImpl implements LastSynchronizationProvider {
 
 	Skype2GmailConfigDir configDir;

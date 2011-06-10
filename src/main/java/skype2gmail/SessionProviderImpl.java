@@ -4,10 +4,13 @@ import java.util.Properties;
 
 import javax.mail.Session;
 
+import com.google.inject.Singleton;
+
 import skype2gmail.api.MailSessionImpl;
 
 import mail.MailSession;
 
+@Singleton
 public class SessionProviderImpl implements SessionProvider {
 	
 	private Session session;

@@ -19,7 +19,7 @@ public class Skype2GmailModuleTest extends AbstractRecordingTest {
 
 	@Test
 	public void testInjections() {
-		final Skype2GmailModuleCommons skype2GmailModule = new Skype2GmailModule();
+		final Skype2GmailModule skype2GmailModule = new Skype2GmailModule();
 		final Injector injector = Guice.createInjector(skype2GmailModule);
 
 		injector.getInstance(SkypeHistoryRecorder.class);
