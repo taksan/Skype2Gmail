@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 
+import skype.commons.Skype2StorageModuleCommons;
 import skype.exceptions.ApplicationException;
 import skype2disk.Skype2GmailConfigDir;
 import utils.Maybe;
@@ -62,6 +63,30 @@ public class Skype2GmailConfigContentsImpl implements Skype2GmailConfigContents 
 		}
 		return Boolean.parseBoolean(property.unbox());
 	}
+	
+	@Override
+	public Class<? extends Skype2StorageModuleCommons> getSelectedRecorder() {
+		Maybe<String> selectedRecorder = getProperty("skype2gmail.selectedRecorder");
+		if (selectedRecorder.unbox() == null) {
+			return Skype2GmailModule.class;
+		}
+		return getModuleClassOrCry(selectedRecorder);
+	}
+	
+	@Override
+	public void setSelectedRecorderModule(
+			Class<? extends Skype2StorageModuleCommons> recorderModuleClass) {
+		setProperty("skype2gmail.selectedRecorder", recorderModuleClass.getName());
+	}
+
+	@SuppressWarnings("unchecked")
+	private Class<? extends Skype2StorageModuleCommons> getModuleClassOrCry(Maybe<String> selectedRecorder) {
+		try {
+			return (Class<? extends Skype2StorageModuleCommons>) Class.forName(selectedRecorder.unbox());
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	
 	private Maybe<String> getProperty(String key) {
@@ -105,5 +130,6 @@ public class Skype2GmailConfigContentsImpl implements Skype2GmailConfigContents 
 			throw new ApplicationException(e);
 		}
 	}
+
 
 }

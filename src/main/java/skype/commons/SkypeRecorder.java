@@ -71,16 +71,6 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 		this.lastSynchronizationProvider.updateSynch();
 	}
 
-	private Logger getLogger() {
-		if (logger == null)
-			logger = loggerProvider.getPriorityLogger(getClass());
-		return logger;
-	}
-	
-	private Logger getVerboseLogger() {
-		return loggerProvider.getLogger(getClass().toString()+"Verbose");
-	}
-
 	@Override
 	public void visit(SkypeChat skypeChat) {
 		try {
@@ -118,5 +108,19 @@ public class SkypeRecorder implements SkypeHistoryRecorder, SkypeApiChatVisitor 
 			getLogger().info("Message processing skipped");
 			chatsWithProblems ++;
 		}
+	}
+	
+	public String getStorageType() {
+		return skypeStorage.getClass().getName();
+	}
+
+	private Logger getLogger() {
+		if (logger == null)
+			logger = loggerProvider.getPriorityLogger(getClass());
+		return logger;
+	}
+	
+	private Logger getVerboseLogger() {
+		return loggerProvider.getLogger(getClass().toString()+"Verbose");
 	}
 }

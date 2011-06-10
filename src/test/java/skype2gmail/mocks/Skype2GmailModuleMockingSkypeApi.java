@@ -23,7 +23,7 @@ public class Skype2GmailModuleMockingSkypeApi extends Skype2GmailModuleCommons {
 	@Override
 	public void configure() {
 		super.configure();
-		bind(UserCredentialsProvider.class).to(MockCredentialsProvider.class).in(Scopes.SINGLETON);
+		bind(UserCredentialsProvider.class).to(CredentialsProviderMock.class).in(Scopes.SINGLETON);
 		bind(SkypeMailFolder.class).to(FolderMock.class).in(Scopes.SINGLETON);
 		
 		bind(SkypeApi.class).to(SkypeApiImplMock.class).in(Scopes.SINGLETON);

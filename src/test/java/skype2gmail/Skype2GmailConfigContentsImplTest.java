@@ -10,6 +10,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import skype.commons.Skype2StorageModuleCommons;
+import skype2disk.Skype2DiskModule;
 import skype2disk.Skype2GmailConfigDir;
 import skype2disk.mocks.BasePathMock;
 import utils.Maybe;
@@ -17,40 +19,51 @@ import utils.Maybe;
 public class Skype2GmailConfigContentsImplTest {
 	private BasePathMock basePath;
 	private Skype2GmailConfigDir mockConfigDir;
-
-	@Before
-	public void before()
-	{
-		basePath = new BasePathMock();
-		mockConfigDir = new Skype2GmailConfigDir(basePath);
-	}
+	private Skype2GmailConfigContents configContents;
 	
-	@After
-	public void after() throws IOException {
-		FileUtils.deleteDirectory(new File(basePath.getPath()));
+	@Test
+	public void defaultUserName_ShouldBeNull() {
+		Maybe<String> username = configContents.getUserName();
+		Assert.assertEquals(null, username.unbox());
+		
 	}
 	
 	@Test
-	public void testDefaultValues() throws IOException {
-		Skype2GmailConfigContentsImpl configContentsImpl = new Skype2GmailConfigContentsImpl(mockConfigDir);
-		
-		Maybe<String> username = configContentsImpl.getUserName();
-		Assert.assertEquals(null, username.unbox());
-		
-		Maybe<String> password = configContentsImpl.getPassword();
+	public void defaultPassword_ShouldBeNull() {
+		Maybe<String> password = configContents.getPassword();
 		Assert.assertEquals(null, password.unbox());
-		
-		
-		boolean outputVerbose = configContentsImpl.isOutputVerbose();
+	}
+
+	@Test
+	public void defaultOutputIsVerbose_ShouldBeTrue()
+	{
+		boolean outputVerbose = configContents.isOutputVerbose();
 		Assert.assertTrue("Default verbosity should be true", outputVerbose);
-		
-		boolean syncWithRecentsDisabled = configContentsImpl.isSyncWithRecentsDisabled();
+	}
+	
+	@Test
+	public void defaultSyncWithRecents_ShouldBeFalse() {
+		boolean syncWithRecentsDisabled = configContents.isSyncWithRecentsDisabled();
 		Assert.assertFalse("Default syncWithRecentsDisabled should be false", syncWithRecentsDisabled);
 	}
 	
 	@Test
-	public void testValuesReadFromFile() throws IOException {
-		Skype2GmailConfigContentsImpl configContentsImpl = new Skype2GmailConfigContentsImpl(mockConfigDir);
+	public void defaultSelectedRecorder_ShouldBeSkype2GmailModule() {
+		Class<?> selectedRecorder = configContents.getSelectedRecorder();
+		Assert.assertEquals(Skype2GmailModule.class.getName(), selectedRecorder.getName());
+	}
+	
+	@Test
+	public void setSelectedRecorder_ShouldChangeStoredRecorder()
+	{
+		Class<? extends Skype2StorageModuleCommons> newSelectedRecorder = Skype2DiskModule.class;
+		configContents.setSelectedRecorderModule(newSelectedRecorder);
+		Class<?> selectedRecorderModule = configContents.getSelectedRecorder();
+		Assert.assertEquals(newSelectedRecorder, selectedRecorderModule);
+	}
+	
+	@Test
+	public void readValuesFromFile_PropertiesShouldHaveValuesInFile() throws IOException {
 		File configFile = mockConfigDir.getConfigFile();
 		FileUtils.writeStringToFile(configFile, 
 				"#Skype2Gmail configuration\n" + 
@@ -58,31 +71,35 @@ public class Skype2GmailConfigContentsImplTest {
 				"gmail.user=fee\n" + 
 				"gmail.password=baz\n" +
 				"skype.neverSyncWithRecentChats=true\n" +
-				"verbosity=none");
+				"verbosity=none\n" +
+				"skype2gmail.selectedRecorder=skype2disk.Skype2DiskModule");
 		
-		Maybe<String> username = configContentsImpl.getUserName();
+		Maybe<String> username = configContents.getUserName();
 		Assert.assertEquals("fee", username.unbox());
 		
-		Maybe<String> password = configContentsImpl.getPassword();
+		Maybe<String> password = configContents.getPassword();
 		Assert.assertEquals("baz", password.unbox());
 		
-		boolean outputVerbose = configContentsImpl.isOutputVerbose();
+		boolean outputVerbose = configContents.isOutputVerbose();
 		Assert.assertFalse("Verbosity should not be enabled", outputVerbose);
 		
-		boolean syncWithRecentsDisabled = configContentsImpl.isSyncWithRecentsDisabled();
+		boolean syncWithRecentsDisabled = configContents.isSyncWithRecentsDisabled();
 		Assert.assertTrue("Sync with recents chats should be disabled", syncWithRecentsDisabled);
+		
+		Class<? extends Skype2StorageModuleCommons> expectedRecorder = Skype2DiskModule.class;
+		Class<?> selectedRecorderModule = configContents.getSelectedRecorder();
+		Assert.assertEquals(expectedRecorder, selectedRecorderModule);
 	}
 	
 	@Test
 	public void testSetValues() throws IOException {
-		Skype2GmailConfigContentsImpl configContentsImpl = new Skype2GmailConfigContentsImpl(mockConfigDir);
 		
-		configContentsImpl.setUserName("foo");
-		Maybe<String> username = configContentsImpl.getUserName();
+		configContents.setUserName("foo");
+		Maybe<String> username = configContents.getUserName();
 		Assert.assertEquals("foo", username.unbox());
 		
-		configContentsImpl.setPassword("bar");
-		Maybe<String> password = configContentsImpl.getPassword();
+		configContents.setPassword("bar");
+		Maybe<String> password = configContents.getPassword();
 		Assert.assertEquals("bar", password.unbox());
 		
 		File configFile = mockConfigDir.getConfigFile();
@@ -95,6 +112,20 @@ public class Skype2GmailConfigContentsImplTest {
 				expected, 
 				contents);
 	}
+	
+
+	@Before
+	public void setup()
+	{
+		basePath = new BasePathMock();
+		mockConfigDir = new Skype2GmailConfigDir(basePath);
+		configContents = new Skype2GmailConfigContentsImpl(mockConfigDir);
+	}
+	
+	@After
+	public void teardown() throws IOException {
+		FileUtils.deleteDirectory(new File(basePath.getPath()));
+	}	
 
 	private String getContentsWithoutComments(File configFile)
 			throws IOException {

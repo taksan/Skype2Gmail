@@ -1,67 +1,54 @@
 package skype2gmail.gui;
 
-import java.awt.MenuItem;
 import java.awt.PopupMenu;
-import java.awt.SystemTray;
-import java.awt.TrayIcon;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.URL;
 
 import tray.SystemTrayAdapter;
-import tray.SystemTrayProvider;
+import tray.SystemTrayProviderInterface;
 import tray.TrayIconAdapter;
+
+import com.google.inject.Inject;
 
 public class Skype2GmailTrayProviderImpl implements Skype2GmailTrayProvider {
 
+	private Skype2GmailMenuProvider trayMenuProvider;
+	private final SystemTrayProviderInterface systemTrayProvider;
+	private final Skype2GmailClickActionProvider clickActionProvider;
+	private final TrayFallbackWindowProvider trayFallbackWindow;
+
+	@Inject
+	public Skype2GmailTrayProviderImpl(
+			SystemTrayProviderInterface systemTrayProvider,
+			Skype2GmailMenuProvider trayMenuProvider, 
+			Skype2GmailClickActionProvider clickActionProvider, 
+			TrayFallbackWindowProvider trayFallbackWindow) 
+	{
+		this.systemTrayProvider = systemTrayProvider;
+		this.trayMenuProvider = trayMenuProvider;
+		this.clickActionProvider = clickActionProvider;
+		this.trayFallbackWindow = trayFallbackWindow;
+	}
+
+	TrayIconAdapter trayIcon;
 	@Override
-	public SystemTray getTray() {
-		final TrayIconAdapter trayIcon;
-
-		if (SystemTray.isSupported()) {
-			SystemTrayAdapter tray = new SystemTrayProvider().getSystemTray();
-			PopupMenu popup = makeTrayPopupMenu();
-
-			URL skype2GmailImageUrl = getClass().getResource("/skype2gmail.svg");
-			trayIcon = tray.createAndAddTrayIcon(skype2GmailImageUrl, "Skype2Gmail", popup);
-			
-			ActionListener actionListener = makeDoubleClickAction(trayIcon);
-			trayIcon.addActionListener(actionListener);
-			trayIcon.setImageAutoSize(true);
-			
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-			return null;
-		} 
-		return null;
+	public void createTray() {
+		if (systemTrayProvider.isSupported()) {
+			if (trayIcon != null)
+				return;
+			createSystemTrayIcon();
+			return;
+		}
+		trayFallbackWindow.display();
 	}
+	
+	private void createSystemTrayIcon() {
+		SystemTrayAdapter tray = systemTrayProvider.getSystemTray();
+		PopupMenu popup = trayMenuProvider.getPopupMenu();
 
-	private ActionListener makeDoubleClickAction(final TrayIconAdapter trayIcon) {
-		ActionListener actionListener = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				trayIcon.displayMessage("Action Event",
-						"An Action Event Has Been Performed...!",
-						TrayIcon.MessageType.INFO);
-			}
-		};
-		return actionListener;
-	}
-
-	private PopupMenu makeTrayPopupMenu() {
-		ActionListener exitListener = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Exiting...");
-				System.exit(0);
-			}
-		};
-
-		PopupMenu popup = new PopupMenu();
-		MenuItem defaultItem = new MenuItem("Exit");
-		defaultItem.addActionListener(exitListener);
-		popup.add(defaultItem);
-		return popup;
+		URL skype2GmailImageUrl = getClass()
+				.getResource("/skype2gmail.svg");
+		trayIcon = tray.createAndAddTrayIcon(skype2GmailImageUrl,
+				"Skype2Gmail", popup);
+		trayIcon.addActionListener(clickActionProvider.get());
 	}
 }

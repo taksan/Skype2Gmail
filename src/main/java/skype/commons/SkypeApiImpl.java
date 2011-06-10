@@ -11,8 +11,10 @@ import utils.LoggerProvider;
 import utils.TaskWithTimeOut;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.skype.SkypeException;
 
+@Singleton
 public class SkypeApiImpl implements SkypeApi {
 
 	private final SkypeWrapper skypeWrapper;

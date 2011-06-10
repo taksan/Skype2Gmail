@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import skype.commons.ChatFetchStrategyChooserImpl;
 import skype.commons.LastSynchronizationProvider;
+import skype.commons.mocks.Skype2GmailConfigContentsMock;
 import skype2gmail.Skype2GmailConfigContents;
 
 public class ChatFetchStrategyImplTest {

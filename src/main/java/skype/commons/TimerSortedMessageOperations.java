@@ -3,7 +3,6 @@ package skype.commons;
 import java.util.Collection;
 import java.util.Date;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.time.DateUtils;
 import org.codehaus.plexus.util.CollectionUtils;
 
@@ -36,12 +35,6 @@ class TimerSortedMessageOperations {
 			tsms = new TimeSortedMessages[] { messagesB, messagesA };
 		}
 		return tsms;
-	}
-
-	static void mergeMessagesUsingEarliestSequenceFirst(
-			TimeSortedMessages timeSortedMessages,
-			TimeSortedMessages secondChatMessages) {
-		throw new NotImplementedException();
 	}
 
 	static TimeSortedMessages[] splitMessageListKeepingSplitPointInTheFirstSegment(

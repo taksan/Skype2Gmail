@@ -5,7 +5,7 @@ import junit.framework.Assert;
 import org.apache.commons.lang.NotImplementedException;
 import org.junit.Test;
 
-import skype.commons.Skype2GmailConfigContentsMock;
+import skype.commons.mocks.Skype2GmailConfigContentsMock;
 import skype2gmail.Skype2GmailConfigContents;
 
 public class UserConfigBasedProviderTest {

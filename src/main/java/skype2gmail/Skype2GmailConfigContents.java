@@ -1,5 +1,6 @@
 package skype2gmail;
 
+import skype.commons.Skype2StorageModuleCommons;
 import utils.Maybe;
 
 public interface Skype2GmailConfigContents {
@@ -11,6 +12,8 @@ public interface Skype2GmailConfigContents {
 	
 	public boolean isOutputVerbose();
 	public boolean isSyncWithRecentsDisabled();
+	public Class<? extends Skype2StorageModuleCommons> getSelectedRecorder();
+	public void setSelectedRecorderModule(Class<? extends Skype2StorageModuleCommons> recorderModuleClass);
 	
 	
 }

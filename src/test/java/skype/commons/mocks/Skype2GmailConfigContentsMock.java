@@ -1,7 +1,8 @@
-package skype.commons;
+package skype.commons.mocks;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import skype.commons.Skype2StorageModuleCommons;
 import skype2gmail.Skype2GmailConfigContents;
 import utils.Maybe;
 
@@ -10,6 +11,7 @@ public class Skype2GmailConfigContentsMock implements Skype2GmailConfigContents 
 	private boolean disableSynchingWithRecents = false;
 	private String username;
 	private String password;
+	private Class<? extends Skype2StorageModuleCommons> currentRecorder;
 
 	@Override
 	public Maybe<String> getUserName() {
@@ -43,6 +45,17 @@ public class Skype2GmailConfigContentsMock implements Skype2GmailConfigContents 
 	@Override
 	public boolean isSyncWithRecentsDisabled() {
 		return disableSynchingWithRecents;
+	}
+
+	@Override
+	public Class<? extends Skype2StorageModuleCommons> getSelectedRecorder() {
+		return currentRecorder;
+	}
+
+	@Override
+	public void setSelectedRecorderModule(
+			Class<? extends Skype2StorageModuleCommons> recorderModuleClass) {
+		currentRecorder = recorderModuleClass;
 	}
 
 }
