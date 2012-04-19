@@ -2,8 +2,8 @@ package skype2gmail;
 
 import mail.SkypeMailFolder;
 import mail.SkypeMailFolderImpl;
-import mail.SkypeMailMessageFactory;
 import mail.SkypeMailStore;
+import mail.skypemail.SkypeMailMessageFactory;
 
 import com.google.inject.Inject;
 

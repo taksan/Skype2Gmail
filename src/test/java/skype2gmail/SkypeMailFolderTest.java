@@ -7,7 +7,7 @@ import junit.framework.Assert;
 import mail.SkypeMailFolder;
 import mail.SkypeMailFolderImpl;
 import mail.SkypeMailMessage;
-import mail.SkypeMailMessageFactoryImpl;
+import mail.skypemail.SkypeMailMessageFactoryImpl;
 
 import org.junit.Before;
 import org.junit.Test;

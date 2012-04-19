@@ -49,7 +49,7 @@ public interface SkypeMailMessage {
 
 	public abstract InternetAddress[] getFrom();
 
-	public abstract InternetAddress[] getRecipients(
+	public abstract String[] getRecipients(
 			javax.mail.Message.RecipientType to);
 
 	public abstract void setDate(String timeAsString);

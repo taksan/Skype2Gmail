@@ -12,12 +12,12 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
-public class SkypeHistoryMain {
+public class SkypeHistoryMainOptions {
 	
 	private final SkypeCliOptions historyCli;
 	private final String[] args;
 	@Inject
-	public SkypeHistoryMain(SkypeCliOptions options, String [] args) {
+	public SkypeHistoryMainOptions(SkypeCliOptions options, String [] args) {
 		this.historyCli = options;
 		this.args = args;
 		

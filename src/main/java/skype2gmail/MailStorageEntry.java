@@ -7,7 +7,7 @@ import java.util.Set;
 
 import mail.SkypeMailFolder;
 import mail.SkypeMailMessage;
-import mail.SkypeMailMessageFactory;
+import mail.skypemail.SkypeMailMessageFactory;
 import skype.commons.MessageBodyBuilder;
 import skype.commons.SkypeChat;
 import skype.commons.SkypeChatDateFormat;

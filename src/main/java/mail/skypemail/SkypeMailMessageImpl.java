@@ -1,31 +1,88 @@
-package mail;
+package mail.skypemail;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.mail.Flags;
+import javax.mail.Folder;
+import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
 
+import mail.HeaderCodec;
+import mail.MailSession;
+import mail.SkypeMailMessage;
+import mail.SkypeMailStore;
+
+import org.apache.log4j.Logger;
+
 import skype.commons.SkypeUser;
 import skype.exceptions.MessageProcessingException;
+import skype2gmail.FolderIndex;
+import skype2gmail.SkypeChatFolderProvider;
 
-public abstract class AbstractSkypeMailMessage implements SkypeMailMessage {
+class SkypeMailMessageImpl implements SkypeMailMessage {
+	private final SkypeChatFolderProvider chatFolderProvider;
+	private final SkypeMailStore mailStore;
+	private final Logger logger;
+	
+
+	SkypeMailMessageImpl(MimeMessage message,
+			SkypeChatFolderProvider chatFolderProvider,
+			SkypeMailStore mailStore, Logger logger) {
+		this.mimeMessage = message;
+		this.chatFolderProvider = chatFolderProvider;
+		this.mailStore = mailStore;
+		this.logger = logger;
+	}
+	
+	SkypeMailMessageImpl(MailSession session, 
+			SkypeChatFolderProvider chatFolderProvider, 
+			SkypeMailStore mailStore, 
+			Logger logger) {
+		this.mimeMessage = session.createMimeMessage();
+		this.chatFolderProvider = chatFolderProvider;
+		this.mailStore = mailStore;
+		this.logger = logger;
+	}
+	
+
+	@Override
+	public void delete() {
+		String skypeFolderName = chatFolderProvider.getFolderName();
+		Folder skypeFolder = mailStore.getFolder(skypeFolderName);
+		Folder trash =  mailStore.getFolder("[Gmail]/Trash");
+		MimeMessage mimeMessage = this.getMimeMessage();
+		Message messageToRemove = mimeMessage;
+		try {
+			Message[] messagesToRemove = new Message[]{messageToRemove};
+			skypeFolder.copyMessages(messagesToRemove, trash);
+		} catch (MessagingException e) {
+			logger.error("Could not transfer message to delete: " + this.getTopic());
+			throw new MessageProcessingException(e);
+		}
+		try {
+			mimeMessage.setFlag(Flags.Flag.DELETED, true);
+			Message[] messages = trash.search(FolderIndex.CHAT_INDEX_SEARCH_TERM);
+			if (messages.length>0)
+				messages[0].setFlag(Flags.Flag.DELETED, true);
+			trash.expunge();
+		} catch (MessagingException e) {
+			throw new MessageProcessingException(e);
+		}
+	}
+	
+	
+	
 	private MimeMessage mimeMessage;
 	private HeaderCodec headerCodec = new HeaderCodec();
 	
-	AbstractSkypeMailMessage(MailSession session) {
-		this.mimeMessage = session.createMimeMessage();
-	}
-
-	public AbstractSkypeMailMessage(MimeMessage message) {
-		this.mimeMessage = message;
-	}
 
 	@Override
 	public MimeMessage getMimeMessage() {
@@ -35,7 +92,7 @@ public abstract class AbstractSkypeMailMessage implements SkypeMailMessage {
 	@Override
 	public void setFrom(String chatAuthor) {
 		try {
-			mimeMessage.setFrom(new InternetAddress(chatAuthor));
+			mimeMessage.setFrom(new InternetAddress(headerCodec.encodeText(chatAuthor)));
 		} catch (MessagingException e) {
 			throw new MessageProcessingException(e);
 		}
@@ -53,8 +110,9 @@ public abstract class AbstractSkypeMailMessage implements SkypeMailMessage {
 	@Override
 	public void addRecipient(SkypeUser skypeUser) {
 		try {
+			String mailAddress = headerCodec.encodeText(skypeUser.getMailAddress());
 			mimeMessage.addRecipient(RecipientType.TO, 
-					new InternetAddress(skypeUser.getMailAddress()));
+					new InternetAddress(mailAddress));
 		} catch (AddressException e) {
 			throw new MessageProcessingException(e);
 		} catch (MessagingException e) {
@@ -151,9 +209,14 @@ public abstract class AbstractSkypeMailMessage implements SkypeMailMessage {
 	}
 
 	@Override
-	public InternetAddress[] getRecipients(javax.mail.Message.RecipientType to) {
+	public String[] getRecipients(javax.mail.Message.RecipientType to) {
 		try {
-			return (InternetAddress[]) mimeMessage.getRecipients(to);
+			ArrayList<String> decodedRecipients = new ArrayList<String>();
+			InternetAddress[] recipients = (InternetAddress[]) mimeMessage.getRecipients(to);
+			for (InternetAddress address : recipients) {
+				decodedRecipients.add(headerCodec.decodeText(address.getAddress()));
+			}
+			return decodedRecipients.toArray(new String[0]);
 		} catch (MessagingException e) {
 			throw new MessageProcessingException(e);
 		}
@@ -173,15 +236,6 @@ public abstract class AbstractSkypeMailMessage implements SkypeMailMessage {
 		if (header == null)
 			return null;
 		return header[0];
-	}
-
-	@Override
-	public void delete() {
-		try {
-			mimeMessage.setFlag(Flags.Flag.DELETED, true);
-		} catch (MessagingException e) {
-			throw new MessageProcessingException(e);
-		}
 	}
 
 	private void setHeader(String headerField, String value) {

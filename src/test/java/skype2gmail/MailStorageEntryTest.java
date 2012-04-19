@@ -9,7 +9,7 @@ import javax.mail.internet.MimeMessage.RecipientType;
 
 import mail.SkypeMailFolder;
 import mail.SkypeMailMessage;
-import mail.SkypeMailMessageFactory;
+import mail.skypemail.SkypeMailMessageFactory;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Assert;
@@ -58,7 +58,7 @@ public class MailStorageEntryTest {
 		final InternetAddress[] from = (InternetAddress[]) mimeMessage.getFrom();
 		Assert.assertEquals("moe", from[0].getAddress());
 		
-		final InternetAddress[] recipients = (InternetAddress[]) mimeMessage.getRecipients(RecipientType.TO);
+		final String[] recipients = mimeMessage.getRecipients(RecipientType.TO);
 		Assert.assertEquals(2, recipients.length);
 		String recipientList = StringUtils.join(recipients, ",");
 		Assert.assertEquals("boe,joe", recipientList);

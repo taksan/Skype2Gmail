@@ -11,6 +11,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.search.HeaderTerm;
 import javax.mail.search.SearchTerm;
 
+import mail.skypemail.SkypeMailMessageFactory;
 import skype.commons.SkypeChat;
 import skype.exceptions.ApplicationException;
 import skype.exceptions.MessageProcessingException;

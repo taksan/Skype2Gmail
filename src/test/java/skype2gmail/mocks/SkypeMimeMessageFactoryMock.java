@@ -4,7 +4,7 @@ package skype2gmail.mocks;
 import javax.mail.internet.MimeMessage;
 
 import mail.SkypeMailMessage;
-import mail.SkypeMailMessageFactory;
+import mail.skypemail.SkypeMailMessageFactory;
 
 import org.apache.commons.lang.NotImplementedException;
 

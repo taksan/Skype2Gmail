@@ -45,10 +45,8 @@ public class Skype2GmailTrayProviderImpl implements Skype2GmailTrayProvider {
 		SystemTrayAdapter tray = systemTrayProvider.getSystemTray();
 		PopupMenu popup = trayMenuProvider.getPopupMenu();
 
-		URL skype2GmailImageUrl = getClass()
-				.getResource("/skype2gmail.svg");
-		trayIcon = tray.createAndAddTrayIcon(skype2GmailImageUrl,
-				"Skype2Gmail", popup);
+		URL skype2GmailImageUrl = getClass().getResource("/skype2gmail.svg");
+		trayIcon = tray.createAndAddTrayIcon(skype2GmailImageUrl, "Skype2Gmail", popup);
 		trayIcon.addActionListener(clickActionProvider.get());
 	}
 }

@@ -1,6 +1,6 @@
 package skype.commons;
 
-import main.SkypeHistoryMain;
+import main.SkypeHistoryMainOptions;
 
 import org.junit.Test;
 
@@ -13,6 +13,6 @@ public class SkypeHistoryMainModuleTest {
 	@Test
 	public void testInjection() {
 		Injector historyInjector = Guice.createInjector(new SkypeHistoryMainModule(new String[0]));
-		historyInjector.getInstance(SkypeHistoryMain.class);
+		historyInjector.getInstance(SkypeHistoryMainOptions.class);
 	}
 }

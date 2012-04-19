@@ -17,7 +17,7 @@
 	</appender>
 
 	<logger name="skype-framework-native" additivity="false">
-		<level value="info" />
+		<level value="debug" />
 		<appender-ref ref="SkypeFrameworkLog" />
 	</logger>
 </log4j:configuration>

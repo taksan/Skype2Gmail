@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 import junit.framework.Assert;
 
-import main.SkypeHistoryMain;
+import main.SkypeHistoryMainOptions;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
@@ -16,7 +16,7 @@ public class SkypeHistoryMainTest {
 	public void testInvokeHelp() {
 		SkypeCliOptionsMock options = new SkypeCliOptionsMock();
 		options.hasHelp = true;
-		SkypeHistoryMain subject = new SkypeHistoryMain(options, null);
+		SkypeHistoryMainOptions subject = new SkypeHistoryMainOptions(options, null);
 		subject.run();
 		
 		String actual = options.getOperations();
@@ -27,7 +27,7 @@ public class SkypeHistoryMainTest {
 	public void testInvokeVersion() {
 		SkypeCliOptionsMock options = new SkypeCliOptionsMock();
 		options.hasVersion = true;
-		SkypeHistoryMain subject = new SkypeHistoryMain(options, null);
+		SkypeHistoryMainOptions subject = new SkypeHistoryMainOptions(options, null);
 		subject.run();
 		
 		String actual = options.getOperations();

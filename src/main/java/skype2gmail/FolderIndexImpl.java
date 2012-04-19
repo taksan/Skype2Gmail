@@ -10,7 +10,7 @@ import javax.mail.search.SearchTerm;
 
 import mail.SkypeMailFolder;
 import mail.SkypeMailMessage;
-import mail.SkypeMailMessageFactory;
+import mail.skypemail.SkypeMailMessageFactory;
 
 import org.apache.log4j.Logger;
 

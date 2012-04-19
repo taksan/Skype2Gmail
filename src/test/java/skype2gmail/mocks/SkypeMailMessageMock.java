@@ -155,7 +155,7 @@ public class SkypeMailMessageMock implements SkypeMailMessage {
 	}
 
 	@Override
-	public InternetAddress[] getRecipients(RecipientType to) {
+	public String[] getRecipients(RecipientType to) {
 		throw new NotImplementedException();
 	}
 
